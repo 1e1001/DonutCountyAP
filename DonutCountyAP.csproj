@@ -31,10 +31,14 @@
     </PropertyGroup>
 
     <Target Name="ZipMod" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <ZipDirectory SourceDirectory="bin\Release\$(AssemblyName)"
-                      DestinationFile="bin\Release\$(AssemblyName)-$(Version).zip"
-                      Overwrite="true"/>
+        <ZipDirectory SourceDirectory="bin\Release\$(AssemblyName)" DestinationFile="bin\Release\$(AssemblyName)-$(Version).zip" Overwrite="true" />
     </Target>
+
+    <ItemGroup>
+      <Compile Remove="lib\export\**" />
+      <EmbeddedResource Remove="lib\export\**" />
+      <None Remove="lib\export\**" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Archipelago.MultiClient.Net" Version="6.6.0" />
@@ -46,7 +50,7 @@
         <PackageReference Include="BepInEx.Core" Version="5.*" />
         <PackageReference Include="UnityEngine.Modules" Version="2017.4.4" IncludeAssets="compile" />
 		<Reference Include="Assembly-CSharp">
-			<HintPath>lib\Donut County\Donut County_Data\Managed\Assembly-CSharp.dll</HintPath>
+			<HintPath>lib\Donut County\DonutCounty_Data\Managed\Assembly-CSharp.dll</HintPath>
 		</Reference>
     </ItemGroup>
 

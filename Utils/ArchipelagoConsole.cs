@@ -66,7 +66,7 @@ public static class ArchipelagoConsole
         }
         
         // draw client/server commands entry
-        if (Hidden || !ArchipelagoClient.Authenticated) return;
+        if (Hidden || Plugin.GameState == null) return;
 
         CommandText = GUI.TextField(CommandTextRect, CommandText);
         if (!CommandText.IsNullOrWhiteSpace() && GUI.Button(SendCommandButton, "Send"))
