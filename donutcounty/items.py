@@ -43,7 +43,7 @@ def non_item(count: int):
     global _item_id
     _item_id += count
 
-# todo: give these better names
+# TODO: import data from logic.xml
 prog_use = ItemClassification.progression | ItemClassification.useful
 _item_id = 1000
 basic_item(1, "Hole: Water", prog_use, OptionFilter(Water, Water.option_true))
@@ -109,6 +109,7 @@ def create_item(world: DonutCountyWorld, name: str) -> DonutCountyItem:
 def create_all_items(world: DonutCountyWorld) -> None:
     total_locations = len(world.multiworld.get_unfilled_locations(world.player))
     itempool: list[Item] = []
+    # TODO: don't submit flag items (count = 1) that are in starting inventory
     for item in BASIC_ITEMS:
         if item.enabled.check(world.options):
             itempool.append(world.create_item(item.name))
@@ -117,8 +118,9 @@ def create_all_items(world: DonutCountyWorld) -> None:
     assert spawn_fragments >= 0, "Not enough item space for fragments"
     itempool += [world.create_item("Fragment") for _ in range(spawn_fragments)]
     required_fragments = (spawn_fragments * world.options.fragments_required_percent.value + 99) // 100
-    world.dc_total_fragments = spawn_fragments
-    world.dc_required_fragments = required_fragments
+    world.dc_slot_data["total_fragments"] = spawn_fragments
+    # TODO: per-level fragment rando
+    world.dc_slot_data["required_fragments"] = required_fragments
     unfilled = total_locations - len(itempool)
     itempool += [world.create_filler() for _ in range(unfilled)]
     world.multiworld.itempool += itempool

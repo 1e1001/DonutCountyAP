@@ -12,6 +12,7 @@ using Archipelago.MultiClient.Net.Packets;
 using DonutCountyAP.Randomizer;
 using DonutCountyAP.Utils;
 using Newtonsoft.Json.Linq;
+using UnityEngine.Networking.Match;
 
 namespace DonutCountyAP.Archipelago;
 
@@ -85,6 +86,10 @@ public class ArchipelagoClient
             var success = (LoginSuccessful)result;
 
             Plugin.SetGame(new GameState(_session.DataStorage.GetSlotData<GameOptions>(), from loc in _session.Locations.AllLocations select (CheckId)loc));
+            foreach (var item in _session.Items.AllItemsReceived)
+                Plugin.GameState?.ReceivedItem((CheckId)item.ItemId);
+            foreach (var location in _session.Locations.AllLocationsChecked)
+                Plugin.GameState?.ReceivedLocation((CheckId)location);
 
             //_deathLinkHandler = new(_session.CreateDeathLinkService(), ServerData.SlotName);
             outText = $"Successfully connected to {Plugin.RandomizerData.Uri} as {Plugin.RandomizerData.SlotName}!";
@@ -128,8 +133,11 @@ public class ArchipelagoClient
 
     private void OnLocationsReceived(ReadOnlyCollection<long> newCheckedLocations)
     {
+        if (Plugin.GameState == null)
+            return;
+        Plugin.BepInLogger.LogDebug($"received {newCheckedLocations.Count} remote locations");
         foreach (var location in newCheckedLocations)
-            Plugin.GameState?.ReceivedLocation((CheckId)location);
+            Plugin.GameState.ReceivedLocation((CheckId)location);
     }
 
     bool _pendingLocationsInFlight = false;
@@ -137,24 +145,25 @@ public class ArchipelagoClient
 
     public void SendLocation(CheckId id)
     {
-        _pendingLocations.Add((long)id);
-        if (!_pendingLocationsInFlight)
-            FlushPendingLocations();
+        if (id == CheckId.Victory)
+            _session.SetGoalAchieved();
+        else
+            _pendingLocations.Add((long)id);
+        if (_pendingLocationsInFlight)
+            Plugin.BepInLogger.LogDebug("server is busy");
     }
 
-    void FlushPendingLocations()
+    public void FlushPendingLocations()
     {
+        if (_pendingLocationsInFlight || _pendingLocations.Count == 0)
+            return;
         _pendingLocationsInFlight = true;
         var ids = _pendingLocations.ToArray();
         _pendingLocations.Clear();
         Plugin.BepInLogger.LogDebug($"sending {ids.Length} location(s) to the server");
-        // TODO: this batching does not work
-        _session?.Locations.CompleteLocationChecksAsync(_ => {
-            Plugin.BepInLogger.LogDebug("got server response");
-            if (_pendingLocations.Count > 0)
-                FlushPendingLocations();
-            else
-                _pendingLocationsInFlight = false;
+        _session?.Locations.CompleteLocationChecksAsync(response => {
+            Plugin.BepInLogger.LogDebug($"server got locations: {response}");
+            _pendingLocationsInFlight = false;
         }, ids);
     }
 

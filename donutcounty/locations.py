@@ -39,7 +39,7 @@ def non_loc(count: int):
     global _loc_id
     _loc_id += count
 
-# TODO: location-specific logic (e.g. achievements)
+# TODO: import data from logic.xml
 _loc_id = 1000
 non_loc(5) # hole abilities
 _loc_id = 2000

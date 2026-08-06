@@ -9,7 +9,7 @@ using UnityEngine.Events;
 
 namespace DonutCountyAP.Patches;
 
-public class PatchTitleScreen
+public partial class GlobalPatches
 {
     [HarmonyPatch(typeof(OS1TitleScreen), "UpdateButtons")]
     public static class OS1TitleScreen_UpdateButtons
@@ -37,10 +37,11 @@ public class PatchTitleScreen
             // setup buttons
             SetupButton(__instance.buttonContinue, "Levels", __instance.OnPressButtonLevelSelect);
             if (inGame)
+                // TODO: re-use new game dialog as a disconnect confirmation
                 SetupButton(__instance.buttonNewGame, "Disconnect", Plugin.OnTitleDisconnect);
             else
                 SetupButton(__instance.buttonNewGame, "Connect", Plugin.OnTitleConnect);
-            SetupButton(__instance.buttonLevelSelect, "Evil debug zone", Plugin.OnTitleDebug);
+            SetupButton(__instance.buttonLevelSelect, "???", () => { });
 
             return false;
         }

@@ -55,56 +55,6 @@ locations / items:
 	- objects that do nothing (how many are there?) have no item
 	- "how many are there?" is a good question in general - do i need to catalogue every object?
 
-game options:
-- goal options:
-	- goal_area
-		- bossfight: Beat the bossfight level to unlock Aftermath
-		- aftermath: Fragments directly unlock Aftermath
-	- total_fragments (0-??): How many fragments to add to the item pool. There may be fewer than this depending on the number of free locations.
-	- framents_required_percent (0-100): Percentage of total fragments that need to be collected to unlock the goal area.
-- items:
-	- water (bool): Require an item to be able to fill your hole with water or soup (1 item)
-	- fire (bool): Require an item to be able to fill your hole with fire, or to have fire ignite things in the world (1 item)
-	- snake (bool): Require an item to be able to fill your hole with a snake (1 item)
-	- light (bool): Require an item to be able to fill your hole with light (1 item)
-	- catapult:
-		- off: Catapult is always available
-		- global: Require an item to use the catapult (1 item)
-		- indiviudal: Each type of launchable object gets its own item (?? items)
-	- trashsanity_items: Multiworld items grant object's hole size bonus and enable the object's effects
-		- off: Regular game progression
-		- type: Collect an item for every object type (?? items)
-		- all: Collect an item for every object (?? items)
-- locations:
-	- level_completions (bool): Location for completing each level (21 locations)
-	- level_segments (bool): Location for completing segments of levels (63 locations)
-	- achievements (bool): Location for each non-postgame achievement (16 locations)
-	- buy_catapult (bool): Location when purchasing the catapult (1 location)
-	- trashsanity_locations: If set lower than trashsanity_items, will inherit its value.
-		- off: You only need the mechanics to get through the game
-		- type: Every type of trash grants a location (?? locations)
-		- all: Every trash object grants a location (?? locations)
-	- snake_danger (bool): Ranger Station snake danger is randomized (4 locations, 4 items)
-	- salt_and_pepper (bool): Cat Soup shakers will give locations, progressive salt & paper unlock progression (5 locations, 5 items)
-	- hack_protocol (bool): Raccoon HQ's entrance is randomized (1 location, 1 check)
-- trash:
-	- filler_weights:
-		- true_filler: BK boes one (1) backflip
-		- concrete_trap: Disable your hole for a short period of time
-
-GameState storage:
-- public fields for game settings
-- or! a map<string, int> + map<string, bool> - for string-based item ids
-- int[] of items + bool[] of locations
-	- for "trigger-based" usage, not polling
-	- how to deal with items/locations that don't exist due to settings
-		- just check the settings
-	- how to do realtime updates
-		- have a randomizer manager that tracks every object
-		- every object has a RandomizerFallState that tracks the extra info i need
-		- patch hole to respect that behavior
-- constants for item ids
-
 extra qol:
 - auto text skip
 	- cutscene levels aren't included in the rando, but there's mid-level dialog
@@ -112,15 +62,19 @@ extra qol:
 	- give secret code infinite debounce (the code never doubles an input)
 	- Quack Enthusiast should take fewer quacks (10)
 	- Egg Breaker should take fewer eggs (12)
+- level select changes
+	- no selecting useless levels (above donut & catapult)
+	- ui for locked level
+	- allow clicking on level circles (always enabled)
+- level select (locations) tracker
+	- to the right of the preview image, add a grid of dots
+		- rows are regions of the level
+		- first dot is segment completion, more dots for each notable location, then a numeric counter for trashsanity
 - abilities tracker
 	- maybe this can be the missing menu item?
 - trashsanity tracker
 	- trashopedia shows collection status next to item
 	- optional in-level indicator (some billboard above item?)
-- patch clickable transitions?
-	- raccoon hq entry could be a fun glitch logic.
-	- tk's door should just kick you to the menu
-- i wonder if i can inject tags into the language data (HoL reference :3)
 
 some implementation notes:
 - `DataManager` needs to be replaced to not use the game's save data

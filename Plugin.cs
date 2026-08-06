@@ -28,28 +28,29 @@ public class Plugin : BaseUnityPlugin
     public const string PLUGIN_VERSION = "0.1.0";
 
     public const string MOD_DISPLAY_INFO = $"{PLUGIN_NAME} v{PLUGIN_VERSION}";
-    private const string AP_DISPLAY_INFO = $"Archipelago v{ArchipelagoClient.AP_VERSION}";
+    const string AP_DISPLAY_INFO = $"Archipelago v{ArchipelagoClient.AP_VERSION}";
     public static ManualLogSource BepInLogger;
     public static ArchipelagoClient ArchipelagoClient = null;
     public static RandomizerSaveData RandomizerData;
     public static GameState GameState = null;
+    public static Patcher Patcher = new();
 
     public static bool ShowTrackerGUI = false;
     public static bool ShowDebugGUI = false;
 
-    private void Awake()
+    void Awake()
     {
         BepInLogger = Logger;
         ArchipelagoClient = new ArchipelagoClient();
         ArchipelagoConsole.Awake();
         Globals.shipping = false;
-        Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+        Patcher.Global.Set(true);
 
         ArchipelagoConsole.LogMessage($"{MOD_DISPLAY_INFO} loaded!");
 
     }
 
-    private void OnGUI()
+    void OnGUI()
     {
         bool titlescreen = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "titlescreen";
         // TODO: this gui sucks total ass
@@ -80,29 +81,6 @@ public class Plugin : BaseUnityPlugin
                 RandomizerData.Password = GUI.TextField(new Rect(150, 110, 150, 20),
                     RandomizerData.Password);
 
-                //}
-                if (GUI.Button(new Rect(16, 130, 100, 20), "Debug session"))
-                {
-                    SetGame(new GameState(new GameOptions()
-                    {
-                        GoalArea = GameOptions.GoalAreaMode.Bossfight,
-                        TotalFragments = 50,
-                        RequiredFragments = 40,
-                        Water = true,
-                        Fire = true,
-                        Snake = true,
-                        Light = true,
-                        Bunnies = true,
-                        Catapult = GameOptions.CatapultMode.Individual,
-                        LevelCompletions = true,
-                        LevelSegments = true,
-                        Achievements = true,
-                        BuyCatapult = true,
-                        SnakeDanger = true,
-                        SaltAndPepper = true,
-                        HackProtocol = true,
-                    }));
-                }
             }
         }
 
@@ -110,6 +88,39 @@ public class Plugin : BaseUnityPlugin
         {
             GameState?.OnGUI();
         }
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            if (GameState != null)
+            {
+                ShowDebugGUI ^= true;
+            }
+            else
+            {
+                SetGame(new GameState(new GameOptions()
+                {
+                    GoalArea = GameOptions.GoalAreaMode.Bossfight,
+                    TotalFragments = 50,
+                    RequiredFragments = 40,
+                    HoleWater = true,
+                    HoleFire = true,
+                    HoleSnake = true,
+                    HoleLight = true,
+                    HoleBunnies = true,
+                    Catapult = GameOptions.CatapultMode.Individual,
+                    LevelCompletions = true,
+                    LevelSegments = true,
+                    Achievements = true,
+                    BuyCatapult = true,
+                    SnakeDanger = true,
+                    SaltAndPepper = true,
+                    HackProtocol = true,
+                }));
+            }
+        }
+        ArchipelagoClient.FlushPendingLocations();
     }
     public static void OnTitleConnect()
     {
@@ -119,15 +130,14 @@ public class Plugin : BaseUnityPlugin
     }
     public static void OnTitleDisconnect()
     {
-        ArchipelagoClient.Disconnect();
+        RM.os1popup.StartPopup("Disconnect?", "Menus/QUIT_CONFIRM", "Menus/OKAY", "Menus/NO", delegate
+        {
+            ArchipelagoClient.Disconnect();
+        }, null);
     }
     public static void OnTitleTracker()
     {
         ShowTrackerGUI ^= true;
-    }
-    public static void OnTitleDebug()
-    {
-        ShowDebugGUI ^= true;
     }
     public static void SetGame(GameState game)
     {

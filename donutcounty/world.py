@@ -17,14 +17,12 @@ class DonutCountyWorld(World):
     options: dc_options.DonutCountyOptions
     location_name_to_id = locations.LOCATION_NAME_TO_ID
     item_name_to_id = items.ITEM_NAME_TO_ID
-    dc_total_fragments = -1
-    dc_required_fragments = -1
+    dc_slot_data = {}
     def create_regions(self) -> None:
         regions.create_and_connect_regions(self)
         locations.create_all_locations(self)
     def set_rules(self) -> None:
         rules.set_all_rules(self)
-        pass
     def create_items(self) -> None:
         items.create_all_items(self)
     def create_item(self, name: str) -> items.DonutCountyItem:
@@ -32,21 +30,6 @@ class DonutCountyWorld(World):
     def get_filler_item_name(self) -> str:
         return items.get_random_filler_item_name(self)
     def fill_slot_data(self) -> Mapping[str, Any]:
-        return {
-            "goal_area": self.options.goal_area.value,
-            "total_fragments": self.dc_total_fragments,
-            "required_fragments": self.dc_required_fragments,
-            "water": self.options.water.value,
-            "fire": self.options.fire.value,
-            "snake": self.options.snake.value,
-            "light": self.options.light.value,
-            "bunnies": self.options.bunnies.value,
-            "catapult": self.options.catapult.value,
-            "level_completions": True,
-            "level_segments": self.options.level_segments.value,
-            "achievements": self.options.achievements.value,
-            "buy_catapult": self.options.buy_catapult.value,
-            "snake_danger": self.options.snake_danger.value,
-            "salt_and_pepper": self.options.salt_and_pepper.value,
-            "hack_protocol": self.options.hack_protocol.value,
-        }
+        for k, v in self.options.asdict("goal_area", "water", "fire", "snake", "light", "bunnies", "catapult", "level_completions", "level_segments", "achievements", "buy_catapult", "snake_danger", "salt_and_pepper", "hack_protocol").items():
+            self.dc_slot_data[k] = v
+        return self.dc_slot_data

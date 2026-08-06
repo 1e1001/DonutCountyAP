@@ -14,7 +14,7 @@ class GoalArea(Choice):
    
 class TotalFragments(Range):
     """
-    How many fragments to add to the item pool. There may be fewer than this depending on the number of free locations.
+    How many fragments to add to the item pool. There may be fewer than this depending on the number of free locations
     """
     display_name = "Total fragments"
     range_start = 0
@@ -23,42 +23,59 @@ class TotalFragments(Range):
     
 class FragmentsRequired(Range):
     """
-    Percentage of total fragments that need to be collected to unlock the goal area.
+    Percentage of total fragments that need to be collected to unlock the goal area
     """
     display_name = "% fragments required"
     range_start = 0
     range_end = 100
     default = 80
+    
+class FragmentsUnlockLevels(Choice):
+    """
+    - off: All levels are available
+    - sequence: Start with only Mira's House, fragments progressively unlock following areas
+    - random: Starting area and order of unlocked areas is randomized
+    """
+    display_name = "Fragments unlock levels"
+    option_off = 0
+    option_sequence = 1
+    option_random = 2
    
-class Water(Toggle):
+class Levels(Toggle):
+    """
+    Require items to be able to access each level. Place Level Unlock in your start_inventory so you don't have an empty first sphere. (21 items)
+    """
+    display_name = "Levels"
+   
+class HoleWater(Toggle):
     """
     Require an item to be able to fill your hole with water or soup (1 item)
     """
-    display_name = "Water"
+    display_name = "Hole water"
     
-class Fire(Toggle):
+class HoleFire(Toggle):
     """
     Require an item to be able to fill your hole with fire, or to have fire ignite things in the world (1 item)
     """
-    display_name = "Fire"
+    display_name = "Hole fire"
     
-class Snake(Toggle):
+class HoleSnake(Toggle):
     """
     Require an item to be able to fill your hole with a snake (1 item)
     """
-    display_name = "Snake"
+    display_name = "Hole snake"
     
-class Light(Toggle):
+class HoleLight(Toggle):
     """
     Require an item to be able to fill your hole with light (1 item)
     """
-    display_name = "Light"
+    display_name = "Hole light"
     
-class Bunnies(Toggle):
+class HoleBunnies(Toggle):
     """
     Require an item to be able to have bunnies mate in your hole (1 item)
     """
-    display_name = "Bunnies"
+    display_name = "Hole bunnies"
     
 class Catapult(Choice):
     """
@@ -140,16 +157,18 @@ class DonutCountyOptions(PerGameCommonOptions):
     goal_area: GoalArea
     total_fragments: TotalFragments
     fragments_required_percent: FragmentsRequired
-
-    # Location options
-    water: Water
-    fire: Fire
-    snake: Snake
-    light: Light
-    bunnies: Bunnies
-    catapult: Catapult
+    fragments_unlock_levels: FragmentsUnlockLevels
 
     # Item options
+    levels: Levels
+    hole_water: HoleWater
+    hole_fire: HoleFire
+    hole_snake: HoleSnake
+    hole_light: HoleLight
+    hole_bunnies: HoleBunnies
+    catapult: Catapult
+
+    # Location options
     # for now, level_completions will be forced true
     #level_completions: LevelCompletions
     level_segments: LevelSegments
@@ -166,10 +185,10 @@ option_groups = [
     OptionGroup("Game Options", [
         GoalArea, TotalFragments, FragmentsRequired
     ]),
-    OptionGroup("Location Options", [
-        Water, Fire, Snake, Light, Catapult
-    ]),
     OptionGroup("Item Options", [
+        HoleWater, HoleFire, HoleSnake, HoleLight, HoleBunnies, Catapult
+    ]),
+    OptionGroup("Location Options", [
         LevelCompletions, LevelSegments, Achievements, BuyCatapult, SnakeDanger, SaltAndPepper, HackProtocol
     ]),
     OptionGroup("Trash Options", [

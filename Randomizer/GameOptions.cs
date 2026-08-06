@@ -28,21 +28,21 @@ public class GameOptions
     [JsonProperty("required_fragments")]
     public int RequiredFragments;
 
-    // Location options
-    [JsonProperty("water")]
-    public bool Water;
-    [JsonProperty("fire")]
-    public bool Fire;
-    [JsonProperty("snake")]
-    public bool Snake;
-    [JsonProperty("light")]
-    public bool Light;
-    [JsonProperty("bunnies")]
-    public bool Bunnies;
+    // Item options
+    [JsonProperty("hole_water")]
+    public bool HoleWater;
+    [JsonProperty("hole_fire")]
+    public bool HoleFire;
+    [JsonProperty("hole_snake")]
+    public bool HoleSnake;
+    [JsonProperty("hole_light")]
+    public bool HoleLight;
+    [JsonProperty("hole_bunnies")]
+    public bool HoleBunnies;
     [JsonProperty("catapult"), JsonConverter(typeof(StringEnumConverter))]
     public CatapultMode Catapult;
 
-    // Item options
+    // Location options
     [JsonProperty("level_completions")]
     public bool LevelCompletions;
     [JsonProperty("level_segments")]

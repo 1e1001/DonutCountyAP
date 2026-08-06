@@ -19,25 +19,20 @@ public partial class GameState
     public GameState(GameOptions options, IEnumerable<CheckId> allLocations = null) {
         _allLocations = new HashSet<CheckId>(allLocations ?? (IEnumerable<CheckId>)Enum.GetValues(typeof(CheckId)));
         _allLocations.Remove(CheckId.None);
+        _allLocations.Add(CheckId.Victory);
         Options = options;
-        GrantDisabledItems(options.Water, [CheckId.HoleWater]);
-        GrantDisabledItems(options.Fire, [CheckId.HoleFire]);
-        GrantDisabledItems(options.Snake, [CheckId.HoleSnake]);
-        GrantDisabledItems(options.Light, [CheckId.HoleLight]);
-        GrantDisabledItems(options.Bunnies, [CheckId.HoleBunnies]);
-        GrantDisabledItems(options.Catapult == GameOptions.CatapultMode.Global, [CheckId.Catapult]);
-        GrantDisabledItems(options.Catapult == GameOptions.CatapultMode.Individual, [
-            CheckId.CatapultBoxes,
-            CheckId.CatapultChickens,
-            CheckId.CatapultEggs,
-            CheckId.CatapultHoneycomb,
-            CheckId.CatapultFrogs,
-            CheckId.CatapultWaterBalloons,
-            CheckId.CatapultWater,
-            CheckId.CatapultDonutsCamerasRaccoons,
-            CheckId.CatapultHackingDevice,
-            CheckId.CatapultBombs,
-        ]);
+        ApplyPatches();
+    }
+
+    public void ApplyPatches()
+    {
+        Plugin.Patcher.HoleWater.Set(Options.HoleWater);
+        //Plugin.Patcher.HoleFire.Set(Options.HoleFire);
+        //Plugin.Patcher.HoleSnake.Set(Options.HoleSnake);
+        //Plugin.Patcher.HoleLight.Set(Options.HoleLight);
+        //Plugin.Patcher.HoleBunnies.Set(Options.HoleBunnies);
+        //Plugin.Patcher.Catapult.Set(Options.Catapult != GameOptions.CatapultMode.Off);
+        // TODO: more patches
     }
 
     void GrantDisabledItems(bool enabled, CheckId[] items)
@@ -71,14 +66,11 @@ public partial class GameState
             {
                 Options = JsonConvert.DeserializeObject<GameOptions>(_guiOptionsText);
                 _guiOptionsText = null;
+                ApplyPatches();
             } catch (JsonException e)
             {
                 _guiOptionsText = e.ToString();
             }
-        }
-        if (GUILayout.Button("Reset items"))
-        {
-            Plugin.SetGame(new GameState(Options, []) { _allLocations = _allLocations });
         }
         GUILayout.EndHorizontal();
         foreach (CheckId i in Enum.GetValues(typeof(CheckId)))
@@ -132,6 +124,13 @@ public partial class GameState
         ++_items[id];
         Plugin.BepInLogger.LogDebug($"received item {id}");
         // TODO: any immediately-occuring updates go here
+        switch(id)
+        {
+            case CheckId.FillerBackflip:
+                foreach (var character in RM.gameUI?.characters ?? [])
+                    character._characterHolder.GetComponent<Backflip>()?.DoBackflip();
+                break;
+        }
     }
     public void ReceivedLocation(CheckId id)
     {
@@ -144,11 +143,12 @@ public partial class GameState
     {
         if (!_allLocations.Contains(id))
         {
-            Plugin.BepInLogger.LogDebug($"Ignoring location {id} because it is not valid");
+            Plugin.BepInLogger.LogWarning($"ignoring location {id} because it is not valid, fix your patch!");
             return;
         }
         Plugin.BepInLogger.LogDebug($"found location {id}");
+        if (!_locations.Contains(id))
+            Plugin.ArchipelagoClient.SendLocation(id);
         ReceivedLocation(id);
-        Plugin.ArchipelagoClient.SendLocation(id);
     }
 }

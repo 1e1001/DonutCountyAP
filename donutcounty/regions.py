@@ -11,6 +11,7 @@ from .items import DonutCountyItem, HasBasic, HasHole, HasCatapult
 if TYPE_CHECKING:
     from .world import DonutCountyWorld
 
+# TODO: import data from logic.xml
 # TODO: progressive item logic
 REGION_DEPTHS: dict[str, list[Rule]] = {
     "MirasHouse": [True_(), True_(), True_(), True_()],
