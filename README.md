@@ -8,12 +8,11 @@ Archipelago implementation for Donut County (2018)
 
 mvp todo:
 - item gates (snake danger, salt & pepper, hack protocol)
-- traps
 - apworld groups
 
 extra qol:
 - auto text skip
-	- cutscene levels aren't included in the rando, but there's mid-level dialog
+	- hold down key for 0.5s
 	- allow pressing chat buttons with space
 - level select changes
 	- no selecting useless levels (above donut & catapult)
@@ -29,11 +28,12 @@ extra qol:
 - trashsanity tracker
 	- trashopedia shows collection status next to item
 	- optional in-level indicator (some billboard above item?)
-- prioritize titlescreen over other scenes
 
 ## Developer guide
 
 - `logic.xml` is a spreadsheet containing all the item/location info
 	- if you change it, run `autologic.fsx` and commit the changes
-- To get working mod builds, add a modded copy of the game as `lib/Donut County/`
+- To get working mod builds:
+	- add a modded copy of the game as `lib/Donut County/`
+	- add a compiled copy of [`c-wspp-websocket-sharp`](https://github.com/black-sliver/c-wspp-websocket-sharp/) to `lib/wspp/`
 - To develop APWorld, hardlink (junction) the `donutcounty/` folder into your from-source Archipelago's `worlds/` folder

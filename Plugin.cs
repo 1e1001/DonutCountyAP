@@ -17,8 +17,7 @@ using static DonutCountyAP.Randomizer.GameOptions;
 
 namespace DonutCountyAP;
 
-[BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
-[BepInProcess("DonutCounty.exe")]
+[BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION), BepInProcess("DonutCounty.exe")]
 public class Plugin : BaseUnityPlugin
 {
     public const string PLUGIN_GUID = "zz1e1001.DonutCountyAP";
@@ -83,17 +82,17 @@ public class Plugin : BaseUnityPlugin
 
             }
 
-            // TODO: actually show this in the pause stats menu
-            if (ShowOptionsGUI)
+        }
+        //if (ShowOptionsGUI)
+        if (RM.pauseMenu != null && (OS1OptionsMenu.State)GlobalPatches.OS1OptionsMenu__currentState.GetValue(RM.pauseMenu) == OS1OptionsMenu.State.Options)
+        {
+            GUI.Label(new Rect(16, 170, 300, 20), "Options:");
+            RandomizerData.EasierAchievements = GUI.Toggle(new Rect(16, 190, 300, 20), RandomizerData.EasierAchievements, "Easier achievements");
+            RandomizerData.DialogueSkipping = GUI.Toggle(new Rect(16, 210, 300, 20), RandomizerData.DialogueSkipping, "Dialogue skipping");
+            if (GUI.Button(new Rect(16, 230, 150, 20), "Apply"))
             {
-                GUI.Label(new Rect(16, 170, 300, 20), "Options:");
-                RandomizerData.EasierAchievements = GUI.Toggle(new Rect(16, 190, 300, 20), RandomizerData.EasierAchievements, "Easier achievements");
-                RandomizerData.DialogueSkipping = GUI.Toggle(new Rect(16, 210, 300, 20), RandomizerData.DialogueSkipping, "Dialogue skipping");
-                if (GUI.Button(new Rect(16, 230, 150, 20), "Apply"))
-                {
-                    DataManager.SaveGameData_Steam();
-                    RandomizerData.ApplyPatches();
-                }
+                DataManager.SaveGameData_Steam();
+                RandomizerData.ApplyPatches();
             }
         }
 
@@ -114,25 +113,45 @@ public class Plugin : BaseUnityPlugin
             }
             else
             {
+                //SetGame(new GameState(new GameOptions()
+                //{
+                //    GoalArea = GameOptions.GoalAreaMode.Bossfight,
+                //    TotalFragments = 50,
+                //    RequiredFragments = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 0],
+                //    Levels = true,
+                //    HoleWater = true,
+                //    HoleFire = true,
+                //    HoleSnake = true,
+                //    HoleLight = true,
+                //    HoleBunnies = true,
+                //    Catapult = GameOptions.CatapultMode.Split,
+                //    LevelCompletions = true,
+                //    LevelSegments = true,
+                //    Achievements = true,
+                //    BuyCatapult = true,
+                //    SnakeDanger = true,
+                //    SaltAndPepper = true,
+                //    HackProtocol = true,
+                //}));
                 SetGame(new GameState(new GameOptions()
                 {
                     GoalArea = GameOptions.GoalAreaMode.Bossfight,
                     TotalFragments = 50,
-                    RequiredFragments = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 0],
-                    Levels = true,
-                    HoleWater = true,
-                    HoleFire = true,
-                    HoleSnake = true,
-                    HoleLight = true,
-                    HoleBunnies = true,
-                    Catapult = GameOptions.CatapultMode.Split,
-                    LevelCompletions = true,
-                    LevelSegments = true,
-                    Achievements = true,
-                    BuyCatapult = true,
-                    SnakeDanger = true,
-                    SaltAndPepper = true,
-                    HackProtocol = true,
+                    RequiredFragments = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    Levels = false,
+                    HoleWater = false,
+                    HoleFire = false,
+                    HoleSnake = false,
+                    HoleLight = false,
+                    HoleBunnies = false,
+                    Catapult = GameOptions.CatapultMode.Off,
+                    LevelCompletions = false,
+                    LevelSegments = false,
+                    Achievements = false,
+                    BuyCatapult = false,
+                    SnakeDanger = false,
+                    SaltAndPepper = false,
+                    HackProtocol = false,
                 }));
             }
         }
@@ -157,6 +176,8 @@ public class Plugin : BaseUnityPlugin
     }
     public static void SetGame(GameState game)
     {
+        if (game == Plugin.GameState)
+            return;
         Debug.Log(game == null ? "ending session" : "starting session");
         Plugin.GameState = game;
         // quit to titlescreen

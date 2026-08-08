@@ -18,8 +18,9 @@
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
-        <OutputPath>lib\Donut County\BepInEx\plugins\$(AssemblyName)</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <!--<OutputPath>lib\Donut County\BepInEx\plugins\$(AssemblyName)</OutputPath>-->
+		<OutputPath>bin\Debug\$(AssemblyName)</OutputPath>
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
         <ErrorReport>prompt</ErrorReport>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -30,8 +31,23 @@
         <ErrorReport>prompt</ErrorReport>
     </PropertyGroup>
 
-    <Target Name="ZipMod" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <ZipDirectory SourceDirectory="bin\Release\$(AssemblyName)" DestinationFile="bin\Release\$(AssemblyName)-$(Version).zip" Overwrite="true" />
+	<Target Name="SelectiveCopy" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<!-- TODO: this looks awful but idk anything about vs projects -->
+		<Copy SourceFiles="bin\Debug\$(AssemblyName)\$(AssemblyName).dll" DestinationFolder="lib\Donut County\BepInEx\plugins\$(AssemblyName)\" />
+		<Copy SourceFiles="bin\Debug\$(AssemblyName)\Archipelago.MultiClient.Net.dll" DestinationFolder="lib\Donut County\BepInEx\plugins\$(AssemblyName)\" />
+		<Copy SourceFiles="bin\Debug\$(AssemblyName)\Newtonsoft.Json.dll" DestinationFolder="lib\Donut County\BepInEx\plugins\$(AssemblyName)\" />
+		<Copy SourceFiles="lib\wspp\websocket-sharp.dll" DestinationFolder="lib\Donut County\BepInEx\plugins\$(AssemblyName)\" />
+		<Copy SourceFiles="lib\wspp\c-wspp.dll" DestinationFolder="lib\Donut County\BepInEx\plugins\$(AssemblyName)\" />
+	</Target>
+	<Target Name="SelectiveCopyRelease" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<Copy SourceFiles="bin\Release\$(AssemblyName)\$(AssemblyName).dll" DestinationFolder="bin\Release\$(AssemblyName)-select\" />
+		<Copy SourceFiles="bin\Release\$(AssemblyName)\Archipelago.MultiClient.Net.dll" DestinationFolder="bin\Release\$(AssemblyName)-select\" />
+		<Copy SourceFiles="bin\Release\$(AssemblyName)\Newtonsoft.Json.dll" DestinationFolder="bin\Release\$(AssemblyName)-select\" />
+		<Copy SourceFiles="lib\wspp\websocket-sharp.dll" DestinationFolder="bin\Release\$(AssemblyName)-select\" />
+		<Copy SourceFiles="lib\wspp\c-wspp.dll" DestinationFolder="bin\Release\$(AssemblyName)-select\" />
+	</Target>
+    <Target Name="ZipMod" AfterTargets="SelectiveCopyRelease" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <ZipDirectory SourceDirectory="bin\Release\$(AssemblyName)-select\" DestinationFile="bin\Release\$(AssemblyName)-$(Version).zip" Overwrite="true" />
     </Target>
 
     <ItemGroup>

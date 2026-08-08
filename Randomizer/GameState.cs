@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DonutCountyAP.Patches;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace DonutCountyAP.Randomizer;
 public partial class GameState
 {
     Dictionary<ItemId, int> _inventory = [];
+    // TODO: debug tracker should probably be implemented as a different type of "archipelago client" instead
     HashSet<long> _debugTrackerLocations = [];
     public bool Complete = false;
     public bool ActiveDelivery = false;
@@ -33,13 +35,13 @@ public partial class GameState
     void OnWindowGUI(int _id)
     {
         _guiScroll = GUILayout.BeginScrollView(_guiScroll, false, true);
-        GUILayout.Label(ActiveDelivery ? "Currently delivering" : "Not delivering");
+        GUILayout.Label(ActiveDelivery ? "currently delivering" : "not delivering");
         _guiOptionsText ??= JsonConvert.SerializeObject(Options, Formatting.Indented);
         _guiOptionsText = GUILayout.TextArea(_guiOptionsText);
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Refresh"))
+        if (GUILayout.Button("refresh"))
             _guiOptionsText = null;
-        if (GUILayout.Button("Save"))
+        if (GUILayout.Button("save"))
         {
             try
             {
@@ -52,7 +54,15 @@ public partial class GameState
             }
         }
         GUILayout.EndHorizontal();
-        GUILayout.Label("Items");
+        GUILayout.BeginHorizontal();
+        var patchEnabled = Plugin.Patcher.DebugFallState.Enabled;
+        Plugin.Patcher.DebugFallState.Set(GUILayout.Toggle(patchEnabled, "fallstate"));
+        GUILayout.EndHorizontal();
+        if (patchEnabled)
+        {
+            GUILayout.TextArea(JsonConvert.SerializeObject(DebugFallStatePatches.ObjectList, Formatting.Indented));
+        }
+        GUILayout.Label("items");
         foreach (ItemId i in Enum.GetValues(typeof(ItemId)))
         {
             GUILayout.BeginHorizontal();
@@ -74,7 +84,7 @@ public partial class GameState
             GUILayout.Label(i.ToString(), GUILayout.ExpandWidth(false));
             GUILayout.EndHorizontal();
         }
-        GUILayout.Label("Locations");
+        GUILayout.Label("locations");
         foreach (AutoLogic.DebugTracker entry in AutoLogic.DEBUG_TRACKER)
         {
             GUILayout.BeginHorizontal();
@@ -120,7 +130,7 @@ public partial class GameState
         }
     }
 
-    public void ReceivedItem(ItemId id)
+    public void ReceivedItem(ItemId id, bool startOfGame = false)
     {
         // TODO: cleaner way of this
         if (!_inventory.ContainsKey(id))
@@ -128,16 +138,22 @@ public partial class GameState
         ++_inventory[id];
         Plugin.BepInLogger.LogDebug($"received item {id}");
         // TODO: any more immediately-occuring updates go here
+        if (startOfGame)
+            return;
         switch(id)
         {
+            // these should exist at all times, so if they somehow don't it's fine to drop the item
             case ItemId.FillerBackflip:
                 RM.gameUI?.GetComponent<Backflip>()?.DoBackflip();
                 break;
-            case ItemId.TrapConcrete:
-                // TODO: trap
+            case ItemId.CementTrap:
+                RM.substanceManager?.GetComponent<CementTrap>()?.DoCementTrap();
                 break;
-            case ItemId.TrapDepths:
-                // TODO: trap
+            case ItemId.DepthsTrap:
+                GlobalPatches.DepthsTrapReroll = true;
+                // don't use OnQueueLevel so it doesn't get caught by LevelTransitionPatches
+                RM.sceneManager.nextLevel = "999ft";
+                RM.sceneManager.OnPlayQueuedLevel();
                 break;
         }
     }

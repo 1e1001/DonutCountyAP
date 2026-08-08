@@ -38,7 +38,7 @@ public partial class GlobalPatches
             SetupButton(__instance.buttonNewGame, "Disconnect", Plugin.OnTitleDisconnect);
         else
             SetupButton(__instance.buttonNewGame, "Connect", Plugin.OnTitleConnect);
-        SetupButton(__instance.buttonLevelSelect, "Randomizer Options", Plugin.OnTitleOptions);
+        SetupButton(__instance.buttonLevelSelect, "???", Plugin.OnTitleOptions);
 
         return false;
     }
@@ -73,4 +73,7 @@ public partial class GlobalPatches
         __instance.StartCoroutine((System.Collections.IEnumerator)ShowTitleScreen_StartTitleScreenRoutine.Invoke(__instance, []));
         return false;
     }
+
+
+    public static readonly FieldInfo OS1OptionsMenu__currentState = AccessTools.Field(typeof(OS1OptionsMenu), "_currentState");
 }

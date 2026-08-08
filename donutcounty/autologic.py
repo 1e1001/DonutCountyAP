@@ -264,7 +264,7 @@ ITEM_NAME_TO_ID = {
     "Catapult: Bombs": 14,
     "Quadcopter Piece": 15,
     "BK Does One (1) Backflip": 16,
-    "Concrete Trap": 17,
+    "Cement Trap": 17,
     "999ft Below Trap": 23,
     "Progressive Snake Danger": 18,
     "Progressive Salt": 19,
@@ -312,7 +312,7 @@ ITEM_DATA = {
     "Catapult: Bombs": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
     "Quadcopter Piece": (ItemClassification.progression, []),
     "BK Does One (1) Backflip": (ItemClassification.filler, []),
-    "Concrete Trap": (ItemClassification.trap, []),
+    "Cement Trap": (ItemClassification.trap, []),
     "999ft Below Trap": (ItemClassification.trap, []),
     "Progressive Snake Danger": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.SnakeDanger, options.SnakeDanger.option_true)]),
     "Progressive Salt": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.SaltAndPepper, options.SaltAndPepper.option_true)]),
@@ -342,7 +342,7 @@ ITEM_DATA = {
 }
 ITEM_FILLER = {
     "filler": "BK Does One (1) Backflip",
-    "concrete_trap": "Concrete Trap",
+    "concrete_trap": "Cement Trap",
     "depths_trap": "999ft Below Trap",
 }
     
@@ -593,7 +593,7 @@ def items(o, f):
         f(1, "Catapult: Bombs")
     f(0, "Quadcopter Piece")
     f(0, "BK Does One (1) Backflip")
-    f(0, "Concrete Trap")
+    f(0, "Cement Trap")
     f(0, "999ft Below Trap")
     if ITEM_DATA["Progressive Snake Danger"][1][0].check(o):
         f(4, "Progressive Snake Danger")

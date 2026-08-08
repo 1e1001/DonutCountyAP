@@ -18,7 +18,7 @@ public class Backflip : MonoBehaviour
     {
         if (_queued == 0 || _currentlyAnimating)
             return;
-        var candidate = Characters.First(ch => ch.activeInHierarchy);
+        var candidate = Characters.FirstOrDefault(ch => ch.activeInHierarchy);
         if (candidate == null)
             return;
         Plugin.BepInLogger.LogInfo($"backflipping {candidate}");
@@ -39,6 +39,7 @@ public class Backflip : MonoBehaviour
         }
         target.localEulerAngles = baseAngle;
         _currentlyAnimating = false;
+        --_queued;
     }
 
     public void DoBackflip()

@@ -80,7 +80,7 @@ public class ArchipelagoClient
         }
         catch (Exception e)
         {
-            Plugin.BepInLogger.LogError(e);
+            Plugin.BepInLogger.LogError($"bad: {e}");
             HandleConnectResult(new LoginFailure(e.ToString()));
             _attemptingConnection = false;
         }
@@ -101,7 +101,7 @@ public class ArchipelagoClient
             }
             Plugin.SetGame(new GameState(_session.DataStorage.GetSlotData<GameOptions>()));
             foreach (var item in _session.Items.AllItemsReceived)
-                Plugin.GameState.ReceivedItem((ItemId)item.ItemId);
+                Plugin.GameState.ReceivedItem((ItemId)item.ItemId, true);
             foreach (var location in _session.Locations.AllLocationsChecked)
                 Plugin.GameState.ReceivedLocation(location);
             Plugin.GameState.Complete = _session.DataStorage.GetClientStatus() == ArchipelagoClientState.ClientGoal;
@@ -176,6 +176,8 @@ public class ArchipelagoClient
         var ids = _pendingLocations.ToArray();
         _pendingLocations.Clear();
         Plugin.BepInLogger.LogDebug($"sending {ids.Length} location(s) to the server");
+        // this isn't actually async, despite all my rage
+        // TODO: probably just move it to a worker thread
         _session.Locations.CompleteLocationChecksAsync(response => {
             Plugin.BepInLogger.LogDebug($"server got locations: {response}");
             _pendingLocationsInFlight = false;

@@ -27,7 +27,7 @@ public partial class GlobalPatches
 	    ["polaroid"] = ItemId.CatapultDonutsCameras,
 	    ["RaccoonCop"] = ItemId.CatapultRaccoons,
 	    ["RaccoonBigBoy"] = ItemId.CatapultRaccoons,
-	    ["RaccoonSleeper (hq)"] = ItemId.CatapultRaccoons,
+	    ["RaccoonSleeper"] = ItemId.CatapultRaccoons,
 	    ["hackerDevice"] = ItemId.CatapultHackingDevice,
 	    ["hackerDevice (1)"] = ItemId.CatapultHackingDevice,
 	    ["keycardBio"] = ItemId.CatapultKeycards,

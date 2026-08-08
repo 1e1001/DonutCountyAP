@@ -53,13 +53,13 @@ public partial class GlobalPatches
         if (select == null || !(bool)OS1LevelSelect__isShowing.GetValue(select))
             return;
         var index = (int)OS1LevelSelect__currentDeliveryIndex.GetValue(select);
-        GUI.Box(new Rect(308, 42, 316, 156), "");
-        GUI.Label(new Rect(316, 50, 300, 20), $"Delivery ID {index}");
+        GUI.Box(new Rect(8, 162, 316, 156), "");
+        GUI.Label(new Rect(16, 170, 300, 20), $"Delivery ID {index}");
         var info = AutoLogic.LEVEL_SELECT[index];
         var unlock = info.Unlock == ItemId.None ? Plugin.GameState.UnlockedBossfight() : !Plugin.GameState.Options.Levels || Plugin.GameState.Has(info.Unlock);
         var fragments = Plugin.GameState.Quantity(ItemId.Fragment);
         var requiredFragments = Plugin.GameState.Options.RequiredFragments[index];
-        GUI.Label(new Rect(316, 70, 300, 20), $"Fragments: {fragments}/{requiredFragments}, Item: {unlock}");
+        GUI.Label(new Rect(16, 190, 300, 20), $"Fragments: {fragments}/{requiredFragments}, Item: {unlock}");
         var trackerString = new StringBuilder();
         var previousType = AutoLogic.LocationType.Victory;
         var previousLine = true;
@@ -83,7 +83,7 @@ public partial class GlobalPatches
             else
                 trackerString.Append(LocationSymbol(entry.Type));
         }
-        GUI.Label(new Rect(316, 90, 300, 100), trackerString.ToString());
+        GUI.Label(new Rect(16, 210, 300, 100), trackerString.ToString());
     }
 
 
