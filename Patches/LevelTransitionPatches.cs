@@ -17,14 +17,13 @@ public partial class GlobalPatches
     [HarmonyPatch(typeof(SceneManager), "OnLevelComplete"), HarmonyPrefix]
     static void SceneManager_OnLevelComplete()
     {
-        var current_info = ExtraDeliveryInfo.GetCurrent();
-        if (current_info.EndOfLevel)
+        var currentInfo = ExtraDeliveryInfo.GetCurrent(out var delivery);
+        if (currentInfo.EndOfLevel)
         {
             DataManager.GetCurrentDeliveryData().nextScene = "titlescreen";
             Plugin.GameState.ActiveDelivery = false;
         }
-        if (current_info.FinishLocation != CheckId.None)
-            Plugin.GameState.FoundLocation(current_info.FinishLocation);
+        Plugin.GameState.FoundEvent($"delivery{delivery}", true);
     }
 
     [HarmonyPatch(typeof(SceneManager), "OnQueueLevel"), HarmonyPrefix]
@@ -45,7 +44,7 @@ public partial class GlobalPatches
     [HarmonyPatch(typeof(Tornado), "Awake"), HarmonyPostfix]
     static void Tornado_Awake(Tornado __instance)
     {
-        __instance.onCompleteEvent.AddListener(() => Plugin.GameState.FoundLocation(CheckId.DeliveryBossFight));
+        __instance.onCompleteEvent.AddListener(() => Plugin.GameState.FoundEvent("boss_tornado"));
     }
 
     [HarmonyPatch(typeof(CameraManager), "MoveCamera"), HarmonyPrefix]
@@ -54,51 +53,39 @@ public partial class GlobalPatches
         // this is called outside of gameplay
         if (Plugin.GameState == null)
             return;
-        var current_info = ExtraDeliveryInfo.GetCurrent();
-        if (current_info == null)
+        var currentInfo = ExtraDeliveryInfo.GetCurrent(out var delivery);
+        if (currentInfo == null)
             return;
         // in deliveries, index is always the next camera
-        var index = __instance.GetIndex() - 1;
-        if (index < 0 || index >= current_info.StartCameraLocations.Length)
-            return;
-        var check = current_info.StartCameraLocations[index];
-        if (check == CheckId.None)
-            return;
-        Plugin.GameState.FoundLocation(check);
+        var camera = __instance.GetIndex();
+        var eventId = $"delivery{delivery}camera{camera}";
+        Plugin.GameState.FoundEvent(eventId, true);
     }
 
     [HarmonyPatch(typeof(OS1Store), "OnPressDoneButton"), HarmonyPrefix]
     static void OS1Store_OnPressDoneButton()
     {
-        if (Plugin.GameState.Options.LevelSegments)
-            Plugin.GameState.FoundLocation(CheckId.SegmentChickenBarn2);
+        Plugin.GameState.FoundEvent("store_done");
     }
 
     [HarmonyPatch(typeof(TKOfficeManager), "Start"), HarmonyPostfix]
     static void TKOfficeManager_Start(TKOfficeManager __instance)
     {
-        __instance.spotlights[2].onCompleteBTC.onPlay.AddListener(() => Plugin.GameState.FoundLocation(CheckId.SegmentTrashKingsOffice1));
-        __instance.spotlights[5].onCompleteBTC.onPlay.AddListener(() => Plugin.GameState.FoundLocation(CheckId.SegmentTrashKingsOffice2));
-        __instance.spotlights[8].onCompleteBTC.onPlay.AddListener(() => Plugin.GameState.FoundLocation(CheckId.SegmentTrashKingsOffice3));
+        __instance.spotlights[2].onCompleteBTC.onPlay.AddListener(() => Plugin.GameState.FoundEvent("tk_office2"));
+        __instance.spotlights[5].onCompleteBTC.onPlay.AddListener(() => Plugin.GameState.FoundEvent("tk_office5"));
+        __instance.spotlights[8].onCompleteBTC.onPlay.AddListener(() => Plugin.GameState.FoundEvent("tk_office8"));
     }
 
     [HarmonyPatch(typeof(TKOfficeManager), "JailRoutine"), HarmonyPrefix]
     static void TKOfficeManager_JailRoutine()
     {
-        Plugin.GameState.FoundLocation(CheckId.DeliveryTrashKingsOffice);
+        Plugin.GameState.FoundEvent("tk_office_jail");
     }
 
     [HarmonyPatch(typeof(QuadcopterBigBoy), "Entrance_Enter"), HarmonyPrefix]
     static void QuadcopterBigBoy_Entrance_Enter()
     {
-        Plugin.GameState.FoundLocation(CheckId.SegmentThe4053);
-    }
-
-    [HarmonyPatch(typeof(LevelSettings), "Start"), HarmonyPostfix]
-    static void Postfix(LevelSettings __instance)
-    {
-        if (__instance.deliveryData?.name == "DonutshopEpiloque")
-            Plugin.GameState.FoundLocation(CheckId.Victory);
+        Plugin.GameState.FoundEvent("quadcopter_big_boy");
     }
 
 

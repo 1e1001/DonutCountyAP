@@ -2,7 +2,6 @@
 using BepInEx.Logging;
 using DonutCountyAP.Archipelago;
 using DonutCountyAP.Randomizer;
-using DonutCountyAP.Utils;
 using DonutCountyAP.Patches;
 using HarmonyLib;
 using UnityEngine;
@@ -31,11 +30,11 @@ public class Plugin : BaseUnityPlugin
     const string AP_DISPLAY_INFO = $"Archipelago v{ArchipelagoClient.AP_VERSION}";
     public static ManualLogSource BepInLogger;
     public static ArchipelagoClient ArchipelagoClient = null;
-    public static RandomizerSaveData RandomizerData;
+    public static RandomizerSaveData RandomizerData = null;
     public static GameState GameState = null;
     public static Patcher Patcher = new();
 
-    public static bool ShowTrackerGUI = false;
+    public static bool ShowOptionsGUI = false;
     public static bool ShowDebugGUI = false;
 
     void Awake()
@@ -45,6 +44,7 @@ public class Plugin : BaseUnityPlugin
         ArchipelagoConsole.Awake();
         Globals.shipping = false;
         Patcher.Global.Set(true);
+        Patcher.EasierAchievements.Set(true);
 
         ArchipelagoConsole.LogMessage($"{MOD_DISPLAY_INFO} loaded!");
 
@@ -82,12 +82,27 @@ public class Plugin : BaseUnityPlugin
                     RandomizerData.Password);
 
             }
+
+            // TODO: actually show this in the pause stats menu
+            if (ShowOptionsGUI)
+            {
+                GUI.Label(new Rect(16, 170, 300, 20), "Options:");
+                RandomizerData.EasierAchievements = GUI.Toggle(new Rect(16, 190, 300, 20), RandomizerData.EasierAchievements, "Easier achievements");
+                RandomizerData.DialogueSkipping = GUI.Toggle(new Rect(16, 210, 300, 20), RandomizerData.DialogueSkipping, "Dialogue skipping");
+                if (GUI.Button(new Rect(16, 230, 150, 20), "Apply"))
+                {
+                    DataManager.SaveGameData_Steam();
+                    RandomizerData.ApplyPatches();
+                }
+            }
         }
 
         if (ShowDebugGUI)
         {
             GameState?.OnGUI();
         }
+
+        GlobalPatches.LevelSelectGUI();
     }
     void Update()
     {
@@ -103,13 +118,14 @@ public class Plugin : BaseUnityPlugin
                 {
                     GoalArea = GameOptions.GoalAreaMode.Bossfight,
                     TotalFragments = 50,
-                    RequiredFragments = 40,
+                    RequiredFragments = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 0],
+                    Levels = true,
                     HoleWater = true,
                     HoleFire = true,
                     HoleSnake = true,
                     HoleLight = true,
                     HoleBunnies = true,
-                    Catapult = GameOptions.CatapultMode.Individual,
+                    Catapult = GameOptions.CatapultMode.Split,
                     LevelCompletions = true,
                     LevelSegments = true,
                     Achievements = true,
@@ -135,9 +151,9 @@ public class Plugin : BaseUnityPlugin
             ArchipelagoClient.Disconnect();
         }, null);
     }
-    public static void OnTitleTracker()
+    public static void OnTitleOptions()
     {
-        ShowTrackerGUI ^= true;
+        ShowOptionsGUI ^= true;
     }
     public static void SetGame(GameState game)
     {

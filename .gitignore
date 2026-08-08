@@ -1,5 +1,5 @@
 .vs/
-# lib/Donut County/ contains a modded copy of the game (to reference assemblies and place compiled output)
 lib/
 bin/
 obj/
+__pycache__/

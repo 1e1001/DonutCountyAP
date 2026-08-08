@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,46 +10,40 @@ namespace DonutCountyAP.Randomizer;
 
 public class Backflip : MonoBehaviour
 {
-    // TODO: backflip should be a component on the gameui instead
-
-    [HarmonyPatch(typeof(OS1GameUI), "Start")]
-    public static class OS1GameUI_Start
-    {
-        static void Postfix(OS1GameUI __instance)
-        {
-            foreach (var character in __instance.characters)
-                character._characterHolder.AddComponent<Backflip>();
-        }
-    }
-
-    Vector3 base_angle;
-    float timer = 0f;
-
-    void Start()
-    {
-        base_angle = transform.localEulerAngles;
-    }
+    int _queued = 0;
+    public GameObject[] Characters;
+    bool _currentlyAnimating = false;
 
     void Update()
     {
-        if (timer <= 0f)
+        if (_queued == 0 || _currentlyAnimating)
             return;
-        float offset_angle = (float)Easing.EaseInOut(Mathf.Repeat(timer, 1f), EasingType.Quadratic) * 360f;
-        timer -= Time.deltaTime;
-        if (timer <= 0f)
+        var candidate = Characters.First(ch => ch.activeInHierarchy);
+        if (candidate == null)
+            return;
+        Plugin.BepInLogger.LogInfo($"backflipping {candidate}");
+        StartCoroutine(BackflipRoutine(candidate.transform));
+    }
+
+    IEnumerator BackflipRoutine(Transform target)
+    {
+        _currentlyAnimating = true;
+        var baseAngle = target.localEulerAngles;
+        float timer = 1f;
+        while (timer > 0f)
         {
-            offset_angle = 0f;
-            timer = 0f;
+            float offset_angle = (float)Easing.EaseInOut(Mathf.Repeat(timer, 1f), EasingType.Quadratic) * 360f;
+            target.localEulerAngles = new Vector3(baseAngle.x + offset_angle, baseAngle.y, baseAngle.z);
+            yield return null;
+            timer -= Time.deltaTime;
         }
-        transform.localEulerAngles = new Vector3(base_angle.x + offset_angle, base_angle.y, base_angle.z);
+        target.localEulerAngles = baseAngle;
+        _currentlyAnimating = false;
     }
 
     public void DoBackflip()
     {
-        if (!this.isActiveAndEnabled)
-            return;
-        Plugin.BepInLogger.LogInfo($"backflipping {this.gameObject}");
-        timer += 1f;
+        ++_queued;
     }
 }
 

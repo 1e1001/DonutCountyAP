@@ -1,4 +1,5 @@
 ﻿using Archipelago.MultiClient.Net.Models;
+using DonutCountyAP.Randomizer;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,7 @@ public partial class GlobalPatches
     static string GetRandomizerDataPath()
     {
         var randomizerDataPath = (string)GetGameDataPath.Invoke(null, []);
-        var place = randomizerDataPath.LastIndexOf("savegame");
-        return randomizerDataPath.Remove(place, "savegame".Length).Insert(place, "randomizer");
+        return randomizerDataPath.Substring(0, randomizerDataPath.Length - "savegame.sav".Length) + "randomizer.xml";
     }
 
     [HarmonyPatch(typeof(DataManager), "InitializeSaveData_Steam"), HarmonyPostfix]
@@ -36,12 +36,12 @@ public partial class GlobalPatches
             Plugin.BepInLogger.LogDebug("no randomizer save");
         }
         Plugin.RandomizerData.Log();
+        Plugin.RandomizerData.ApplyPatches();
         DataManager.gameData = new GameSaveData()
         {
             gameComplete = 1,
             newItemsPopup = 1,
             trashopediaIndex = Plugin.RandomizerData.TrashopediaIndex,
-            // TODO: should this be a slot data?
             hasSeenGameOverCutscene = 0,
         };
     }
@@ -51,6 +51,7 @@ public partial class GlobalPatches
         Plugin.RandomizerData.TrashopediaIndex = DataManager.gameData.trashopediaIndex;
         FileManagement.SetString(GetRandomizerDataPath(), SerializerHelper<RandomizerSaveData>.ObjectToXml(Plugin.RandomizerData));
         Plugin.BepInLogger.LogInfo("not saving the game, saved ap config instead");
+        // TODO: save achievement progress to slot data
         return false;
     }
 }

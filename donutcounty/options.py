@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, OptionCounter
+from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, OptionCounter, StartInventoryPool
 
 class GoalArea(Choice):
     """
@@ -33,13 +33,13 @@ class FragmentsRequired(Range):
 class FragmentsUnlockLevels(Choice):
     """
     - off: All levels are available
-    - sequence: Start with only Mira's House, fragments progressively unlock following areas
-    - random: Starting area and order of unlocked areas is randomized
+    - ordered: Start with only Mira's House, fragments progressively unlock following areas
+    - shuffled: Starting area and order of unlocked areas is shuffled
     """
     display_name = "Fragments unlock levels"
     option_off = 0
-    option_sequence = 1
-    option_random = 2
+    option_ordered = 1
+    option_shuffled = 2
    
 class Levels(Toggle):
     """
@@ -81,12 +81,12 @@ class Catapult(Choice):
     """
 	- off: Catapult is always available
 	- global: Require an item to use the catapult (1 item)
-	- indiviudal: Each type of launchable object gets its own item (10 items)
+	- split: Each type of launchable object gets its own item (10 items)
     """
     display_name = "Catapult"
     option_off = 0
     option_global = 1
-    option_individual = 2
+    option_split = 2
     default = option_global
     
 class LevelCompletions(Toggle):
@@ -180,6 +180,9 @@ class DonutCountyOptions(PerGameCommonOptions):
     
     # Trash options
     filler_weights: FillerWeights
+
+    # Default AP option (why)
+    start_inventory_from_pool: StartInventoryPool
 
 option_groups = [
     OptionGroup("Game Options", [

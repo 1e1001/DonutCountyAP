@@ -21,6 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="autologic.py" />
     <Compile Include="items.py" />
     <Compile Include="locations.py" />
     <Compile Include="options.py" />

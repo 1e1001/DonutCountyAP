@@ -3,7 +3,7 @@ from typing import Any
 
 from worlds.AutoWorld import World
 
-from . import items, locations, regions, rules, web_world
+from . import autologic, items, locations, regions, rules, web_world
 from . import options as dc_options
 
 # todo: try cached rule bulder world
@@ -15,8 +15,12 @@ class DonutCountyWorld(World):
     web = web_world.DonutCountyWebWorld()
     options_dataclass = dc_options.DonutCountyOptions
     options: dc_options.DonutCountyOptions
-    location_name_to_id = locations.LOCATION_NAME_TO_ID
-    item_name_to_id = items.ITEM_NAME_TO_ID
+    item_name_to_id = autologic.ITEM_NAME_TO_ID
+    location_name_to_id = autologic.LOCATION_NAME_TO_ID
+    # TODO: groups
+    item_name_groups = {}
+    location_name_groups = {}
+    dc_gen_data = {}
     dc_slot_data = {}
     def create_regions(self) -> None:
         regions.create_and_connect_regions(self)
@@ -30,6 +34,9 @@ class DonutCountyWorld(World):
     def get_filler_item_name(self) -> str:
         return items.get_random_filler_item_name(self)
     def fill_slot_data(self) -> Mapping[str, Any]:
-        for k, v in self.options.asdict("goal_area", "water", "fire", "snake", "light", "bunnies", "catapult", "level_completions", "level_segments", "achievements", "buy_catapult", "snake_danger", "salt_and_pepper", "hack_protocol").items():
+        for k, v in self.options.as_dict("goal_area", "hole_water", "hole_fire", "hole_snake", "hole_light", "hole_bunnies", "catapult", "level_segments", "achievements", "buy_catapult", "snake_danger", "salt_and_pepper", "hack_protocol").items():
             self.dc_slot_data[k] = v
+        self.dc_slot_data["level_completions"] = True
         return self.dc_slot_data
+    def custom_ut_sort(self, region_label: str, location_label: str) -> str | int:
+        return autologic.LOCATION_SORT_ORDER[location_label]

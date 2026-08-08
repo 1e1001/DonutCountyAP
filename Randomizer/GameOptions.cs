@@ -3,6 +3,7 @@ using Newtonsoft.Json.Converters;
 using System.Runtime.Serialization;
 using UnityEngine.SocialPlatforms;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace DonutCountyAP.Randomizer;
 
@@ -17,7 +18,7 @@ public class GameOptions
     {
         Off,
         Global,
-        Individual,
+        Split,
     }
     // Game options
     [JsonProperty("goal_area"), JsonConverter(typeof(StringEnumConverter))]
@@ -26,9 +27,11 @@ public class GameOptions
     [JsonProperty("total_fragments")]
     public int TotalFragments;
     [JsonProperty("required_fragments")]
-    public int RequiredFragments;
+    public int[] RequiredFragments;
 
     // Item options
+    [JsonProperty("levels")]
+    public bool Levels;
     [JsonProperty("hole_water")]
     public bool HoleWater;
     [JsonProperty("hole_fire")]
@@ -58,4 +61,37 @@ public class GameOptions
     [JsonProperty("hack_protocol")]
     public bool HackProtocol;
 
+
+    public void ApplyPatches()
+    {
+        Plugin.Patcher.SnakeDanger.Set(SnakeDanger);
+        Plugin.Patcher.SaltAndPepper.Set(SaltAndPepper);
+        Plugin.Patcher.HackProtocol.Set(HackProtocol);
+    }
+
+    public bool CanSendLocation(AutoLogic.LocationType type)
+    {
+        switch (type)
+        {
+            case AutoLogic.LocationType.Delivery:
+                return LevelCompletions;
+            case AutoLogic.LocationType.Segment:
+                return LevelSegments;
+            case AutoLogic.LocationType.Achievement:
+                return Achievements;
+            case AutoLogic.LocationType.SnakeDanger:
+                return SnakeDanger;
+            case AutoLogic.LocationType.Catapult:
+                return BuyCatapult;
+            case AutoLogic.LocationType.SaltAndPepper:
+                return SaltAndPepper;
+            case AutoLogic.LocationType.HackProtocol:
+                return HackProtocol;
+            case AutoLogic.LocationType.Victory:
+                return true;
+            default:
+                Plugin.BepInLogger.LogError($"tried to send location with nonexistant type {type}");
+                return false;
+        }
+    }
 }

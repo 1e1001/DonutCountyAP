@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace DonutCountyAP.Patches;
+namespace DonutCountyAP.Randomizer;
 
 [Serializable]
 [XmlRoot("randomizer_data")]
@@ -15,7 +15,18 @@ public class RandomizerSaveData
     public string SlotName = "Player1";
     [XmlElement("password")]
     public string Password;
+    [XmlElement("easier_achievements")]
+    public bool EasierAchievements;
+    [XmlElement("dialogue_skipping")]
+    public bool DialogueSkipping;
+
+
     public void Validate() { }
+    public void ApplyPatches()
+    {
+        Plugin.Patcher.EasierAchievements.Set(EasierAchievements);
+        Plugin.Patcher.DialogueSkipping.Set(DialogueSkipping);
+    }
     public void Log()
     {
         Plugin.BepInLogger.LogDebug($"trashopedia_index: {TrashopediaIndex}");

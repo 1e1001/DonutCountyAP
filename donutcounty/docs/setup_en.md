@@ -1,3 +1,3 @@
 # DonutCountyAP setup guide
 
-... todo: add info here :)
+... TODO: add info here :)

@@ -12,12 +12,16 @@ public partial class AutoLogic
         Delivery,
         Segment,
         Achievement,
-        Victory,
         SnakeDanger,
         Catapult,
         SaltAndPepper,
         HackProtocol,
+        Victory,
     }
     public record struct Location(long Id, LocationType Type);
-    public record struct DebugTracker(long Id, string Name)
+    // TODO: the real tracker info will be shaped for the menus
+    public record struct DebugTracker(string Name, Location Location);
+
+    public record struct LevelSelect(ItemId Unlock, Location[] Locations);
+
 }

@@ -10,7 +10,6 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Packets;
 using DonutCountyAP.Randomizer;
-using DonutCountyAP.Utils;
 using Newtonsoft.Json.Linq;
 using UnityEngine.Networking.Match;
 
@@ -18,7 +17,8 @@ namespace DonutCountyAP.Archipelago;
 
 public class ArchipelagoClient
 {
-    // TODO: de-static this implementation
+    record struct ConnectionInfo(string Uri, string SlotName, string Password);
+
     public const string AP_VERSION = "0.5.0";
     private const string GAME = "Donut County";
 
@@ -27,13 +27,21 @@ public class ArchipelagoClient
     //private DeathLinkHandler _deathLinkHandler;
     private ArchipelagoSession _session = null;
 
+    bool _pendingLocationsInFlight = false;
+    readonly List<long> _pendingLocations = [];
+
+    ConnectionInfo _thisConnection = new("", "", "");
+    ConnectionInfo _lastConnection = new("", "", "");
+
     public void Connect()
     {
         if (Plugin.GameState != null || _attemptingConnection) return;
+        _lastConnection = _thisConnection;
+        _thisConnection = new(Plugin.RandomizerData.Uri, Plugin.RandomizerData.SlotName, Plugin.RandomizerData.Password);
 
         try
         {
-            _session = ArchipelagoSessionFactory.CreateSession(Plugin.RandomizerData.Uri);
+            _session = ArchipelagoSessionFactory.CreateSession(_thisConnection.Uri);
             SetupSession();
         }
         catch (Exception e)
@@ -63,10 +71,10 @@ public class ArchipelagoClient
                 _ => HandleConnectResult(
                     _session.TryConnectAndLogin(
                         GAME,
-                        Plugin.RandomizerData.SlotName,
+                        _thisConnection.SlotName,
                         ItemsHandlingFlags.AllItems,
                         new Version(AP_VERSION),
-                        password: Plugin.RandomizerData.Password,
+                        password: _thisConnection.Password,
                         requestSlotData: true
                     )));
         }
@@ -85,11 +93,19 @@ public class ArchipelagoClient
         {
             var success = (LoginSuccessful)result;
 
-            Plugin.SetGame(new GameState(_session.DataStorage.GetSlotData<GameOptions>(), from loc in _session.Locations.AllLocations select (CheckId)loc));
+            if (_thisConnection != _lastConnection)
+            {
+                Plugin.BepInLogger.LogInfo("clearning previous locations");
+                _pendingLocations.Clear();
+                _pendingLocationsInFlight = false;
+            }
+            Plugin.SetGame(new GameState(_session.DataStorage.GetSlotData<GameOptions>()));
             foreach (var item in _session.Items.AllItemsReceived)
-                Plugin.GameState?.ReceivedItem((CheckId)item.ItemId);
+                Plugin.GameState.ReceivedItem((ItemId)item.ItemId);
             foreach (var location in _session.Locations.AllLocationsChecked)
-                Plugin.GameState?.ReceivedLocation((CheckId)location);
+                Plugin.GameState.ReceivedLocation(location);
+            Plugin.GameState.Complete = _session.DataStorage.GetClientStatus() == ArchipelagoClientState.ClientGoal;
+            // TODO: load achievement state from slot data
 
             //_deathLinkHandler = new(_session.CreateDeathLinkService(), ServerData.SlotName);
             outText = $"Successfully connected to {Plugin.RandomizerData.Uri} as {Plugin.RandomizerData.SlotName}!";
@@ -128,7 +144,7 @@ public class ArchipelagoClient
     {
         var receivedItem = helper.DequeueItem();
 
-        Plugin.GameState?.ReceivedItem((CheckId)receivedItem.ItemId);
+        Plugin.GameState?.ReceivedItem((ItemId)receivedItem.ItemId);
     }
 
     private void OnLocationsReceived(ReadOnlyCollection<long> newCheckedLocations)
@@ -137,34 +153,38 @@ public class ArchipelagoClient
             return;
         Plugin.BepInLogger.LogDebug($"received {newCheckedLocations.Count} remote locations");
         foreach (var location in newCheckedLocations)
-            Plugin.GameState.ReceivedLocation((CheckId)location);
+            Plugin.GameState.ReceivedLocation(location);
     }
 
-    bool _pendingLocationsInFlight = false;
-    readonly List<long> _pendingLocations = [];
-
-    public void SendLocation(CheckId id)
+    public void SendGoal()
     {
-        if (id == CheckId.Victory)
-            _session.SetGoalAchieved();
-        else
-            _pendingLocations.Add((long)id);
+        _session.SetGoalAchieved();
+    }
+
+    public void SendLocation(long id)
+    {
+        _pendingLocations.Add(id);
         if (_pendingLocationsInFlight)
-            Plugin.BepInLogger.LogDebug("server is busy");
+            Plugin.BepInLogger.LogDebug("(server is busy)");
     }
 
     public void FlushPendingLocations()
     {
-        if (_pendingLocationsInFlight || _pendingLocations.Count == 0)
+        if (_pendingLocationsInFlight || _pendingLocations.Count == 0 || _session == null)
             return;
         _pendingLocationsInFlight = true;
         var ids = _pendingLocations.ToArray();
         _pendingLocations.Clear();
         Plugin.BepInLogger.LogDebug($"sending {ids.Length} location(s) to the server");
-        _session?.Locations.CompleteLocationChecksAsync(response => {
+        _session.Locations.CompleteLocationChecksAsync(response => {
             Plugin.BepInLogger.LogDebug($"server got locations: {response}");
             _pendingLocationsInFlight = false;
         }, ids);
+    }
+
+    public bool HasLocation(long id)
+    {
+        return _session?.Locations.AllLocationsChecked.Contains(id) ?? false;
     }
 
     private void OnSessionErrorReceived(Exception e, string message)
