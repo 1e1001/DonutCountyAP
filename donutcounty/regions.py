@@ -19,10 +19,15 @@ def create_and_connect_regions(world: DonutCountyWorld) -> None:
         world.get_region(parent).connect(region, "Enter " + name, rules)
     menu = Region("Menu", world.player, world.multiworld)
     aftermath = Region("Aftermath0", world.player, world.multiworld)
-    world.multiworld.regions += [menu, aftermath]
+    texting = Region("Texting", world.player, world.multiworld)
+    world.multiworld.regions += [menu, aftermath, texting]
     autologic.regions(world_region)
+    world.get_region("MirasHouse0").connect(texting, "Texting MirasHouse")
+    world.get_region("GeckoPark0").connect(texting, "Texting GeckoPark")
+    world.get_region("ChickenBarn1").connect(texting, "Texting ChickenBarn")
+    world.get_region("RaccoonHQ0").connect(texting, "Texting RaccoonHQ")
     aftermath_parent = world.get_region("BossFight3") if world.options.goal_area == GoalArea.option_bossfight else menu
-    # this True_() is load-bearing for rules
-    aftermath_parent.connect(aftermath, "Enter Aftermath0", True_())
+    aftermath_parent.connect(aftermath, "Enter Aftermath0")
+
     
     

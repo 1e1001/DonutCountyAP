@@ -1,16 +1,12 @@
-﻿using HarmonyLib;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace DonutCountyAP.Randomizer;
 
 public class Backflip : MonoBehaviour
 {
-    int _queued = 0;
+    static int _queued = 0;
     public GameObject[] Characters;
     bool _currentlyAnimating = false;
 

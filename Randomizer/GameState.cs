@@ -2,18 +2,16 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace DonutCountyAP.Randomizer;
 
 public partial class GameState
 {
-    Dictionary<ItemId, int> _inventory = [];
-    // TODO: debug tracker should probably be implemented as a different type of "archipelago client" instead
-    HashSet<long> _debugTrackerLocations = [];
-    public bool Complete = false;
+    // TODO: should the randomizer client own this instead of the plugin?
+
+    public readonly int[] _inventory = new int[(int)ItemId.Length];
     public bool ActiveDelivery = false;
 
     public GameOptions Options;
@@ -27,6 +25,8 @@ public partial class GameState
     private Rect _guiRect = new(100, 100, 400, 400);
     private Vector2 _guiScroll;
     private string _guiOptionsText = null;
+    private string _guiDebugKeyText = "";
+    private string _guiDebugValueText = "";
     public void OnGUI()
     {
         _guiRect = GUI.Window(0, _guiRect, OnWindowGUI, "Debug");
@@ -54,6 +54,25 @@ public partial class GameState
             }
         }
         GUILayout.EndHorizontal();
+        var debugClient = Plugin.Client as DebugClient;
+        if (debugClient != null)
+        {
+            foreach (var entry in debugClient.FakeRandomizer)
+            {
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("-", GUILayout.Width(20f)))
+                    debugClient.FakeRandomizer.Remove(entry.Key);
+                GUILayout.Label($"{entry.Key} -> {entry.Value}");
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("+", GUILayout.Width(20f)) && long.TryParse(_guiDebugKeyText, out var location))
+                debugClient.FakeRandomizer.Add(location, (ItemId)Enum.Parse(typeof(ItemId), _guiDebugValueText));
+            _guiDebugKeyText = GUILayout.TextField(_guiDebugKeyText, GUILayout.ExpandWidth(false));
+            GUILayout.Label(" -> ", GUILayout.ExpandWidth(false));
+            _guiDebugValueText = GUILayout.TextField(_guiDebugValueText, GUILayout.ExpandWidth(false));
+            GUILayout.EndHorizontal();
+        }
         GUILayout.BeginHorizontal();
         var patchEnabled = Plugin.Patcher.DebugFallState.Enabled;
         Plugin.Patcher.DebugFallState.Set(GUILayout.Toggle(patchEnabled, "fallstate"));
@@ -63,39 +82,51 @@ public partial class GameState
             GUILayout.TextArea(JsonConvert.SerializeObject(DebugFallStatePatches.ObjectList, Formatting.Indented));
         }
         GUILayout.Label("items");
-        foreach (ItemId i in Enum.GetValues(typeof(ItemId)))
+        foreach (ItemId id in AutoLogic.DEBUG_SORTED_ITEMS)
         {
             GUILayout.BeginHorizontal();
-            _inventory.TryGetValue(i, out int value);
+            var value = _inventory[(int)id];
             if (GUILayout.Button("-", GUILayout.Width(20f)))
-                _inventory[i] = value - 1;
+                _inventory[(int)id] = value - 1;
             if (GUILayout.Button("+", GUILayout.Width(20f)))
-                ReceivedItem(i);
+                ReceivedItem(id);
             var has_item = value > 0;
             var will_have_item = GUILayout.Toggle(has_item, "", GUILayout.Width(15f));
             if (has_item != will_have_item)
             {
                 if (will_have_item)
-                    ReceivedItem(i);
+                    ReceivedItem(id);
                 else if (value == 1)
-                    _inventory.Remove(i);
+                    _inventory[(int)id] = 0;
             }
             GUILayout.Label(value.ToString(), GUILayout.Width(25f));
-            GUILayout.Label(i.ToString(), GUILayout.ExpandWidth(false));
+            GUILayout.Label(id.ToString(), GUILayout.ExpandWidth(false));
             GUILayout.EndHorizontal();
         }
         GUILayout.Label("locations");
+        var locations = Plugin.Client.Locations();
         foreach (AutoLogic.DebugTracker entry in AutoLogic.DEBUG_TRACKER)
         {
             GUILayout.BeginHorizontal();
-            var has_location = _debugTrackerLocations.Contains(entry.Location.Id);
+            var has_location = locations.Contains(entry.Location.Id);
             var will_have_location = GUILayout.Toggle(has_location, "", GUILayout.Width(15f));
             if (has_location != will_have_location)
             {
-                if (will_have_location)
-                    ReceivedLocation(entry.Location.Id);
-                else
-                    _debugTrackerLocations.Remove(entry.Location.Id);
+                try
+                {
+                    if (will_have_location)
+                    {
+                        locations.Add(entry.Location.Id);
+                        ReceivedLocation(entry.Location.Id);
+                    }
+                    else
+                    {
+                        locations.Remove(entry.Location.Id);
+                    }
+                } catch (NotImplementedException)
+                {
+                    // do nothing (archipelago client)
+                }
             }
             var oldColor = GUI.contentColor;
             if (!Options.CanSendLocation(entry.Location.Type))
@@ -105,25 +136,38 @@ public partial class GameState
             GUILayout.EndHorizontal();
         }
         GUILayout.EndScrollView();
+        // crying
         GUI.DragWindow(new Rect(0, 0, 10000, 20));
     }
 
     public bool Has(ItemId id, int atLeast = 1)
     {
-        return _inventory.TryGetValue(id, out var value) && value >= atLeast;
+        return _inventory[(int)id]  >= atLeast;
     }
     public int Quantity(ItemId id)
     {
-        return _inventory.TryGetValue(id, out var value) ? value : 0;
+        return _inventory[(int)id];
     }
 
+    public bool HasHole(ItemId id)
+    {
+        switch (Options.Hole)
+        {
+            case GameOptions.EffectItemMode.Split:
+                return Has(id);
+            case GameOptions.EffectItemMode.Global:
+                return Has(ItemId.Hole);
+            default:
+                return true;
+        }
+    }
     public bool HasCatapult(ItemId id)
     {
         switch (Options.Catapult)
         {
-            case GameOptions.CatapultMode.Split:
+            case GameOptions.EffectItemMode.Split:
                 return Has(id);
-            case GameOptions.CatapultMode.Global:
+            case GameOptions.EffectItemMode.Global:
                 return Has(ItemId.Catapult);
             default:
                 return true;
@@ -132,10 +176,8 @@ public partial class GameState
 
     public void ReceivedItem(ItemId id, bool startOfGame = false)
     {
-        // TODO: cleaner way of this
-        if (!_inventory.ContainsKey(id))
-            _inventory[id] = 0;
-        ++_inventory[id];
+        // TODO: cleaner way of initializing this
+        ++_inventory[(int)id];
         Plugin.BepInLogger.LogDebug($"received item {id}");
         // TODO: any more immediately-occuring updates go here
         if (startOfGame)
@@ -147,21 +189,35 @@ public partial class GameState
                 RM.gameUI?.GetComponent<Backflip>()?.DoBackflip();
                 break;
             case ItemId.CementTrap:
+                if (Plugin.Client.IsComplete())
+                    break;
                 RM.substanceManager?.GetComponent<CementTrap>()?.DoCementTrap();
                 break;
             case ItemId.DepthsTrap:
+                if (Plugin.Client.IsComplete())
+                    break;
                 GlobalPatches.DepthsTrapReroll = true;
-                // don't use OnQueueLevel so it doesn't get caught by LevelTransitionPatches
-                RM.sceneManager.nextLevel = "999ft";
+                // of note: if on the catapult delivery, this will just reload the catapult
+                // the player is about to goal anyways, so it just wastes a little bit of time before then.
+                RM.sceneManager.OnQueueLevel("999ft_forced");
                 RM.sceneManager.OnPlayQueuedLevel();
+                break;
+            case ItemId.SnakeDanger:
+                var radio = GameObject.FindObjectOfType<RangerRadio>();
+                if (radio != null)
+                    SnakeDangerPatches.OnDangerEvent(radio);
+                break;
+            case ItemId.Salt: case ItemId.Pepper:
+                var manager = GameObject.FindObjectOfType<SoupManager>();
+                if (manager != null)
+                    SaltAndPepperPatches.SoupManager_TestSecret(manager);
                 break;
         }
     }
     public void ReceivedLocation(long id)
     {
-        _debugTrackerLocations.Add(id);
         Plugin.BepInLogger.LogDebug($"received location {id}");
-        // TODO: update trackers
+        // TODO: any more immediately-occuring updates go here
     }
     public void FoundEvent(string name, bool allowInvalid = false)
     {
@@ -176,19 +232,13 @@ public partial class GameState
             return;
         if (location.Type == AutoLogic.LocationType.Victory)
         {
-            Complete = true;
-            Plugin.ArchipelagoClient.SendGoal();
+            Plugin.Client.SendGoal();
             return;
         }
-        if (!Plugin.ArchipelagoClient.HasLocation(location.Id))
-            Plugin.ArchipelagoClient.SendLocation(location.Id);
+        if (Plugin.Client.Locations().Contains(location.Id))
+            return;
+        Plugin.Client.SendLocation(location.Id);
         ReceivedLocation(location.Id);
-    }
-
-    public bool HasLocation(long id)
-    {
-        return _debugTrackerLocations.Contains(id);
-        //return Plugin.ArchipelagoClient.HasLocation(id);
     }
 
     public bool UnlockedBossfight()

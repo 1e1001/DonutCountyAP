@@ -34,7 +34,7 @@
   <ItemGroup>
     <Content Include="archipelago.json" />
     <Content Include="docs\en_Donut County.md" />
-    <Content Include="docs\setup_en.md" />
+    <Content Include="docs\en_setup.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\" />

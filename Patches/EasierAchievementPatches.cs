@@ -1,9 +1,5 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace DonutCountyAP.Patches;
 
@@ -47,12 +43,12 @@ public class EasierAchievementPatches
     static readonly FieldInfo ClawMachineManager__secretKey = AccessTools.Field(typeof(ClawMachineManager), "_secretKey");
 
     [HarmonyPatch(typeof(ClawMachineManager), "OnPressButton"), HarmonyPrefix]
-    static bool ClawMachineManager_OnPressButton(ClawMachineManager __instance, ClawMachineManager.ButtonType __0)
+    static void ClawMachineManager_OnPressButton(ClawMachineManager __instance, ClawMachineManager.ButtonType __0)
     {
         var secretProgress = (int)ClawMachineManager__secretProgress.GetValue(__instance);
         var secretKey = (ClawMachineManager.ButtonType[])ClawMachineManager__secretKey.GetValue(__instance);
-        var duplicateKey = secretProgress > 0 && __0 == secretKey[secretProgress - 1];
-        return !duplicateKey;
+        if (secretProgress > 0 && __0 == secretKey[secretProgress - 1])
+            ClawMachineManager__secretProgress.SetValue(__instance, secretProgress - 1);
     }
 
     [HarmonyPatch(typeof(PlatformAchievements), "Unlock"), HarmonyPrefix]

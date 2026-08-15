@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DonutCountyAP.Randomizer;
+﻿namespace DonutCountyAP.Randomizer;
 
 public partial class AutoLogic
 {
@@ -15,7 +10,6 @@ public partial class AutoLogic
         SnakeDanger,
         Catapult,
         SaltAndPepper,
-        HackProtocol,
         Victory,
     }
     public record struct Location(long Id, LocationType Type);

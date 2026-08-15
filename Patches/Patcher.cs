@@ -1,8 +1,5 @@
 ﻿using HarmonyLib;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace DonutCountyAP.Patches;
 
@@ -11,9 +8,9 @@ public class Patcher
     public PatchSet Global = new(typeof(GlobalPatches));
     public PatchSet EasierAchievements = new(typeof(EasierAchievementPatches));
     public PatchSet DialogueSkipping = new(typeof(DialogueSkippingPatches));
+
     public PatchSet SnakeDanger = new(typeof(SnakeDangerPatches));
     public PatchSet SaltAndPepper = new(typeof(SaltAndPepperPatches));
-    public PatchSet HackProtocol = new(typeof(HackProtocolPatches));
     public PatchSet DebugFallState = new(typeof(DebugFallStatePatches));
 
     // for some reason record doesn't work here?

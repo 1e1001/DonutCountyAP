@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Runtime.Serialization;
-using UnityEngine.SocialPlatforms;
-using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 namespace DonutCountyAP.Randomizer;
 
@@ -14,7 +10,7 @@ public class GameOptions
         Bossfight,
         Aftermath,
     }
-    public enum CatapultMode
+    public enum EffectItemMode
     {
         Off,
         Global,
@@ -24,32 +20,26 @@ public class GameOptions
     [JsonProperty("goal_area"), JsonConverter(typeof(StringEnumConverter))]
     public GoalAreaMode GoalArea;
     // differs from options struct! these two are adjusted to the exact values for this generation
-    [JsonProperty("total_fragments")]
-    public int TotalFragments;
-    [JsonProperty("required_fragments")]
-    public int[] RequiredFragments;
+    [JsonProperty("total_pieces")]
+    public int TotalPieces;
+    [JsonProperty("required_pieces")]
+    public int[] RequiredPieces = new int[22];
 
     // Item options
     [JsonProperty("levels")]
     public bool Levels;
-    [JsonProperty("hole_water")]
-    public bool HoleWater;
-    [JsonProperty("hole_fire")]
-    public bool HoleFire;
-    [JsonProperty("hole_snake")]
-    public bool HoleSnake;
-    [JsonProperty("hole_light")]
-    public bool HoleLight;
-    [JsonProperty("hole_bunnies")]
-    public bool HoleBunnies;
+    [JsonProperty("hole"), JsonConverter(typeof(StringEnumConverter))]
+    public EffectItemMode Hole;
     [JsonProperty("catapult"), JsonConverter(typeof(StringEnumConverter))]
-    public CatapultMode Catapult;
+    public EffectItemMode Catapult;
+    [JsonProperty("texting")]
+    public bool Texting;
 
     // Location options
     [JsonProperty("level_completions")]
-    public bool LevelCompletions;
+    public bool LevelCompletions = true;
     [JsonProperty("level_segments")]
-    public bool LevelSegments;
+    public bool LevelSegments = true;
     [JsonProperty("achievements")]
     public bool Achievements;
     [JsonProperty("buy_catapult")]
@@ -58,15 +48,12 @@ public class GameOptions
     public bool SnakeDanger;
     [JsonProperty("salt_and_pepper")]
     public bool SaltAndPepper;
-    [JsonProperty("hack_protocol")]
-    public bool HackProtocol;
 
 
     public void ApplyPatches()
     {
         Plugin.Patcher.SnakeDanger.Set(SnakeDanger);
         Plugin.Patcher.SaltAndPepper.Set(SaltAndPepper);
-        Plugin.Patcher.HackProtocol.Set(HackProtocol);
     }
 
     public bool CanSendLocation(AutoLogic.LocationType type)
@@ -85,12 +72,10 @@ public class GameOptions
                 return BuyCatapult;
             case AutoLogic.LocationType.SaltAndPepper:
                 return SaltAndPepper;
-            case AutoLogic.LocationType.HackProtocol:
-                return HackProtocol;
             case AutoLogic.LocationType.Victory:
                 return true;
             default:
-                Plugin.BepInLogger.LogError($"tried to send location with nonexistant type {type}");
+                Plugin.BepInLogger.LogError($"tried to send location with mysterious type {type}");
                 return false;
         }
     }

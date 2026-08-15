@@ -3,17 +3,7 @@ using BepInEx.Logging;
 using DonutCountyAP.Archipelago;
 using DonutCountyAP.Randomizer;
 using DonutCountyAP.Patches;
-using HarmonyLib;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Reflection;
-using I2.Loc;
-using System.Text;
-using System;
-using System.Text.RegularExpressions;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json;
-using static DonutCountyAP.Randomizer.GameOptions;
 
 namespace DonutCountyAP;
 
@@ -26,11 +16,13 @@ public class Plugin : BaseUnityPlugin
     public const string PLUGIN_VERSION = "0.1.0";
 
     public const string MOD_DISPLAY_INFO = $"{PLUGIN_NAME} v{PLUGIN_VERSION}";
-    const string AP_DISPLAY_INFO = $"Archipelago v{ArchipelagoClient.AP_VERSION}";
     public static ManualLogSource BepInLogger;
-    public static ArchipelagoClient ArchipelagoClient = null;
-    public static RandomizerSaveData RandomizerData = null;
+    // TODO: Client and GameState are extremely coupled together (via the global Plugin)
+    // particularly there's some weird handling about when each is null or not
+    // not a problem yet but it should be looked into more
+    public static IRandomizerClient Client = null;
     public static GameState GameState = null;
+    public static RandomizerSaveData RandomizerData = null;
     public static Patcher Patcher = new();
 
     public static bool ShowOptionsGUI = false;
@@ -39,11 +31,9 @@ public class Plugin : BaseUnityPlugin
     void Awake()
     {
         BepInLogger = Logger;
-        ArchipelagoClient = new ArchipelagoClient();
         ArchipelagoConsole.Awake();
-        Globals.shipping = false;
+        //Globals.shipping = false;
         Patcher.Global.Set(true);
-        Patcher.EasierAchievements.Set(true);
 
         ArchipelagoConsole.LogMessage($"{MOD_DISPLAY_INFO} loaded!");
 
@@ -59,16 +49,12 @@ public class Plugin : BaseUnityPlugin
 
         if (titlescreen)
         {
-            string statusMessage;
+            GUI.Label(new Rect(16, 50, 300, 20), Client?.GUIStatus() ?? ArchipelagoClient.AP_DEFAULT_STATUS);
             if (GameState != null)
             {
-                statusMessage = " Status: Connected";
-                GUI.Label(new Rect(16, 50, 300, 20), AP_DISPLAY_INFO + statusMessage);
             }
             else
             {
-                statusMessage = " Status: Disconnected";
-                GUI.Label(new Rect(16, 50, 300, 20), AP_DISPLAY_INFO + statusMessage);
                 GUI.Label(new Rect(16, 70, 150, 20), "Host: ");
                 GUI.Label(new Rect(16, 90, 150, 20), "Player Name: ");
                 GUI.Label(new Rect(16, 110, 150, 20), "Password: ");
@@ -113,61 +99,24 @@ public class Plugin : BaseUnityPlugin
             }
             else
             {
-                //SetGame(new GameState(new GameOptions()
-                //{
-                //    GoalArea = GameOptions.GoalAreaMode.Bossfight,
-                //    TotalFragments = 50,
-                //    RequiredFragments = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 0],
-                //    Levels = true,
-                //    HoleWater = true,
-                //    HoleFire = true,
-                //    HoleSnake = true,
-                //    HoleLight = true,
-                //    HoleBunnies = true,
-                //    Catapult = GameOptions.CatapultMode.Split,
-                //    LevelCompletions = true,
-                //    LevelSegments = true,
-                //    Achievements = true,
-                //    BuyCatapult = true,
-                //    SnakeDanger = true,
-                //    SaltAndPepper = true,
-                //    HackProtocol = true,
-                //}));
-                SetGame(new GameState(new GameOptions()
-                {
-                    GoalArea = GameOptions.GoalAreaMode.Bossfight,
-                    TotalFragments = 50,
-                    RequiredFragments = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                    Levels = false,
-                    HoleWater = false,
-                    HoleFire = false,
-                    HoleSnake = false,
-                    HoleLight = false,
-                    HoleBunnies = false,
-                    Catapult = GameOptions.CatapultMode.Off,
-                    LevelCompletions = false,
-                    LevelSegments = false,
-                    Achievements = false,
-                    BuyCatapult = false,
-                    SnakeDanger = false,
-                    SaltAndPepper = false,
-                    HackProtocol = false,
-                }));
+                Client = new DebugClient();
+                SetGame(new GameState(new GameOptions()));
             }
         }
-        ArchipelagoClient.FlushPendingLocations();
+
+        Client?.Update();
     }
     public static void OnTitleConnect()
     {
         if (RandomizerData.SlotName.IsNullOrWhiteSpace())
             return;
-        ArchipelagoClient.Connect();
+        Client = new ArchipelagoClient();
     }
     public static void OnTitleDisconnect()
     {
         RM.os1popup.StartPopup("Disconnect?", "Menus/QUIT_CONFIRM", "Menus/OKAY", "Menus/NO", delegate
         {
-            ArchipelagoClient.Disconnect();
+            Client.Disconnect();
         }, null);
     }
     public static void OnTitleOptions()
@@ -176,10 +125,10 @@ public class Plugin : BaseUnityPlugin
     }
     public static void SetGame(GameState game)
     {
-        if (game == Plugin.GameState)
+        if (game == GameState)
             return;
         Debug.Log(game == null ? "ending session" : "starting session");
-        Plugin.GameState = game;
+        GameState = game;
         // quit to titlescreen
         RM.sceneManager.OnQueueLevel("titlescreen");
         RM.sceneManager.OnPlayQueuedLevel();

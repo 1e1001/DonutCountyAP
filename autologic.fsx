@@ -50,7 +50,9 @@ let getTable (doc: XmlDocument) ns name (columnNames: string array) construct =
                 let newIndex = cell.GetAttribute "ss:Index"
                 if newIndex <> "" then
                     index <- int newIndex - 1
-                result[index] <- downcast cell.SelectSingleNode("ss:Data", ns) |> dataValue
+                let node = cell.SelectSingleNode("ss:Data", ns)
+                if node <> null then
+                    result[index] <- downcast node |> dataValue
                 index <- index + 1
             index <- -1
             construct (fun () ->
@@ -60,63 +62,88 @@ let getTable (doc: XmlDocument) ns name (columnNames: string array) construct =
         )
     | _ -> BadTable "no header" |> raise
 
+let debugIdGaps label (list: int list) =
+    let set = Set.ofList list
+    for i in set.MinimumElement..(set.MaximumElement + 1) do
+        if set.Contains i |> not then
+            printfn "free %s id %d" label i
+    list
+
 let verifyNoDuplicates (list: 'a list) =
     let diff = list.Length - (List.distinct list).Length
     if diff > 0 then
         BadContent $"{diff} duplicate ids" |> raise
 
-type ItemRow = { id: int; code: string; name: string; quantity: int; type_: string; value: string; class_: string }
+type ItemRow = { id: int; code: string; name: string; groups: string; quantity: int; type_: string; value: string; class_: string }
 type LocationRow = { id: int; tracker: string; name: string; type_: string; event: string; region: string; rules: string }
 
-let locationRules (itemMap: Map<string, string>) (rule: string) =
-    if rule = "" then
+let locationRules (itemMap: Map<string, string>) (location: LocationRow) =
+    if location.rules = "" then
         "True_()"
     else
         // no quotes in string :(
         let itemSalt = itemMap["Salt"]
         let itemPepper = itemMap["Pepper"]
         let itemSnakeDanger = itemMap["SnakeDanger"]
-        rule.Split ' '
+        location.rules.Split ' '
         |> Seq.ofArray
         |> Seq.map (fun rule ->
             match rule with
             | "" | "&" | "|" | "(" | ")" -> rule
+            | "Glitches" -> "Has(\"Glitches\")"
             | "SnakeDangerAll" -> $"HasFlag(\"{itemSnakeDanger}\", 4)"
             | "SaltPepperOne" -> $"HasFlag(\"{itemSalt}\") & HasFlag(\"{itemPepper}\")"
             | "SaltPepperAll" -> $"HasFlag(\"{itemSalt}\", 2) & HasFlag(\"{itemPepper}\", 3)"
-            | rule when rule.StartsWith("Catapult") && itemMap.ContainsKey(rule) -> $"HasFlag(\"Catapult\") & HasFlag(\"{itemMap[rule]}\")"
+            | rule when rule.StartsWith("Hole") && itemMap.ContainsKey(rule) -> $"HasFlag(\"Hole Effects\") & HasFlag(\"{itemMap[rule]}\")"
+            | rule when rule.StartsWith("Catapult") && itemMap.ContainsKey(rule) -> $"HasFlag(\"Catapults\") & HasFlag(\"{itemMap[rule]}\")"
             | rule when itemMap.ContainsKey(rule) -> $"HasFlag(\"{itemMap[rule]}\")"
             | rule -> BadContent $"bad rule {rule}" |> raise
         )
         |> String.concat " "
-let locationCondition type_ =
-    match type_ with
+let locationCondition (location: LocationRow) =
+    match location.type_ with
     | "Delivery" -> "True"
-    | "Segment" -> "o.level_segments"
+    | "Segment" -> "True"
     | "Achievement" -> "o.achievements"
     //| "Victory" -> "False"
     | "SnakeDanger" -> "o.snake_danger"
     | "Catapult" -> "o.buy_catapult"
     | "SaltAndPepper" -> "o.salt_and_pepper"
-    | "HackProtocol" -> "o.hack_protocol"
     | type_ -> BadContent $"bad location type {type_}" |> raise
-let locationSortOrder (tracker: string) =
-    (tracker.Split ',')[0]
+let locationSortOrder (location: LocationRow) =
+    (location.tracker.Split ',')[0]
+let locationGroup (location: LocationRow) =
+    match location.type_ with
+    | "Delivery" -> "Level"
+    | "Segment" -> "Segment"
+    | "Achievement" -> "Achievement"
+    //| "Victory" -> ""
+    | "SnakeDanger" -> "Element"
+    | "Catapult" -> "Element"
+    | "SaltAndPepper" -> "Element"
+    | type_ -> BadContent $"bad location type {type_}" |> raise
 
-let itemCondition type_ value =
-    match type_ with
+
+let itemCondition (item: ItemRow) =
+    match item.type_ with
+    | "Level" when item.value = "BossFight" -> "[OptionFilter(options.Levels, options.Levels.option_true), OptionFilter(options.GoalArea, options.GoalArea.option_aftermath)]"
     | "Level" -> "[OptionFilter(options.Levels, options.Levels.option_true)]"
     | "Filler" -> "[]"
-    | "Flag" when value = "" -> "[]"
+    | "Flag" when item.value = "" -> "[]"
     | "Flag" ->
-        let key = (value.Split '.')[0]
-        $"[OptionFilter(options.{key}, options.{value})]"
+        let key = (item.value.Split '.')[0]
+        $"[OptionFilter(options.{key}, options.{item.value})]"
     | type_ -> BadContent $"bad item type {type_}" |> raise
-let itemClass (class_: string) =
-    class_.Split ','
+let itemClass (item: ItemRow) =
+    item.class_.Split ','
     |> Seq.ofArray
     |> Seq.map (fun class_ -> $"ItemClassification.{class_}")
     |> String.concat " | "
+let itemGroups (item: ItemRow) =
+    if item.groups = "" then
+        [||]
+    else
+        item.groups.Split ';'
 
 let trackerParts (tracker: string) =
     if tracker.Substring(0, 1) <> "d" || tracker.Substring(3, 1) <> "c" then
@@ -131,15 +158,17 @@ let main =
     ns.AddNamespace("ss", "urn:schemas-microsoft-com:office:spreadsheet")
     let items =
         getTable doc ns "items" 
-            [| "id"; "code"; "name"; "quantity"; "type"; "value"; "class" |]
-            (fun f -> { id = f().Int; code = f().String; name = f().String; quantity = f().Int; type_ = f().String; value = f().String; class_ = f().String })
-    items |> List.map (fun row -> row.id) |> verifyNoDuplicates
+            [| "id"; "code"; "name"; "groups"; "quantity"; "type"; "value"; "class" |]
+            (fun f -> { id = f().Int; code = f().String; name = f().String; groups = f().String; quantity = f().Int; type_ = f().String; value = f().String; class_ = f().String })
+    items |> List.map (fun row -> row.id) |> debugIdGaps "item" |> verifyNoDuplicates
     let locations =
         getTable doc ns "locations"
             [| "id"; "tracker"; "name"; "type"; "event"; "region"; "rules" |]
             (fun f -> { id = f().Int; tracker = f().String; name = f().String; type_ = f().String; event = f().String; region = f().String; rules = f().String })
-    locations |> List.map (fun row -> row.id) |> verifyNoDuplicates
+    locations |> List.map (fun row -> row.id) |> debugIdGaps "location" |> verifyNoDuplicates
     locations |> List.map (fun row -> row.tracker) |> verifyNoDuplicates
+
+    let apworldLocations = locations |> List.filter (fun location -> location.type_ <> "Victory")
     let itemMap =
         items
         |> List.map (fun item -> (item.code, item.name))
@@ -154,13 +183,22 @@ from rule_builder.rules import Has, True_
 from . import options
 
 LOCATION_NAME_TO_ID = {"
-    for location in locations |> List.filter (fun location -> location.type_ <> "Victory") do
+    for location in apworldLocations do
         sprintf "    \"%s\": %d," location.name location.id
         |> pyStream.WriteLine
     pyStream.WriteLine "}
 LOCATION_SORT_ORDER = {"
-    for location in locations |> List.filter (fun location -> location.type_ <> "Victory") do
-        sprintf "    \"%s\": \"%s\"," location.name (locationSortOrder location.tracker)
+    for location in apworldLocations do
+        sprintf "    \"%s\": \"%s\"," location.name (locationSortOrder location)
+        |> pyStream.WriteLine
+    pyStream.WriteLine "}
+LOCATION_GROUPS = {"
+    for group, locations in apworldLocations |> List.groupBy locationGroup do
+        let locationsText =
+            locations
+            |> List.map (fun location -> $"\"{location.name}\"")
+            |> String.concat ", "
+        sprintf "    \"%s\": {%s}," group locationsText
         |> pyStream.WriteLine
     pyStream.WriteLine "}
 LEVEL_ENTRANCES = ["
@@ -173,20 +211,39 @@ ITEM_NAME_TO_ID = {"
     for item in items do
         sprintf "    \"%s\": %d," item.name item.id
         |> pyStream.WriteLine
-    pyStream.WriteLine "}
+    pyStream.WriteLine "    \"Glitches\": None
+}
 ITEM_DATA = {"
     for item in items do
-        sprintf "    \"%s\": (%s, %s)," item.name (itemClass item.class_) (itemCondition item.type_ item.value)
+        sprintf "    \"%s\": (%s, %s)," item.name (itemClass item) (itemCondition item)
         |> pyStream.WriteLine
-    pyStream.WriteLine "}
+    pyStream.WriteLine "    \"Glitches\": (ItemClassification.progression, [])
+}
 ITEM_FILLER = {"
     for item in items |> List.filter (fun item -> item.type_ = "Filler") do
         sprintf "    \"%s\": \"%s\"," item.value item.name
         |> pyStream.WriteLine
     pyStream.WriteLine "}
+ITEM_GROUPS = {"
+    let groupItems = items |> List.collect (fun item -> itemGroups item |> List.ofArray |> List.map (fun group -> group, item)) |> List.groupBy fst
+    for group, items in groupItems do
+        if group <> "" then
+            let itemsText =
+                items
+                |> List.map (fun (_, item) -> $"\"{item.name}\"")
+                |> String.concat ", "
+            sprintf "    \"%s\": {%s}," group itemsText
+            |> pyStream.WriteLine
+    pyStream.WriteLine "}
     
 def HasFlag(name: str, amount: int = 1):
     return Has(name, amount, options=ITEM_DATA[name][1], filtered_resolution=True)
+
+def check_all(o, l):
+    for filter in l:
+        if not filter.check(o):
+            return False
+    return True
 
 def regions(f):"
     for item in items |> List.filter (fun item -> item.type_ = "Level") do
@@ -196,31 +253,31 @@ def regions(f):"
         sprintf "    f(\"%s0\", \"Menu\", True_())" item.value
         |> pyStream.WriteLine
     // TODO: if i wanna give regions reasonable names, generate it from the completion location name (or ": Finish")
-    // and make the logic region internal to the generator
+    // and make the logic region internal to this script
     for location in locations |> List.filter(fun location -> location.type_ = "Delivery" || location.type_ = "Segment") do
         let prefix = location.region.Substring(0, location.region.Length - 1)
         let suffix = location.region.Substring(location.region.Length - 1) |> int
         let previous_region = prefix + string (suffix - 1)
-        sprintf "    f(\"%s\", \"%s\", %s)" location.region previous_region (locationRules itemMap location.rules)
+        sprintf "    f(\"%s\", \"%s\", %s)" location.region previous_region (locationRules itemMap location)
         |> pyStream.WriteLine
     pyStream.WriteLine "
 def locations(o, f):"
-    for type_, locations in locations |> List.groupBy (fun location -> location.type_) do
-        if type_ <> "Victory" then
-            sprintf "    if %s:" (locationCondition type_)
+    for condition, locations in apworldLocations |> List.groupBy locationCondition do
+        sprintf "    if %s:" condition
+        |> pyStream.WriteLine
+        for location in locations do
+            let rules = if location.type_ = "Delivery" || location.type_ = "Segment" then "True_()" else locationRules itemMap location
+            sprintf "        f(%d, \"%s\", \"%s\", %s)" location.id location.name location.region rules
             |> pyStream.WriteLine
-            for location in locations do
-                sprintf "        f(%d, \"%s\", \"%s\", %s)" location.id location.name location.region (locationRules itemMap location.rules)
-                |> pyStream.WriteLine
     pyStream.WriteLine "
 def items(o, f):"
-    for condition, items in items |> List.groupBy (fun item -> itemCondition item.type_ item.value) do
+    for condition, items in items |> List.groupBy itemCondition do
         if condition = "[]" then
             for item in items do
                 sprintf "    f(%d, \"%s\")" item.quantity item.name
                 |> pyStream.WriteLine
         else
-            sprintf "    if ITEM_DATA[\"%s\"][1][0].check(o):" items[0].name
+            sprintf "    if check_all(o, ITEM_DATA[\"%s\"][1]):" items[0].name
             |> pyStream.WriteLine
             for item in items do
                 sprintf "        f(%d, \"%s\")" item.quantity item.name
@@ -235,9 +292,16 @@ namespace DonutCountyAP.Randomizer;
 
 public enum ItemId {
     None,"
+    let mutable nextId = 1
     for item in items |> List.sortBy (fun item -> item.id) do
-        sprintf "    %s," item.code
-        |> csStream.WriteLine
+        if item.id = nextId then
+            sprintf "    %s," item.code
+            |> csStream.WriteLine
+        else
+            sprintf "    %s = %d," item.code item.id
+            |> csStream.WriteLine
+            nextId <- item.id
+        nextId <- nextId + 1
     csStream.WriteLine "    Length
 }
 
@@ -249,6 +313,11 @@ public partial class AutoLogic
             sprintf "        [\"%s\"] = new(%d, LocationType.%s)," location.event location.id location.type_
             |> csStream.WriteLine
     csStream.WriteLine "    };
+    public static readonly ItemId[] DEBUG_SORTED_ITEMS = ["
+    for item in items do
+        sprintf "        ItemId.%s," item.code
+        |> csStream.WriteLine
+    csStream.WriteLine "    ];
     public static readonly DebugTracker[] DEBUG_TRACKER = ["
     for location in locations do
         sprintf "        new(\"%s\", new(%d, LocationType.%s))," location.name location.id  location.type_

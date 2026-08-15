@@ -64,7 +64,7 @@ LOCATION_NAME_TO_ID = {
     "Donut Shop": 13,
     "Abandoned House: Dark": 56,
     "Abandoned House: Light": 57,
-    "Abandoned house": 14,
+    "Abandoned House": 14,
     "Raccoon Lagoon: Water wheel": 58,
     "Raccoon Lagoon: Log flume": 59,
     "Raccoon Lagoon: Dispenser": 60,
@@ -76,8 +76,7 @@ LOCATION_NAME_TO_ID = {
     "The 405: Big boy": 65,
     "The 405": 16,
     "Raccoon HQ: Exterior": 66,
-    "Raccoon HQ: USB drive": 67,
-    "H.A.C.K. Protocol": 68,
+    "Raccoon HQ: Hacking device": 67,
     "Raccoon HQ: Hacking complete": 69,
     "Raccoon HQ": 17,
     "Biology Lab: Raccoons": 70,
@@ -110,7 +109,7 @@ LOCATION_NAME_TO_ID = {
     "Achievement: Donut County": 93,
     "Achievement: Gamer": 94,
     "Achievement: Pyro": 95,
-    "Achievement: Pup's Oddyssey": 96,
+    "Achievement: Pup's Odyssey": 96,
 }
 LOCATION_SORT_ORDER = {
     "Mira's House: Donut County": "d00c0z",
@@ -172,7 +171,7 @@ LOCATION_SORT_ORDER = {
     "Donut Shop": "d12c1z",
     "Abandoned House: Dark": "d13c0z",
     "Abandoned House: Light": "d13c1z",
-    "Abandoned house": "d13c2z",
+    "Abandoned House": "d13c2z",
     "Raccoon Lagoon: Water wheel": "d14c0z",
     "Raccoon Lagoon: Log flume": "d14c1z",
     "Raccoon Lagoon: Dispenser": "d14c2z",
@@ -184,8 +183,7 @@ LOCATION_SORT_ORDER = {
     "The 405: Big boy": "d15c3z",
     "The 405": "d15c4z",
     "Raccoon HQ: Exterior": "d16c0z",
-    "Raccoon HQ: USB drive": "d16c1z",
-    "H.A.C.K. Protocol": "d16c2s0",
+    "Raccoon HQ: Hacking device": "d16c1z",
     "Raccoon HQ: Hacking complete": "d16c2z",
     "Raccoon HQ": "d16c3z",
     "Biology Lab: Raccoons": "d17c0z",
@@ -218,7 +216,13 @@ LOCATION_SORT_ORDER = {
     "Achievement: Donut County": "d12c1a0",
     "Achievement: Gamer": "d09c1a0",
     "Achievement: Pyro": "d06c0a0",
-    "Achievement: Pup's Oddyssey": "d01c5s0",
+    "Achievement: Pup's Odyssey": "d01c5s0",
+}
+LOCATION_GROUPS = {
+    "Segment": {"Mira's House: Donut County", "Potter's Rock: Pile", "Potter's Rock: Front", "Potter's Rock: Potter", "Potter's Rock: Pots", "Potter's Rock: Launch", "Ranger Station: Snakes", "Ranger Station: Snake hole", "Ranger Station: Snake danger", "Riverbed: Small Dog", "Campground: Popcorn", "Campground: Right tent", "Hopper Springs: Carrots", "Hopper Springs: Bunnies 1", "Hopper Springs: Bunnies 2", "Hopper Springs: Bunnies 3", "Joshua Tree: Arson", "Beach Lot C: First firework", "Beach Lot C: Birds", "Beach Lot C: Cliff", "Gecko Park: Geckos", "Gecko Park: Coco", "Chicken Barn: Boxes", "Chicken Barn: BK's apartment", "Chicken Barn: Catapult tutorial", "Chicken Barn: Chicken toss", "Chicken Barn: Egg toss", "Honey Nut Forest: Get frog", "Honey Nut Forest: Frog tutorial", "Cat Soup: Outside", "Cat Soup: Cooking", "Cat Soup: Dining", "Cat Soup: Cars", "Donut Shop: Car", "Abandoned House: Dark", "Abandoned House: Light", "Raccoon Lagoon: Water wheel", "Raccoon Lagoon: Log flume", "Raccoon Lagoon: Dispenser", "Raccoon Lagoon: Ferris wheel", "The 405: Small car", "The 405: Truck repair", "The 405: Cop raccoons", "The 405: Big boy", "Raccoon HQ: Exterior", "Raccoon HQ: Hacking device", "Raccoon HQ: Hacking complete", "Biology Lab: Raccoons", "Biology Lab: Snake", "Biology Lab: Lab", "Anthropology Lab: Garbage bin", "Anthropology Lab: Fire alarm", "Anthropology Lab: Firework", "Trash King's Office: Donuts 1", "Trash King's Office: Donuts 2", "Trash King's Office: Donuts 3", "Boss Fight: Phase 1", "Boss Fight: Phase 2"},
+    "Level": {"Mira's House", "Potter's Rock", "Ranger Station", "Riverbed", "Campground", "Hopper Springs", "Joshua Tree", "Beach Lot C", "Gecko Park", "Chicken Barn", "Honey Nut Forest", "Cat Soup", "Donut Shop", "Abandoned House", "Racoon Lagoon", "The 405", "Raccoon HQ", "Biology Lab", "Anthropology Lab", "Trash King's Office", "Boss Fight"},
+    "Element": {"Snake danger: Snake", "Snake danger: Horn", "Snake danger: Sign", "Snake danger: Swing", "Buy Catapult", "Salt 1", "Salt 2", "Pepper 1", "Pepper 2", "Pepper 3"},
+    "Achievement": {"Achievement: Bandit", "Achievement: Secret Soup", "Achievement: Game Over", "Achievement: Disrespecter", "Achievement: Quack Enthusiast", "Achievement: Egg Breaker", "Achievement: Music Lover", "Achievement: Flawless", "Achievement: Dethroner", "Achievement: Boss Fight", "Achievement: Hacker", "Achievement: The Flume Is Doomed", "Achievement: Donut County", "Achievement: Gamer", "Achievement: Pyro", "Achievement: Pup's Odyssey"},
 }
 LEVEL_ENTRANCES = [
     ("MirasHouse0", "Mira's House"),
@@ -245,23 +249,25 @@ LEVEL_ENTRANCES = [
     ("Aftermath0", None),
 ]
 ITEM_NAME_TO_ID = {
-    "Hole: Water": 1,
-    "Hole: Fire": 2,
-    "Hole: Snake": 3,
-    "Hole: Light": 4,
-    "Hole: Bunnies": 22,
-    "Catapult": 5,
-    "Catapult: Boxes": 6,
-    "Catapult: Chickens": 7,
-    "Catapult: Eggs": 8,
-    "Catapult: Honeycomb": 9,
-    "Catapult: Frogs": 10,
-    "Catapult: Water, Balloons, and Fish": 11,
-    "Catapult: Donuts and Cameras": 12,
-    "Catapult: Raccoons": 45,
-    "Catapult: Hacking Device": 13,
-    "Catapult: Keycards": 46,
-    "Catapult: Bombs": 14,
+    "Hole Effects": 47,
+    "Hole Effects: Water": 1,
+    "Hole Effects: Fire": 2,
+    "Hole Effects: Snake": 3,
+    "Hole Effects: Light": 4,
+    "Hole Effects: Bunnies": 22,
+    "Catapults": 5,
+    "Catapults: Boxes": 6,
+    "Catapults: Chickens": 7,
+    "Catapults: Eggs": 8,
+    "Catapults: Honeycomb": 9,
+    "Catapults: Frogs": 10,
+    "Catapults: Water, Balloons, and Fish": 11,
+    "Catapults: Donuts and Cameras": 12,
+    "Catapults: Raccoons": 45,
+    "Catapults: Hacking Device": 13,
+    "Catapults: Keycards": 46,
+    "Catapults: Bombs": 14,
+    "Texting": 21,
     "Quadcopter Piece": 15,
     "BK Does One (1) Backflip": 16,
     "Cement Trap": 17,
@@ -269,7 +275,6 @@ ITEM_NAME_TO_ID = {
     "Progressive Snake Danger": 18,
     "Progressive Salt": 19,
     "Progressive Pepper": 20,
-    "H.A.C.K. Protocol": 21,
     "Mira's House": 24,
     "Potter's Rock": 25,
     "Ranger Station": 26,
@@ -291,63 +296,114 @@ ITEM_NAME_TO_ID = {
     "Anthropology Lab": 42,
     "Trash King's Office": 43,
     "Boss Fight": 44,
+    "Glitches": None
 }
 ITEM_DATA = {
-    "Hole: Water": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.HoleWater, options.HoleWater.option_true)]),
-    "Hole: Fire": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.HoleFire, options.HoleFire.option_true)]),
-    "Hole: Snake": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.HoleSnake, options.HoleSnake.option_true)]),
-    "Hole: Light": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.HoleLight, options.HoleLight.option_true)]),
-    "Hole: Bunnies": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.HoleBunnies, options.HoleBunnies.option_true)]),
-    "Catapult": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_global)]),
-    "Catapult: Boxes": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Catapult: Chickens": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Catapult: Eggs": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Catapult: Honeycomb": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Catapult: Frogs": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Catapult: Water, Balloons, and Fish": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Catapult: Donuts and Cameras": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Catapult: Raccoons": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Catapult: Hacking Device": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Catapult: Keycards": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Catapult: Bombs": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
-    "Quadcopter Piece": (ItemClassification.progression, []),
+    "Hole Effects": (ItemClassification.progression, [OptionFilter(options.Hole, options.Hole.option_global)]),
+    "Hole Effects: Water": (ItemClassification.progression, [OptionFilter(options.Hole, options.Hole.option_split)]),
+    "Hole Effects: Fire": (ItemClassification.progression, [OptionFilter(options.Hole, options.Hole.option_split)]),
+    "Hole Effects: Snake": (ItemClassification.progression, [OptionFilter(options.Hole, options.Hole.option_split)]),
+    "Hole Effects: Light": (ItemClassification.progression, [OptionFilter(options.Hole, options.Hole.option_split)]),
+    "Hole Effects: Bunnies": (ItemClassification.progression, [OptionFilter(options.Hole, options.Hole.option_split)]),
+    "Catapults": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_global)]),
+    "Catapults: Boxes": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Catapults: Chickens": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Catapults: Eggs": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Catapults: Honeycomb": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Catapults: Frogs": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Catapults: Water, Balloons, and Fish": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Catapults: Donuts and Cameras": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Catapults: Raccoons": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Catapults: Hacking Device": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Catapults: Keycards": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Catapults: Bombs": (ItemClassification.progression, [OptionFilter(options.Catapult, options.Catapult.option_split)]),
+    "Texting": (ItemClassification.progression, [OptionFilter(options.Texting, options.Texting.option_true)]),
+    "Quadcopter Piece": (ItemClassification.progression | ItemClassification.useful, []),
     "BK Does One (1) Backflip": (ItemClassification.filler, []),
     "Cement Trap": (ItemClassification.trap, []),
     "999ft Below Trap": (ItemClassification.trap, []),
-    "Progressive Snake Danger": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.SnakeDanger, options.SnakeDanger.option_true)]),
-    "Progressive Salt": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.SaltAndPepper, options.SaltAndPepper.option_true)]),
-    "Progressive Pepper": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.SaltAndPepper, options.SaltAndPepper.option_true)]),
-    "H.A.C.K. Protocol": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.HackProtocol, options.HackProtocol.option_true)]),
-    "Mira's House": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Potter's Rock": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Ranger Station": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Riverbed": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Campground": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Hopper Springs": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Joshua Tree": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Beach Lot C": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Gecko Park": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Chicken Barn": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Honey Nut Forest": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Cat Soup": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Donut Shop": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Abandoned House": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Raccoon Lagoon": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "The 405": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Raccoon HQ": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Biology Lab": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Anthropology Lab": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Trash King's Office": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
-    "Boss Fight": (ItemClassification.progression | ItemClassification.useful, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Progressive Snake Danger": (ItemClassification.progression, [OptionFilter(options.SnakeDanger, options.SnakeDanger.option_true)]),
+    "Progressive Salt": (ItemClassification.progression, [OptionFilter(options.SaltAndPepper, options.SaltAndPepper.option_true)]),
+    "Progressive Pepper": (ItemClassification.progression, [OptionFilter(options.SaltAndPepper, options.SaltAndPepper.option_true)]),
+    "Mira's House": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Potter's Rock": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Ranger Station": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Riverbed": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Campground": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Hopper Springs": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Joshua Tree": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Beach Lot C": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Gecko Park": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Chicken Barn": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Honey Nut Forest": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Cat Soup": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Donut Shop": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Abandoned House": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Raccoon Lagoon": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "The 405": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Raccoon HQ": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Biology Lab": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Anthropology Lab": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Trash King's Office": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true)]),
+    "Boss Fight": (ItemClassification.progression, [OptionFilter(options.Levels, options.Levels.option_true), OptionFilter(options.GoalArea, options.GoalArea.option_aftermath)]),
+    "Glitches": (ItemClassification.progression, [])
 }
 ITEM_FILLER = {
     "filler": "BK Does One (1) Backflip",
     "concrete_trap": "Cement Trap",
     "depths_trap": "999ft Below Trap",
 }
+ITEM_GROUPS = {
+    "Hole Effect": {"Hole Effects", "Hole Effects: Water", "Hole Effects: Fire", "Hole Effects: Snake", "Hole Effects: Light", "Hole Effects: Bunnies"},
+    "Hole": {"Hole Effects"},
+    "Hole Water": {"Hole Effects: Water"},
+    "Water": {"Hole Effects: Water"},
+    "Hole Fire": {"Hole Effects: Fire"},
+    "Fire": {"Hole Effects: Fire"},
+    "Hole Snake": {"Hole Effects: Snake"},
+    "Snake": {"Hole Effects: Snake"},
+    "Hole Light": {"Hole Effects: Light"},
+    "Light": {"Hole Effects: Light"},
+    "Hole Bunnies": {"Hole Effects: Bunnies"},
+    "Bunnies": {"Hole Effects: Bunnies"},
+    "Catapult": {"Catapults", "Catapults: Boxes", "Catapults: Chickens", "Catapults: Eggs", "Catapults: Honeycomb", "Catapults: Frogs", "Catapults: Water, Balloons, and Fish", "Catapults: Donuts and Cameras", "Catapults: Raccoons", "Catapults: Hacking Device", "Catapults: Keycards", "Catapults: Bombs"},
+    "Boxes": {"Catapults: Boxes"},
+    "Chickens": {"Catapults: Chickens"},
+    "Eggs": {"Catapults: Eggs"},
+    "Honeycomb": {"Catapults: Honeycomb"},
+    "Frogs": {"Catapults: Frogs"},
+    "Catapult Water": {"Catapults: Water, Balloons, and Fish"},
+    "Catapult Balloons": {"Catapults: Water, Balloons, and Fish"},
+    "Catapult Fish": {"Catapults: Water, Balloons, and Fish"},
+    "Water, Ballons, and Fish": {"Catapults: Water, Balloons, and Fish"},
+    "Balloons": {"Catapults: Water, Balloons, and Fish"},
+    "Fish": {"Catapults: Water, Balloons, and Fish"},
+    "Catapult Donuts": {"Catapults: Donuts and Cameras"},
+    "Catapult Cameras": {"Catapults: Donuts and Cameras"},
+    "Donuts and Cameras": {"Catapults: Donuts and Cameras"},
+    "Donuts": {"Catapults: Donuts and Cameras"},
+    "Cameras": {"Catapults: Donuts and Cameras"},
+    "Raccoons": {"Catapults: Raccoons"},
+    "Hacking Device": {"Catapults: Hacking Device"},
+    "Keycards": {"Catapults: Keycards"},
+    "Bombs": {"Catapults: Bombs"},
+    "MacGuffin": {"Quadcopter Piece"},
+    "Filler": {"BK Does One (1) Backflip", "Cement Trap", "999ft Below Trap"},
+    "Element": {"Progressive Snake Danger", "Progressive Salt", "Progressive Pepper"},
+    "Snake Danger": {"Progressive Snake Danger"},
+    "Salt": {"Progressive Salt"},
+    "Pepper": {"Progressive Pepper"},
+    "Level": {"Mira's House", "Potter's Rock", "Ranger Station", "Riverbed", "Campground", "Hopper Springs", "Joshua Tree", "Beach Lot C", "Gecko Park", "Chicken Barn", "Honey Nut Forest", "Cat Soup", "Donut Shop", "Abandoned House", "Raccoon Lagoon", "The 405", "Raccoon HQ", "Biology Lab", "Anthropology Lab", "Trash King's Office", "Boss Fight"},
+}
     
 def HasFlag(name: str, amount: int = 1):
     return Has(name, amount, options=ITEM_DATA[name][1], filtered_resolution=True)
+
+def check_all(o, l):
+    for filter in l:
+        if not filter.check(o):
+            return False
+    return True
 
 def regions(f):
     f("MirasHouse0", "Menu", True_())
@@ -371,238 +427,233 @@ def regions(f):
     f("AnthropologyLab0", "Menu", True_())
     f("TrashKingsOffice0", "Menu", True_())
     f("BossFight0", "Menu", True_())
-    f("MirasHouse1", "MirasHouse0", True_())
+    f("MirasHouse1", "MirasHouse0", HasFlag("Texting") | Has("Glitches"))
     f("MirasHouse2", "MirasHouse1", True_())
     f("PottersRock1", "PottersRock0", True_())
     f("PottersRock2", "PottersRock1", True_())
     f("PottersRock3", "PottersRock2", True_())
     f("PottersRock4", "PottersRock3", True_())
-    f("PottersRock5", "PottersRock4", HasFlag("Hole: Fire"))
+    f("PottersRock5", "PottersRock4", HasFlag("Hole Effects") & HasFlag("Hole Effects: Fire"))
     f("PottersRock6", "PottersRock5", True_())
     f("RangerStation1", "RangerStation0", True_())
     f("RangerStation2", "RangerStation1", True_())
-    f("RangerStation3", "RangerStation2", HasFlag("Hole: Snake") & HasFlag("Progressive Snake Danger", 4))
+    f("RangerStation3", "RangerStation2", HasFlag("Hole Effects") & HasFlag("Hole Effects: Snake") & HasFlag("Progressive Snake Danger", 4))
     f("RangerStation4", "RangerStation3", True_())
     f("Riverbed1", "Riverbed0", True_())
-    f("Riverbed2", "Riverbed1", HasFlag("Hole: Water"))
+    f("Riverbed2", "Riverbed1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water"))
     f("Campground1", "Campground0", True_())
-    f("Campground2", "Campground1", HasFlag("Hole: Fire"))
+    f("Campground2", "Campground1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Fire"))
     f("Campground3", "Campground2", True_())
     f("HopperSprings1", "HopperSprings0", True_())
-    f("HopperSprings2", "HopperSprings1", HasFlag("Hole: Bunnies"))
+    f("HopperSprings2", "HopperSprings1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Bunnies"))
     f("HopperSprings3", "HopperSprings2", True_())
     f("HopperSprings4", "HopperSprings3", True_())
     f("HopperSprings5", "HopperSprings4", True_())
-    f("JoshuaTree1", "JoshuaTree0", HasFlag("Hole: Fire"))
+    f("JoshuaTree1", "JoshuaTree0", HasFlag("Hole Effects") & HasFlag("Hole Effects: Fire"))
     f("JoshuaTree2", "JoshuaTree1", True_())
-    f("BeachLotC1", "BeachLotC0", HasFlag("Hole: Fire"))
+    f("BeachLotC1", "BeachLotC0", HasFlag("Hole Effects") & HasFlag("Hole Effects: Fire"))
     f("BeachLotC2", "BeachLotC1", True_())
     f("BeachLotC3", "BeachLotC2", True_())
     f("BeachLotC4", "BeachLotC3", True_())
-    f("GeckoPark1", "GeckoPark0", True_())
+    f("GeckoPark1", "GeckoPark0", HasFlag("Texting"))
     f("GeckoPark2", "GeckoPark1", True_())
     f("GeckoPark3", "GeckoPark2", True_())
     f("ChickenBarn1", "ChickenBarn0", True_())
-    f("ChickenBarn2", "ChickenBarn1", True_())
-    f("ChickenBarn3", "ChickenBarn2", HasFlag("Catapult") & HasFlag("Catapult: Boxes"))
-    f("ChickenBarn4", "ChickenBarn3", HasFlag("Catapult") & HasFlag("Catapult: Chickens"))
-    f("ChickenBarn5", "ChickenBarn4", HasFlag("Catapult") & HasFlag("Catapult: Eggs"))
+    f("ChickenBarn2", "ChickenBarn1", HasFlag("Texting"))
+    f("ChickenBarn3", "ChickenBarn2", HasFlag("Catapults") & HasFlag("Catapults: Boxes"))
+    f("ChickenBarn4", "ChickenBarn3", HasFlag("Catapults") & HasFlag("Catapults: Chickens"))
+    f("ChickenBarn5", "ChickenBarn4", HasFlag("Catapults") & HasFlag("Catapults: Eggs"))
     f("ChickenBarn6", "ChickenBarn5", True_())
-    f("HoneyNutForest1", "HoneyNutForest0", HasFlag("Catapult") & HasFlag("Catapult: Honeycomb"))
-    f("HoneyNutForest2", "HoneyNutForest1", HasFlag("Catapult") & HasFlag("Catapult: Frogs"))
+    f("HoneyNutForest1", "HoneyNutForest0", HasFlag("Catapults") & HasFlag("Catapults: Honeycomb"))
+    f("HoneyNutForest2", "HoneyNutForest1", HasFlag("Catapults") & HasFlag("Catapults: Frogs"))
     f("HoneyNutForest3", "HoneyNutForest2", True_())
     f("CatSoup1", "CatSoup0", True_())
-    f("CatSoup2", "CatSoup1", HasFlag("Hole: Water") & HasFlag("Progressive Salt") & HasFlag("Progressive Pepper"))
+    f("CatSoup2", "CatSoup1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water") & HasFlag("Progressive Salt") & HasFlag("Progressive Pepper"))
     f("CatSoup3", "CatSoup2", True_())
     f("CatSoup4", "CatSoup3", True_())
     f("CatSoup5", "CatSoup4", True_())
     f("DonutShop1", "DonutShop0", True_())
     f("DonutShop2", "DonutShop1", True_())
-    f("AbandonedHouse1", "AbandonedHouse0", HasFlag("Hole: Light"))
+    f("AbandonedHouse1", "AbandonedHouse0", HasFlag("Hole Effects") & HasFlag("Hole Effects: Light"))
     f("AbandonedHouse2", "AbandonedHouse1", True_())
     f("AbandonedHouse3", "AbandonedHouse2", True_())
-    f("RaccoonLagoon1", "RaccoonLagoon0", HasFlag("Hole: Water") & HasFlag("Catapult") & HasFlag("Catapult: Water, Balloons, and Fish"))
+    f("RaccoonLagoon1", "RaccoonLagoon0", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water") & HasFlag("Catapults") & HasFlag("Catapults: Water, Balloons, and Fish"))
     f("RaccoonLagoon2", "RaccoonLagoon1", True_())
     f("RaccoonLagoon3", "RaccoonLagoon2", True_())
     f("RaccoonLagoon4", "RaccoonLagoon3", True_())
     f("RaccoonLagoon5", "RaccoonLagoon4", True_())
     f("The4051", "The4050", True_())
     f("The4052", "The4051", True_())
-    f("The4053", "The4052", HasFlag("Catapult") & HasFlag("Catapult: Donuts and Cameras") & HasFlag("Catapult") & HasFlag("Catapult: Raccoons"))
+    f("The4053", "The4052", HasFlag("Catapults") & HasFlag("Catapults: Donuts and Cameras") & HasFlag("Catapults") & HasFlag("Catapults: Raccoons"))
     f("The4054", "The4053", True_())
     f("The4055", "The4054", True_())
-    f("RaccoonHQ1", "RaccoonHQ0", True_())
+    f("RaccoonHQ1", "RaccoonHQ0", HasFlag("Texting"))
     f("RaccoonHQ2", "RaccoonHQ1", True_())
-    f("RaccoonHQ3", "RaccoonHQ2", HasFlag("Catapult") & HasFlag("Catapult: Hacking Device") & HasFlag("H.A.C.K. Protocol"))
-    f("RaccoonHQ4", "RaccoonHQ3", HasFlag("Catapult") & HasFlag("Catapult: Keycards"))
+    f("RaccoonHQ3", "RaccoonHQ2", HasFlag("Catapults") & HasFlag("Catapults: Hacking Device") | Has("Glitches"))
+    f("RaccoonHQ4", "RaccoonHQ3", HasFlag("Catapults") & HasFlag("Catapults: Raccoons") & HasFlag("Catapults") & HasFlag("Catapults: Keycards"))
     f("BiologyLab1", "BiologyLab0", True_())
-    f("BiologyLab2", "BiologyLab1", HasFlag("Hole: Snake"))
-    f("BiologyLab3", "BiologyLab2", HasFlag("Catapult") & HasFlag("Catapult: Frogs") & HasFlag("Hole: Bunnies"))
-    f("BiologyLab4", "BiologyLab3", HasFlag("Catapult") & HasFlag("Catapult: Keycards"))
+    f("BiologyLab2", "BiologyLab1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Snake"))
+    f("BiologyLab3", "BiologyLab2", HasFlag("Catapults") & HasFlag("Catapults: Frogs") & HasFlag("Hole Effects") & HasFlag("Hole Effects: Bunnies"))
+    f("BiologyLab4", "BiologyLab3", HasFlag("Catapults") & HasFlag("Catapults: Keycards"))
     f("AnthropologyLab1", "AnthropologyLab0", True_())
-    f("AnthropologyLab2", "AnthropologyLab1", HasFlag("Hole: Fire"))
-    f("AnthropologyLab3", "AnthropologyLab2", HasFlag("Hole: Water"))
+    f("AnthropologyLab2", "AnthropologyLab1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Fire"))
+    f("AnthropologyLab3", "AnthropologyLab2", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water"))
     f("AnthropologyLab4", "AnthropologyLab3", True_())
     f("TrashKingsOffice1", "TrashKingsOffice0", True_())
     f("TrashKingsOffice2", "TrashKingsOffice1", True_())
     f("TrashKingsOffice3", "TrashKingsOffice2", True_())
     f("TrashKingsOffice4", "TrashKingsOffice3", True_())
-    f("BossFight1", "BossFight0", HasFlag("Catapult") & HasFlag("Catapult: Bombs"))
-    f("BossFight2", "BossFight1", HasFlag("Catapult") & HasFlag("Catapult: Hacking Device"))
+    f("BossFight1", "BossFight0", HasFlag("Catapults") & HasFlag("Catapults: Bombs"))
+    f("BossFight2", "BossFight1", HasFlag("Catapults") & HasFlag("Catapults: Hacking Device"))
     f("BossFight3", "BossFight2", True_())
 
 def locations(o, f):
-    if o.level_segments:
+    if True:
         f(22, "Mira's House: Donut County", "MirasHouse1", True_())
+        f(1, "Mira's House", "MirasHouse2", True_())
         f(23, "Potter's Rock: Pile", "PottersRock1", True_())
         f(24, "Potter's Rock: Front", "PottersRock2", True_())
         f(25, "Potter's Rock: Potter", "PottersRock3", True_())
         f(26, "Potter's Rock: Pots", "PottersRock4", True_())
-        f(27, "Potter's Rock: Launch", "PottersRock5", HasFlag("Hole: Fire"))
+        f(27, "Potter's Rock: Launch", "PottersRock5", True_())
+        f(2, "Potter's Rock", "PottersRock6", True_())
         f(28, "Ranger Station: Snakes", "RangerStation1", True_())
         f(29, "Ranger Station: Snake hole", "RangerStation2", True_())
-        f(30, "Ranger Station: Snake danger", "RangerStation3", HasFlag("Hole: Snake") & HasFlag("Progressive Snake Danger", 4))
+        f(30, "Ranger Station: Snake danger", "RangerStation3", True_())
+        f(3, "Ranger Station", "RangerStation4", True_())
         f(31, "Riverbed: Small Dog", "Riverbed1", True_())
+        f(4, "Riverbed", "Riverbed2", True_())
         f(32, "Campground: Popcorn", "Campground1", True_())
-        f(33, "Campground: Right tent", "Campground2", HasFlag("Hole: Fire"))
+        f(33, "Campground: Right tent", "Campground2", True_())
+        f(5, "Campground", "Campground3", True_())
         f(34, "Hopper Springs: Carrots", "HopperSprings1", True_())
-        f(35, "Hopper Springs: Bunnies 1", "HopperSprings2", HasFlag("Hole: Bunnies"))
+        f(35, "Hopper Springs: Bunnies 1", "HopperSprings2", True_())
         f(36, "Hopper Springs: Bunnies 2", "HopperSprings3", True_())
         f(37, "Hopper Springs: Bunnies 3", "HopperSprings4", True_())
-        f(38, "Joshua Tree: Arson", "JoshuaTree1", HasFlag("Hole: Fire"))
-        f(39, "Beach Lot C: First firework", "BeachLotC1", HasFlag("Hole: Fire"))
+        f(6, "Hopper Springs", "HopperSprings5", True_())
+        f(38, "Joshua Tree: Arson", "JoshuaTree1", True_())
+        f(7, "Joshua Tree", "JoshuaTree2", True_())
+        f(39, "Beach Lot C: First firework", "BeachLotC1", True_())
         f(40, "Beach Lot C: Birds", "BeachLotC2", True_())
         f(41, "Beach Lot C: Cliff", "BeachLotC3", True_())
+        f(8, "Beach Lot C", "BeachLotC4", True_())
         f(42, "Gecko Park: Geckos", "GeckoPark1", True_())
         f(43, "Gecko Park: Coco", "GeckoPark2", True_())
+        f(9, "Gecko Park", "GeckoPark3", True_())
         f(44, "Chicken Barn: Boxes", "ChickenBarn1", True_())
         f(45, "Chicken Barn: BK's apartment", "ChickenBarn2", True_())
-        f(46, "Chicken Barn: Catapult tutorial", "ChickenBarn3", HasFlag("Catapult") & HasFlag("Catapult: Boxes"))
-        f(47, "Chicken Barn: Chicken toss", "ChickenBarn4", HasFlag("Catapult") & HasFlag("Catapult: Chickens"))
-        f(48, "Chicken Barn: Egg toss", "ChickenBarn5", HasFlag("Catapult") & HasFlag("Catapult: Eggs"))
-        f(49, "Honey Nut Forest: Get frog", "HoneyNutForest1", HasFlag("Catapult") & HasFlag("Catapult: Honeycomb"))
-        f(50, "Honey Nut Forest: Frog tutorial", "HoneyNutForest2", HasFlag("Catapult") & HasFlag("Catapult: Frogs"))
+        f(46, "Chicken Barn: Catapult tutorial", "ChickenBarn3", True_())
+        f(47, "Chicken Barn: Chicken toss", "ChickenBarn4", True_())
+        f(48, "Chicken Barn: Egg toss", "ChickenBarn5", True_())
+        f(10, "Chicken Barn", "ChickenBarn6", True_())
+        f(49, "Honey Nut Forest: Get frog", "HoneyNutForest1", True_())
+        f(50, "Honey Nut Forest: Frog tutorial", "HoneyNutForest2", True_())
+        f(11, "Honey Nut Forest", "HoneyNutForest3", True_())
         f(51, "Cat Soup: Outside", "CatSoup1", True_())
-        f(52, "Cat Soup: Cooking", "CatSoup2", HasFlag("Hole: Water") & HasFlag("Progressive Salt") & HasFlag("Progressive Pepper"))
+        f(52, "Cat Soup: Cooking", "CatSoup2", True_())
         f(53, "Cat Soup: Dining", "CatSoup3", True_())
         f(54, "Cat Soup: Cars", "CatSoup4", True_())
+        f(12, "Cat Soup", "CatSoup5", True_())
         f(55, "Donut Shop: Car", "DonutShop1", True_())
-        f(56, "Abandoned House: Dark", "AbandonedHouse1", HasFlag("Hole: Light"))
+        f(13, "Donut Shop", "DonutShop2", True_())
+        f(56, "Abandoned House: Dark", "AbandonedHouse1", True_())
         f(57, "Abandoned House: Light", "AbandonedHouse2", True_())
-        f(58, "Raccoon Lagoon: Water wheel", "RaccoonLagoon1", HasFlag("Hole: Water") & HasFlag("Catapult") & HasFlag("Catapult: Water, Balloons, and Fish"))
+        f(14, "Abandoned House", "AbandonedHouse3", True_())
+        f(58, "Raccoon Lagoon: Water wheel", "RaccoonLagoon1", True_())
         f(59, "Raccoon Lagoon: Log flume", "RaccoonLagoon2", True_())
         f(60, "Raccoon Lagoon: Dispenser", "RaccoonLagoon3", True_())
         f(61, "Raccoon Lagoon: Ferris wheel", "RaccoonLagoon4", True_())
+        f(15, "Racoon Lagoon", "RaccoonLagoon5", True_())
         f(62, "The 405: Small car", "The4051", True_())
         f(63, "The 405: Truck repair", "The4052", True_())
-        f(64, "The 405: Cop raccoons", "The4053", HasFlag("Catapult") & HasFlag("Catapult: Donuts and Cameras") & HasFlag("Catapult") & HasFlag("Catapult: Raccoons"))
+        f(64, "The 405: Cop raccoons", "The4053", True_())
         f(65, "The 405: Big boy", "The4054", True_())
+        f(16, "The 405", "The4055", True_())
         f(66, "Raccoon HQ: Exterior", "RaccoonHQ1", True_())
-        f(67, "Raccoon HQ: USB drive", "RaccoonHQ2", True_())
-        f(69, "Raccoon HQ: Hacking complete", "RaccoonHQ3", HasFlag("Catapult") & HasFlag("Catapult: Hacking Device") & HasFlag("H.A.C.K. Protocol"))
+        f(67, "Raccoon HQ: Hacking device", "RaccoonHQ2", True_())
+        f(69, "Raccoon HQ: Hacking complete", "RaccoonHQ3", True_())
+        f(17, "Raccoon HQ", "RaccoonHQ4", True_())
         f(70, "Biology Lab: Raccoons", "BiologyLab1", True_())
-        f(71, "Biology Lab: Snake", "BiologyLab2", HasFlag("Hole: Snake"))
-        f(72, "Biology Lab: Lab", "BiologyLab3", HasFlag("Catapult") & HasFlag("Catapult: Frogs") & HasFlag("Hole: Bunnies"))
+        f(71, "Biology Lab: Snake", "BiologyLab2", True_())
+        f(72, "Biology Lab: Lab", "BiologyLab3", True_())
+        f(18, "Biology Lab", "BiologyLab4", True_())
         f(73, "Anthropology Lab: Garbage bin", "AnthropologyLab1", True_())
-        f(74, "Anthropology Lab: Fire alarm", "AnthropologyLab2", HasFlag("Hole: Fire"))
-        f(75, "Anthropology Lab: Firework", "AnthropologyLab3", HasFlag("Hole: Water"))
+        f(74, "Anthropology Lab: Fire alarm", "AnthropologyLab2", True_())
+        f(75, "Anthropology Lab: Firework", "AnthropologyLab3", True_())
+        f(19, "Anthropology Lab", "AnthropologyLab4", True_())
         f(76, "Trash King's Office: Donuts 1", "TrashKingsOffice1", True_())
         f(77, "Trash King's Office: Donuts 2", "TrashKingsOffice2", True_())
         f(78, "Trash King's Office: Donuts 3", "TrashKingsOffice3", True_())
-        f(79, "Boss Fight: Phase 1", "BossFight1", HasFlag("Catapult") & HasFlag("Catapult: Bombs"))
-        f(80, "Boss Fight: Phase 2", "BossFight2", HasFlag("Catapult") & HasFlag("Catapult: Hacking Device"))
-    if True:
-        f(1, "Mira's House", "MirasHouse2", True_())
-        f(2, "Potter's Rock", "PottersRock6", True_())
-        f(3, "Ranger Station", "RangerStation4", True_())
-        f(4, "Riverbed", "Riverbed2", HasFlag("Hole: Water"))
-        f(5, "Campground", "Campground3", True_())
-        f(6, "Hopper Springs", "HopperSprings5", True_())
-        f(7, "Joshua Tree", "JoshuaTree2", True_())
-        f(8, "Beach Lot C", "BeachLotC4", True_())
-        f(9, "Gecko Park", "GeckoPark3", True_())
-        f(10, "Chicken Barn", "ChickenBarn6", True_())
-        f(11, "Honey Nut Forest", "HoneyNutForest3", True_())
-        f(12, "Cat Soup", "CatSoup5", True_())
-        f(13, "Donut Shop", "DonutShop2", True_())
-        f(14, "Abandoned house", "AbandonedHouse3", True_())
-        f(15, "Racoon Lagoon", "RaccoonLagoon5", True_())
-        f(16, "The 405", "The4055", True_())
-        f(17, "Raccoon HQ", "RaccoonHQ4", HasFlag("Catapult") & HasFlag("Catapult: Keycards"))
-        f(18, "Biology Lab", "BiologyLab4", HasFlag("Catapult") & HasFlag("Catapult: Keycards"))
-        f(19, "Anthropology Lab", "AnthropologyLab4", True_())
         f(20, "Trash King's Office", "TrashKingsOffice4", True_())
+        f(79, "Boss Fight: Phase 1", "BossFight1", True_())
+        f(80, "Boss Fight: Phase 2", "BossFight2", True_())
         f(21, "Boss Fight", "BossFight3", True_())
     if o.snake_danger:
-        f(98, "Snake danger: Snake", "RangerStation2", HasFlag("Hole: Snake"))
-        f(99, "Snake danger: Horn", "RangerStation2", HasFlag("Hole: Snake"))
-        f(100, "Snake danger: Sign", "RangerStation2", HasFlag("Hole: Snake"))
-        f(101, "Snake danger: Swing", "RangerStation2", HasFlag("Hole: Snake"))
+        f(98, "Snake danger: Snake", "RangerStation2", HasFlag("Hole Effects") & HasFlag("Hole Effects: Snake"))
+        f(99, "Snake danger: Horn", "RangerStation2", HasFlag("Hole Effects") & HasFlag("Hole Effects: Snake"))
+        f(100, "Snake danger: Sign", "RangerStation2", HasFlag("Hole Effects") & HasFlag("Hole Effects: Snake"))
+        f(101, "Snake danger: Swing", "RangerStation2", HasFlag("Hole Effects") & HasFlag("Hole Effects: Snake"))
     if o.buy_catapult:
-        f(97, "Buy Catapult", "ChickenBarn1", True_())
+        f(97, "Buy Catapult", "ChickenBarn1", HasFlag("Texting"))
     if o.salt_and_pepper:
-        f(102, "Salt 1", "CatSoup1", HasFlag("Hole: Water"))
-        f(103, "Salt 2", "CatSoup1", HasFlag("Hole: Water"))
-        f(104, "Pepper 1", "CatSoup1", HasFlag("Hole: Water"))
-        f(105, "Pepper 2", "CatSoup1", HasFlag("Hole: Water"))
-        f(106, "Pepper 3", "CatSoup1", HasFlag("Hole: Water"))
-    if o.hack_protocol:
-        f(68, "H.A.C.K. Protocol", "RaccoonHQ2", True_())
+        f(102, "Salt 1", "CatSoup1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water"))
+        f(103, "Salt 2", "CatSoup1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water"))
+        f(104, "Pepper 1", "CatSoup1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water"))
+        f(105, "Pepper 2", "CatSoup1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water"))
+        f(106, "Pepper 3", "CatSoup1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water"))
     if o.achievements:
-        f(81, "Achievement: Bandit", "BiologyLab4", True_())
-        f(82, "Achievement: Secret Soup", "CatSoup1", HasFlag("Hole: Water") & HasFlag("Progressive Salt", 2) & HasFlag("Progressive Pepper", 3))
+        f(81, "Achievement: Bandit", "BiologyLab3", True_())
+        f(82, "Achievement: Secret Soup", "CatSoup1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water") & HasFlag("Progressive Salt", 2) & HasFlag("Progressive Pepper", 3))
         f(83, "Achievement: Game Over", "BossFight0", True_())
         f(84, "Achievement: Disrespecter", "AnthropologyLab1", True_())
-        f(85, "Achievement: Quack Enthusiast", "Menu", HasFlag("Mira's House") | HasFlag("Gecko Park") | HasFlag("Chicken Barn") | HasFlag("Raccoon HQ"))
+        f(85, "Achievement: Quack Enthusiast", "Texting", True_())
         f(86, "Achievement: Egg Breaker", "ChickenBarn4", True_())
         f(87, "Achievement: Music Lover", "GeckoPark3", True_())
         f(88, "Achievement: Flawless", "BossFight2", True_())
         f(89, "Achievement: Dethroner", "BossFight3", True_())
         f(90, "Achievement: Boss Fight", "BossFight3", True_())
-        f(91, "Achievement: Hacker", "RaccoonHQ3", True_())
+        f(91, "Achievement: Hacker", "RaccoonHQ3", HasFlag("Catapults") & HasFlag("Catapults: Hacking Device"))
         f(92, "Achievement: The Flume Is Doomed", "RaccoonLagoon5", True_())
         f(93, "Achievement: Donut County", "DonutShop2", True_())
         f(94, "Achievement: Gamer", "ChickenBarn1", True_())
         f(95, "Achievement: Pyro", "JoshuaTree1", True_())
-        f(96, "Achievement: Pup's Oddyssey", "PottersRock5", True_())
+        f(96, "Achievement: Pup's Odyssey", "PottersRock5", True_())
 
 def items(o, f):
-    if ITEM_DATA["Hole: Water"][1][0].check(o):
-        f(1, "Hole: Water")
-    if ITEM_DATA["Hole: Fire"][1][0].check(o):
-        f(1, "Hole: Fire")
-    if ITEM_DATA["Hole: Snake"][1][0].check(o):
-        f(1, "Hole: Snake")
-    if ITEM_DATA["Hole: Light"][1][0].check(o):
-        f(1, "Hole: Light")
-    if ITEM_DATA["Hole: Bunnies"][1][0].check(o):
-        f(1, "Hole: Bunnies")
-    if ITEM_DATA["Catapult"][1][0].check(o):
-        f(1, "Catapult")
-    if ITEM_DATA["Catapult: Boxes"][1][0].check(o):
-        f(1, "Catapult: Boxes")
-        f(1, "Catapult: Chickens")
-        f(1, "Catapult: Eggs")
-        f(1, "Catapult: Honeycomb")
-        f(1, "Catapult: Frogs")
-        f(1, "Catapult: Water, Balloons, and Fish")
-        f(1, "Catapult: Donuts and Cameras")
-        f(1, "Catapult: Raccoons")
-        f(1, "Catapult: Hacking Device")
-        f(1, "Catapult: Keycards")
-        f(1, "Catapult: Bombs")
+    if check_all(o, ITEM_DATA["Hole Effects"][1]):
+        f(1, "Hole Effects")
+    if check_all(o, ITEM_DATA["Hole Effects: Water"][1]):
+        f(1, "Hole Effects: Water")
+        f(1, "Hole Effects: Fire")
+        f(1, "Hole Effects: Snake")
+        f(1, "Hole Effects: Light")
+        f(1, "Hole Effects: Bunnies")
+    if check_all(o, ITEM_DATA["Catapults"][1]):
+        f(1, "Catapults")
+    if check_all(o, ITEM_DATA["Catapults: Boxes"][1]):
+        f(1, "Catapults: Boxes")
+        f(1, "Catapults: Chickens")
+        f(1, "Catapults: Eggs")
+        f(1, "Catapults: Honeycomb")
+        f(1, "Catapults: Frogs")
+        f(1, "Catapults: Water, Balloons, and Fish")
+        f(1, "Catapults: Donuts and Cameras")
+        f(1, "Catapults: Raccoons")
+        f(1, "Catapults: Hacking Device")
+        f(1, "Catapults: Keycards")
+        f(1, "Catapults: Bombs")
+    if check_all(o, ITEM_DATA["Texting"][1]):
+        f(1, "Texting")
     f(0, "Quadcopter Piece")
     f(0, "BK Does One (1) Backflip")
     f(0, "Cement Trap")
     f(0, "999ft Below Trap")
-    if ITEM_DATA["Progressive Snake Danger"][1][0].check(o):
+    if check_all(o, ITEM_DATA["Progressive Snake Danger"][1]):
         f(4, "Progressive Snake Danger")
-    if ITEM_DATA["Progressive Salt"][1][0].check(o):
+    if check_all(o, ITEM_DATA["Progressive Salt"][1]):
         f(2, "Progressive Salt")
         f(3, "Progressive Pepper")
-    if ITEM_DATA["H.A.C.K. Protocol"][1][0].check(o):
-        f(1, "H.A.C.K. Protocol")
-    if ITEM_DATA["Mira's House"][1][0].check(o):
+    if check_all(o, ITEM_DATA["Mira's House"][1]):
         f(1, "Mira's House")
         f(1, "Potter's Rock")
         f(1, "Ranger Station")
@@ -623,4 +674,5 @@ def items(o, f):
         f(1, "Biology Lab")
         f(1, "Anthropology Lab")
         f(1, "Trash King's Office")
+    if check_all(o, ITEM_DATA["Boss Fight"][1]):
         f(1, "Boss Fight")

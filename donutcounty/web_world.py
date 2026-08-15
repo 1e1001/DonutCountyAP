@@ -10,7 +10,7 @@ class DonutCountyWebWorld(WebWorld):
         "Multiworld Setup Guide",
         "A guide to setting up the DonutCountyAP mod.",
         "English",
-        "setup_en.md",
+        "en_setup.md",
         "setup/en",
         ["1e1001"],
     )

@@ -8,7 +8,7 @@
   <Author>michael</Author>
   <LastAuthor>michael</LastAuthor>
   <Created>2026-08-06T00:56:49Z</Created>
-  <LastSaved>2026-08-08T10:03:30Z</LastSaved>
+  <LastSaved>2026-08-15T11:31:52Z</LastSaved>
   <Company>/DEV/PTY</Company>
   <Version>10.2625</Version>
  </DocumentProperties>
@@ -17,10 +17,11 @@
   <LocationOfComponents HRef="file:///E:\"/>
  </OfficeDocumentSettings>
  <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
-  <WindowHeight>9870</WindowHeight>
-  <WindowWidth>10005</WindowWidth>
+  <WindowHeight>4590</WindowHeight>
+  <WindowWidth>9705</WindowWidth>
   <WindowTopX>495</WindowTopX>
   <WindowTopY>15</WindowTopY>
+  <TabRatio>339</TabRatio>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>
@@ -33,15 +34,18 @@
    <NumberFormat/>
    <Protection/>
   </Style>
+  <Style ss:ID="s24">
+   <Font x:Family="Swiss"/>
+  </Style>
  </Styles>
  <Worksheet ss:Name="locations">
-  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="108" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="9" ss:ExpandedRowCount="107" x:FullColumns="1"
    x:FullRows="1">
    <Column ss:Index="3" ss:AutoFitWidth="0" ss:Width="171.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="77.25"/>
    <Column ss:AutoFitWidth="0" ss:Width="156"/>
    <Column ss:AutoFitWidth="0" ss:Width="98.25"/>
-   <Column ss:AutoFitWidth="0" ss:Width="333"/>
+   <Column ss:AutoFitWidth="0" ss:Width="210.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="57.75" ss:Span="1"/>
    <Row>
     <Cell><Data ss:Type="String">id</Data></Cell>
@@ -59,6 +63,7 @@
     <Cell><Data ss:Type="String">Segment</Data></Cell>
     <Cell><Data ss:Type="String">delivery0camera1</Data></Cell>
     <Cell><Data ss:Type="String">MirasHouse1</Data></Cell>
+    <Cell><Data ss:Type="String">Texting | Glitches</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">1</Data></Cell>
@@ -326,6 +331,7 @@
     <Cell><Data ss:Type="String">Segment</Data></Cell>
     <Cell><Data ss:Type="String">delivery9camera1</Data></Cell>
     <Cell><Data ss:Type="String">GeckoPark1</Data></Cell>
+    <Cell><Data ss:Type="String">Texting</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">43</Data></Cell>
@@ -358,6 +364,7 @@
     <Cell><Data ss:Type="String">Catapult</Data></Cell>
     <Cell><Data ss:Type="String">store_catapult</Data></Cell>
     <Cell><Data ss:Type="String">ChickenBarn1</Data></Cell>
+    <Cell><Data ss:Type="String">Texting</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">45</Data></Cell>
@@ -366,6 +373,7 @@
     <Cell><Data ss:Type="String">Segment</Data></Cell>
     <Cell><Data ss:Type="String">store_done</Data></Cell>
     <Cell><Data ss:Type="String">ChickenBarn2</Data></Cell>
+    <Cell><Data ss:Type="String">Texting</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">46</Data></Cell>
@@ -550,7 +558,7 @@
    <Row>
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">d13c2z</Data></Cell>
-    <Cell><Data ss:Type="String">Abandoned house</Data></Cell>
+    <Cell><Data ss:Type="String">Abandoned House</Data></Cell>
     <Cell><Data ss:Type="String">Delivery</Data></Cell>
     <Cell><Data ss:Type="String">delivery14</Data></Cell>
     <Cell><Data ss:Type="String">AbandonedHouse3</Data></Cell>
@@ -644,21 +652,14 @@
     <Cell><Data ss:Type="String">Segment</Data></Cell>
     <Cell><Data ss:Type="String">delivery18camera1</Data></Cell>
     <Cell><Data ss:Type="String">RaccoonHQ1</Data></Cell>
+    <Cell><Data ss:Type="String">Texting</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">67</Data></Cell>
     <Cell><Data ss:Type="String">d16c1z</Data></Cell>
-    <Cell><Data ss:Type="String">Raccoon HQ: USB drive</Data></Cell>
+    <Cell><Data ss:Type="String">Raccoon HQ: Hacking device</Data></Cell>
     <Cell><Data ss:Type="String">Segment</Data></Cell>
     <Cell><Data ss:Type="String">delivery18camera3</Data></Cell>
-    <Cell><Data ss:Type="String">RaccoonHQ2</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="Number">68</Data></Cell>
-    <Cell><Data ss:Type="String">d16c2s0</Data></Cell>
-    <Cell><Data ss:Type="String">H.A.C.K. Protocol</Data></Cell>
-    <Cell><Data ss:Type="String">HackProtocol</Data></Cell>
-    <Cell><Data ss:Type="String">hack_hq</Data></Cell>
     <Cell><Data ss:Type="String">RaccoonHQ2</Data></Cell>
    </Row>
    <Row>
@@ -668,7 +669,7 @@
     <Cell><Data ss:Type="String">Segment</Data></Cell>
     <Cell><Data ss:Type="String">delivery18</Data></Cell>
     <Cell><Data ss:Type="String">RaccoonHQ3</Data></Cell>
-    <Cell><Data ss:Type="String">CatapultHackingDevice &amp; HackProtocol</Data></Cell>
+    <Cell><Data ss:Type="String">CatapultHackingDevice | Glitches</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">17</Data></Cell>
@@ -805,8 +806,8 @@
     <Cell><Data ss:Type="String">Delivery</Data></Cell>
     <Cell><Data ss:Type="String">boss_tornado</Data><Comment ss:Author="michael"><ss:Data
        xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
-         x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;this is referenced in level select code</Font></ss:Data></Comment></Cell>
+         html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;this is referenced in level select code to gate aftermath</Font></ss:Data></Comment></Cell>
     <Cell><Data ss:Type="String">BossFight3</Data></Cell>
    </Row>
    <Row>
@@ -815,7 +816,7 @@
     <Cell><Data ss:Type="String">Achievement: Bandit</Data></Cell>
     <Cell><Data ss:Type="String">Achievement</Data></Cell>
     <Cell><Data ss:Type="String">UNLOCK_HQ_VAULT</Data></Cell>
-    <Cell><Data ss:Type="String">BiologyLab4</Data></Cell>
+    <Cell><Data ss:Type="String">BiologyLab3</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">82</Data></Cell>
@@ -844,15 +845,15 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">85</Data></Cell>
-    <Cell><Data ss:Type="String">d00c0a0,d08c0a0,d09c0a0,d16c0a0</Data></Cell>
+    <Cell><Data ss:Type="String">d00c0a0,d08c0a0,d09c1a0,d16c0a0</Data></Cell>
     <Cell><Data ss:Type="String">Achievement: Quack Enthusiast</Data></Cell>
     <Cell><Data ss:Type="String">Achievement</Data></Cell>
     <Cell><Data ss:Type="String">QUACK_100_TIMES</Data></Cell>
-    <Cell><Data ss:Type="String">Menu</Data></Cell>
-    <Cell><Data ss:Type="String">LevelMirasHouse | LevelGeckoPark | LevelChickenBarn | LevelRaccoonHQ</Data><Comment
-      ss:Author="michael"><ss:Data xmlns="http://www.w3.org/TR/REC-html40"><B><Font
-         html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;all the textboxes are accessible at the start of the level</Font></ss:Data></Comment></Cell>
+    <Cell><Data ss:Type="String">Texting</Data></Cell>
+    <Cell><Comment ss:Author="michael"><ss:Data
+       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
+         html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;texting logic is done in regions.py</Font></ss:Data></Comment></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">86</Data></Cell>
@@ -901,6 +902,7 @@
     <Cell><Data ss:Type="String">Achievement</Data></Cell>
     <Cell><Data ss:Type="String">HACK_HQ</Data></Cell>
     <Cell><Data ss:Type="String">RaccoonHQ3</Data></Cell>
+    <Cell><Data ss:Type="String">CatapultHackingDevice</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">92</Data></Cell>
@@ -937,7 +939,7 @@
    <Row>
     <Cell><Data ss:Type="Number">96</Data></Cell>
     <Cell><Data ss:Type="String">d01c5s0</Data></Cell>
-    <Cell><Data ss:Type="String">Achievement: Pup's Oddyssey</Data></Cell>
+    <Cell><Data ss:Type="String">Achievement: Pup's Odyssey</Data></Cell>
     <Cell><Data ss:Type="String">Achievement</Data></Cell>
     <Cell><Data ss:Type="String">RELEASE_HOT_AIR_BALLOON</Data></Cell>
     <Cell><Data ss:Type="String">PottersRock5</Data></Cell>
@@ -951,19 +953,20 @@
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
    <Selected/>
-   <TopRowVisible>63</TopRowVisible>
+   <TopRowVisible>57</TopRowVisible>
+   <LeftColumnVisible>2</LeftColumnVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>76</ActiveRow>
-     <ActiveCol>6</ActiveCol>
+     <ActiveRow>91</ActiveRow>
+     <ActiveCol>5</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R1C4:R73C4,R75C4:R65536C4,R108C5:R65536C5</Range>
+   <Range>R107C5:R65536C5,C4</Range>
    <Condition>
     <Qualifier>Equal</Qualifier>
     <Value1>&quot;segment&quot;</Value1>
@@ -977,10 +980,11 @@
   </ConditionalFormatting>
  </Worksheet>
  <Worksheet ss:Name="items">
-  <Table ss:ExpandedColumnCount="7" ss:ExpandedRowCount="47" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="8" ss:ExpandedRowCount="48" x:FullColumns="1"
    x:FullRows="1">
    <Column ss:Index="2" ss:AutoFitWidth="0" ss:Width="154.5"/>
-   <Column ss:AutoFitWidth="0" ss:Width="192"/>
+   <Column ss:AutoFitWidth="0" ss:Width="165.75"/>
+   <Column ss:AutoFitWidth="0" ss:Width="225"/>
    <Column ss:AutoFitWidth="0" ss:Width="40.5"/>
    <Column ss:AutoFitWidth="0" ss:Width="34.5"/>
    <Column ss:AutoFitWidth="0" ss:Width="127.5"/>
@@ -989,179 +993,222 @@
     <Cell><Data ss:Type="String">id</Data></Cell>
     <Cell><Data ss:Type="String">code</Data></Cell>
     <Cell><Data ss:Type="String">name</Data></Cell>
+    <Cell><Data ss:Type="String">groups</Data></Cell>
     <Cell><Data ss:Type="String">quantity</Data></Cell>
     <Cell><Data ss:Type="String">type</Data></Cell>
     <Cell><Data ss:Type="String">value</Data></Cell>
-    <Cell><Data ss:Type="String">class</Data><Comment ss:Author="michael"><ss:Data
-       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
-         html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;progression,useful&#10;if it unlocks more than one check</Font></ss:Data></Comment></Cell>
+    <Cell><Data ss:Type="String">class</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="Number">47</Data></Cell>
+    <Cell><Data ss:Type="String">Hole</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effects</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effect;Hole</Data></Cell>
+    <Cell><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="String">Flag</Data></Cell>
+    <Cell><Data ss:Type="String">Hole.option_global</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">HoleWater</Data></Cell>
-    <Cell><Data ss:Type="String">Hole: Water</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effects: Water</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effect;Hole Water;Water</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
-    <Cell><Data ss:Type="String">HoleWater.option_true</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">Hole.option_split</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">HoleFire</Data></Cell>
-    <Cell><Data ss:Type="String">Hole: Fire</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effects: Fire</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effect;Hole Fire;Fire</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
-    <Cell><Data ss:Type="String">HoleFire.option_true</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">Hole.option_split</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">3</Data></Cell>
     <Cell><Data ss:Type="String">HoleSnake</Data></Cell>
-    <Cell><Data ss:Type="String">Hole: Snake</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effects: Snake</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effect;Hole Snake;Snake</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
-    <Cell><Data ss:Type="String">HoleSnake.option_true</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">Hole.option_split</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">HoleLight</Data></Cell>
-    <Cell><Data ss:Type="String">Hole: Light</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effects: Light</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effect;Hole Light;Light</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
-    <Cell><Data ss:Type="String">HoleLight.option_true</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">Hole.option_split</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">22</Data></Cell>
     <Cell><Data ss:Type="String">HoleBunnies</Data></Cell>
-    <Cell><Data ss:Type="String">Hole: Bunnies</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effects: Bunnies</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Effect;Hole Bunnies;Bunnies</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
-    <Cell><Data ss:Type="String">HoleBunnies.option_true</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">Hole.option_split</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">5</Data></Cell>
     <Cell><Data ss:Type="String">Catapult</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults</Data></Cell>
     <Cell><Data ss:Type="String">Catapult</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_global</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">6</Data></Cell>
     <Cell><Data ss:Type="String">CatapultBoxes</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Boxes</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults: Boxes</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Boxes</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">7</Data></Cell>
     <Cell><Data ss:Type="String">CatapultChickens</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Chickens</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults: Chickens</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Chickens</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">8</Data></Cell>
     <Cell><Data ss:Type="String">CatapultEggs</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Eggs</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults: Eggs</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Eggs</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">9</Data></Cell>
     <Cell><Data ss:Type="String">CatapultHoneycomb</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Honeycomb</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults: Honeycomb</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Honeycomb</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">10</Data></Cell>
     <Cell><Data ss:Type="String">CatapultFrogs</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Frogs</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults: Frogs</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Frogs</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">11</Data></Cell>
     <Cell><Data ss:Type="String">CatapultWater</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Water, Balloons, and Fish</Data></Cell>
+    <Cell ss:StyleID="s24"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40">Catapults: Water, Balloons, and Fish</ss:Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Catapult Water;Catapult Balloons;Catapult Fish;Water, Ballons, and Fish;Balloons;Fish</Data><Comment
+      ss:Author="michael"><ss:Data xmlns="http://www.w3.org/TR/REC-html40"><B><Font
+         html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;no &quot;Water&quot; tag since the hole is more used</Font></ss:Data></Comment></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">12</Data></Cell>
     <Cell><Data ss:Type="String">CatapultDonutsCameras</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Donuts and Cameras</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults: Donuts and Cameras</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Catapult Donuts;Catapult Cameras;Donuts and Cameras;Donuts;Cameras</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">45</Data></Cell>
     <Cell><Data ss:Type="String">CatapultRaccoons</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Raccoons</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults: Raccoons</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Raccoons</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">13</Data></Cell>
     <Cell><Data ss:Type="String">CatapultHackingDevice</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Hacking Device</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults: Hacking Device</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Hacking Device</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">46</Data></Cell>
     <Cell><Data ss:Type="String">CatapultKeycards</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Keycards</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults: Keycards</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Keycards</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">14</Data></Cell>
     <Cell><Data ss:Type="String">CatapultBombs</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult: Bombs</Data></Cell>
+    <Cell><Data ss:Type="String">Catapults: Bombs</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Bombs</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="Number">21</Data></Cell>
+    <Cell><Data ss:Type="String">Texting</Data></Cell>
+    <Cell><Data ss:Type="String">Texting</Data><Comment ss:Author="michael"><ss:Data
+       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
+         x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;TODO: this needs a better name?</Font></ss:Data></Comment></Cell>
+    <Cell ss:Index="5"><Data ss:Type="Number">1</Data></Cell>
+    <Cell><Data ss:Type="String">Flag</Data></Cell>
+    <Cell><Data ss:Type="String">Texting.option_true</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">15</Data></Cell>
-    <Cell><Data ss:Type="String">Fragment</Data></Cell>
+    <Cell><Data ss:Type="String">QuadcopterPiece</Data></Cell>
     <Cell><Data ss:Type="String">Quadcopter Piece</Data></Cell>
+    <Cell><Data ss:Type="String">MacGuffin</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">progression</Data></Cell>
+    <Cell ss:Index="8"><Data ss:Type="String">progression,useful</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">16</Data></Cell>
     <Cell><Data ss:Type="String">FillerBackflip</Data></Cell>
     <Cell><Data ss:Type="String">BK Does One (1) Backflip</Data></Cell>
+    <Cell><Data ss:Type="String">Filler</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="String">Filler</Data></Cell>
     <Cell><Data ss:Type="String">filler</Data></Cell>
@@ -1171,6 +1218,7 @@
     <Cell><Data ss:Type="Number">17</Data></Cell>
     <Cell><Data ss:Type="String">CementTrap</Data></Cell>
     <Cell><Data ss:Type="String">Cement Trap</Data></Cell>
+    <Cell><Data ss:Type="String">Filler</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="String">Filler</Data></Cell>
     <Cell><Data ss:Type="String">concrete_trap</Data></Cell>
@@ -1180,6 +1228,7 @@
     <Cell><Data ss:Type="Number">23</Data></Cell>
     <Cell><Data ss:Type="String">DepthsTrap</Data></Cell>
     <Cell><Data ss:Type="String">999ft Below Trap</Data></Cell>
+    <Cell><Data ss:Type="String">Filler</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="String">Filler</Data></Cell>
     <Cell><Data ss:Type="String">depths_trap</Data></Cell>
@@ -1189,226 +1238,241 @@
     <Cell><Data ss:Type="Number">18</Data></Cell>
     <Cell><Data ss:Type="String">SnakeDanger</Data></Cell>
     <Cell><Data ss:Type="String">Progressive Snake Danger</Data></Cell>
+    <Cell><Data ss:Type="String">Element;Snake Danger</Data></Cell>
     <Cell><Data ss:Type="Number">4</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">SnakeDanger.option_true</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">19</Data></Cell>
     <Cell><Data ss:Type="String">Salt</Data></Cell>
     <Cell><Data ss:Type="String">Progressive Salt</Data></Cell>
+    <Cell><Data ss:Type="String">Element;Salt</Data></Cell>
     <Cell><Data ss:Type="Number">2</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">SaltAndPepper.option_true</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">20</Data></Cell>
     <Cell><Data ss:Type="String">Pepper</Data></Cell>
     <Cell><Data ss:Type="String">Progressive Pepper</Data></Cell>
+    <Cell><Data ss:Type="String">Element;Pepper</Data></Cell>
     <Cell><Data ss:Type="Number">3</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">SaltAndPepper.option_true</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="Number">21</Data></Cell>
-    <Cell><Data ss:Type="String">HackProtocol</Data></Cell>
-    <Cell><Data ss:Type="String">H.A.C.K. Protocol</Data></Cell>
-    <Cell><Data ss:Type="Number">1</Data></Cell>
-    <Cell><Data ss:Type="String">Flag</Data></Cell>
-    <Cell><Data ss:Type="String">HackProtocol.option_true</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">24</Data></Cell>
     <Cell><Data ss:Type="String">LevelMirasHouse</Data></Cell>
     <Cell><Data ss:Type="String">Mira's House</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">MirasHouse</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">25</Data></Cell>
     <Cell><Data ss:Type="String">LevelPottersRock</Data></Cell>
     <Cell><Data ss:Type="String">Potter's Rock</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">PottersRock</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">26</Data></Cell>
     <Cell><Data ss:Type="String">LevelRangerStation</Data></Cell>
     <Cell><Data ss:Type="String">Ranger Station</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">RangerStation</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">27</Data></Cell>
     <Cell><Data ss:Type="String">LevelRiverbed</Data></Cell>
     <Cell><Data ss:Type="String">Riverbed</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">Riverbed</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">28</Data></Cell>
     <Cell><Data ss:Type="String">LevelCampground</Data></Cell>
     <Cell><Data ss:Type="String">Campground</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">Campground</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">29</Data></Cell>
     <Cell><Data ss:Type="String">LevelHopperSprings</Data></Cell>
     <Cell><Data ss:Type="String">Hopper Springs</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">HopperSprings</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">30</Data></Cell>
     <Cell><Data ss:Type="String">LevelJoshuaTree</Data></Cell>
     <Cell><Data ss:Type="String">Joshua Tree</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">JoshuaTree</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">31</Data></Cell>
     <Cell><Data ss:Type="String">LevelBeachLotC</Data></Cell>
     <Cell><Data ss:Type="String">Beach Lot C</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">BeachLotC</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">32</Data></Cell>
     <Cell><Data ss:Type="String">LevelGeckoPark</Data></Cell>
     <Cell><Data ss:Type="String">Gecko Park</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">GeckoPark</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">33</Data></Cell>
     <Cell><Data ss:Type="String">LevelChickenBarn</Data></Cell>
     <Cell><Data ss:Type="String">Chicken Barn</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">ChickenBarn</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">34</Data></Cell>
     <Cell><Data ss:Type="String">LevelHoneyNutForest</Data></Cell>
     <Cell><Data ss:Type="String">Honey Nut Forest</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">HoneyNutForest</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">35</Data></Cell>
     <Cell><Data ss:Type="String">LevelCatSoup</Data></Cell>
     <Cell><Data ss:Type="String">Cat Soup</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">CatSoup</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">36</Data></Cell>
     <Cell><Data ss:Type="String">LevelDonutShop</Data></Cell>
     <Cell><Data ss:Type="String">Donut Shop</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">DonutShop</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">37</Data></Cell>
     <Cell><Data ss:Type="String">LevelAbandonedHouse</Data></Cell>
     <Cell><Data ss:Type="String">Abandoned House</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">AbandonedHouse</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">38</Data></Cell>
     <Cell><Data ss:Type="String">LevelRaccoonLagoon</Data></Cell>
     <Cell><Data ss:Type="String">Raccoon Lagoon</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">RaccoonLagoon</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">39</Data></Cell>
     <Cell><Data ss:Type="String">LevelThe405</Data></Cell>
     <Cell><Data ss:Type="String">The 405</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">The405</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">40</Data></Cell>
     <Cell><Data ss:Type="String">LevelRaccoonHQ</Data></Cell>
     <Cell><Data ss:Type="String">Raccoon HQ</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">RaccoonHQ</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">41</Data></Cell>
     <Cell><Data ss:Type="String">LevelBiologyLab</Data></Cell>
     <Cell><Data ss:Type="String">Biology Lab</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">BiologyLab</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">42</Data></Cell>
     <Cell><Data ss:Type="String">LevelAnthropologyLab</Data></Cell>
     <Cell><Data ss:Type="String">Anthropology Lab</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">AnthropologyLab</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">43</Data></Cell>
     <Cell><Data ss:Type="String">LevelTrashKingsOffice</Data></Cell>
     <Cell><Data ss:Type="String">Trash King's Office</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">TrashKingsOffice</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">44</Data></Cell>
     <Cell><Data ss:Type="String">LevelBossFight</Data></Cell>
     <Cell><Data ss:Type="String">Boss Fight</Data></Cell>
+    <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Level</Data></Cell>
     <Cell><Data ss:Type="String">BossFight</Data></Cell>
-    <Cell><Data ss:Type="String">progression,useful</Data></Cell>
+    <Cell><Data ss:Type="String">progression</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -1417,19 +1481,19 @@
     <HorizontalResolution>600</HorizontalResolution>
     <VerticalResolution>600</VerticalResolution>
    </Print>
-   <TopRowVisible>3</TopRowVisible>
+   <TopRowVisible>9</TopRowVisible>
    <Panes>
     <Pane>
      <Number>3</Number>
-     <ActiveRow>22</ActiveRow>
-     <ActiveCol>1</ActiveCol>
+     <ActiveRow>19</ActiveRow>
+     <ActiveCol>6</ActiveCol>
     </Pane>
    </Panes>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
   <ConditionalFormatting xmlns="urn:schemas-microsoft-com:office:excel">
-   <Range>R1C4:R15C4,R19C4:R65536C4,R17C4</Range>
+   <Range>R18C5,R21C5:R65536C5,R1C5:R16C5</Range>
    <Condition>
     <Qualifier>NotEqual</Qualifier>
     <Value1>1</Value1>

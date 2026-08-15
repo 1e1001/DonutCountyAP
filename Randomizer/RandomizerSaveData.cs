@@ -18,7 +18,7 @@ public class RandomizerSaveData
     [XmlElement("easier_achievements")]
     public bool EasierAchievements;
     [XmlElement("dialogue_skipping")]
-    public bool DialogueSkipping;
+    public bool DialogueSkipping = true;
 
 
     public void Validate() { }
@@ -30,5 +30,7 @@ public class RandomizerSaveData
     public void Log()
     {
         Plugin.BepInLogger.LogDebug($"trashopedia_index: {TrashopediaIndex}");
+        Plugin.BepInLogger.LogDebug($"connection: {Uri}, {SlotName}");
+        Plugin.BepInLogger.LogDebug($"easier_achievements: {EasierAchievements}, dialogue_skipping: {DialogueSkipping}");
     }
 }

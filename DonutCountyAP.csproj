@@ -65,6 +65,9 @@
 		<PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
 		<PackageReference Include="BepInEx.Core" Version="5.*" />
 		<PackageReference Include="UnityEngine.Modules" Version="2017.4.4" IncludeAssets="compile" />
+		<Reference Include="UnityEngine.UI">
+			<HintPath>lib\Donut County\DonutCounty_Data\Managed\UnityEngine.UI.dll</HintPath>
+		</Reference>
 		<Reference Include="Assembly-CSharp">
 			<HintPath>lib\Donut County\DonutCounty_Data\Managed\Assembly-CSharp.dll</HintPath>
 		</Reference>

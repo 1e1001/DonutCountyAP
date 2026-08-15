@@ -1,17 +1,14 @@
 ﻿using DonutCountyAP.Randomizer;
 using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using UnityEngine;
 
 namespace DonutCountyAP.Patches;
-  
+
 public partial class GlobalPatches
 {
-	// TODO: if i make an index of every fallstate these should be part of it
+	// TODO: if i make an index of every fallstate this attribute should be part of it
     static Dictionary<string, ItemId> CATAPULT_TYPES = new()
     {
 	    ["crate"] = ItemId.CatapultBoxes,
@@ -20,7 +17,8 @@ public partial class GlobalPatches
 	    ["egg(Clone)"] = ItemId.CatapultEggs,
 	    ["honeycombPiece"] = ItemId.CatapultHoneycomb,
 	    ["Frog"] = ItemId.CatapultFrogs,
-	    ["WaterBalloon"] = ItemId.CatapultWater,
+        ["Frog (1)"] = ItemId.CatapultFrogs,
+        ["WaterBalloon"] = ItemId.CatapultWater,
 	    ["WaterBalloon(Clone)"] = ItemId.CatapultWater,
 	    ["fish"] = ItemId.CatapultWater,
 	    ["donutHero"] = ItemId.CatapultDonutsCameras,

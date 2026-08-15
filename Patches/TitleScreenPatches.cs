@@ -1,10 +1,5 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using UnityEngine;
 using UnityEngine.Events;
 
 namespace DonutCountyAP.Patches;
@@ -49,8 +44,9 @@ public partial class GlobalPatches
     static bool Prefix(ShowTitleScreen __instance)
     {
         var complete = Plugin.GameState == null;
-        var beach = Plugin.GameState?.Complete ?? false;
+        var beach = Plugin.Client?.IsComplete() ?? false;
         complete |= beach;
+        Plugin.BepInLogger.LogDebug($"Titlescreen {complete}+{beach}");
         __instance.gameCompleteTitleScreen.SetActive(complete && beach);
         __instance.gameRestartTitleScreen.SetActive(complete && !beach);
         __instance.defaultTitleScreen.SetActive(!complete);

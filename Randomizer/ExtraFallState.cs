@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DonutCountyAP.Randomizer;
 
 public class ExtraFallState : MonoBehaviour
 {
-    
+    // TODO: this should be attached onto every FallState instance, to identify it
 }
 

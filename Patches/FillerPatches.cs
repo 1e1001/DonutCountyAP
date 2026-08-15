@@ -1,11 +1,6 @@
 ﻿using DonutCountyAP.Randomizer;
 using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
-using static HoleSubstanceManager;
 
 namespace DonutCountyAP.Patches;
 
@@ -27,7 +22,7 @@ public partial class GlobalPatches
     }
 
     [HarmonyPatch(typeof(HoleSubstanceManager), "SetSubstance"), HarmonyPrefix]
-    static bool HoleSubstanceManager_SetSubstance(HoleSubstanceManager __instance, Substance __0)
+    static bool HoleSubstanceManager_SetSubstance(HoleSubstanceManager __instance, HoleSubstanceManager.Substance __0)
     {
         var trap = __instance.GetComponent<CementTrap>();
         if (trap == null)

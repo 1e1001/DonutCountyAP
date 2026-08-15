@@ -1,34 +1,30 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections;
 using UnityEngine;
-using static HoleSubstanceManager;
-using static OS1GameUI;
 
 namespace DonutCountyAP.Randomizer;
 
 public class CementTrap : MonoBehaviour
 {
     const float RUNTIME = 10f;
-    int _queued = 0;
+    static int _queued = 0;
     public float Timer = 0f;
-    public Substance UnderlyingSubstance;
+    public HoleSubstanceManager.Substance UnderlyingSubstance;
 
 
     void Update()
     {
         if (_queued == 0 || Timer > 0f)
             return;
-        Plugin.BepInLogger.LogInfo($"doing cement trap");
+        if (RM.holeMovement.GetDisableMovement() || RM.holeScale.GetScale() == 0f)
+            return;
+        Plugin.BepInLogger.LogInfo("doing cement trap");
         StartCoroutine(TrapRoutine());
     }
 
     IEnumerator TrapRoutine()
     {
         UnderlyingSubstance = RM.substanceManager.GetSubstance();
-        RM.substanceManager.SetSubstance(Substance.Cement);
+        RM.substanceManager.SetSubstance(HoleSubstanceManager.Substance.Cement);
         Timer = RUNTIME;
         while (Timer > 0f)
         {
@@ -42,5 +38,10 @@ public class CementTrap : MonoBehaviour
     public void DoCementTrap()
     {
         ++_queued;
+    }
+
+    public static bool HasNoCement()
+    {
+        return (RM.substanceManager.GetComponent<CementTrap>()?.Timer ?? 0f) <= 0f;
     }
 }

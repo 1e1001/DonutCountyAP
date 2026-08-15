@@ -70,7 +70,7 @@ public static class ArchipelagoConsole
         CommandText = GUI.TextField(CommandTextRect, CommandText);
         if (!CommandText.IsNullOrWhiteSpace() && GUI.Button(SendCommandButton, "Send"))
         {
-            Plugin.ArchipelagoClient.SendMessage(CommandText);
+            ((ArchipelagoClient)Plugin.Client).SendMessage(CommandText);
             CommandText = "";
         }
     }
