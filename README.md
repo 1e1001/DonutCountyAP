@@ -1,7 +1,7 @@
 # DonutCountyAP
 Archipelago implementation for Donut County (2018)
 
-[Game info](./donutcounty/docs/en_Donut County.md) / [Setup guide](./donutcounty/docs/en_setup.md) / [Latest release](https://github.com/1e1001/DonutCountyAP/releases/latest)
+[Game info](./donutcounty/docs/en_Donut%20County.md) / [Setup guide](./donutcounty/docs/en_setup.md) / [Latest release](https://github.com/1e1001/DonutCountyAP/releases/latest)
 
 ## Developer guide
 
