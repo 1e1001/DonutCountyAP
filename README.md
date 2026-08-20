@@ -3,6 +3,10 @@ Archipelago implementation for Donut County (2018)
 
 [Game info](./donutcounty/docs/en_Donut%20County.md) / [Setup guide](./donutcounty/docs/en_setup.md) / [Latest release](https://github.com/1e1001/DonutCountyAP/releases/latest)
 
+## AI non-usage disclosure
+
+Generative AI has not been used to make this AP implementation. I have no plans to start using generative AI.
+
 ## Developer guide
 
 - `logic.xml` is a spreadsheet containing all the item/location info
