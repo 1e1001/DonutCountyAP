@@ -9,6 +9,7 @@ Oh, and the raccoon's name is BK.
 
 <!-- TODO: some more info on kinds of items/locations -->
 
+<!-- this is misinfo btw
 ## A note on starting inventory
 
 Some YAML options (notably, `levels`, `hole` and `catapult`) add items that act as keys, where having more than one means nothing.
@@ -16,3 +17,4 @@ If you want to disable the effect of a particular key, you would usually add it 
 The item that is removed will be replaced by a filler item, even if that space could be used to add more `Quadcopter Piece`s.
 For that reason, this APWorld specifically makes `start_inventory` for key-like items remove that item from the itempool,
 but allows the item to be replaced by a `Quadcopter Piece` if the number of pieces is set higher than the number of free locations.
+-->
