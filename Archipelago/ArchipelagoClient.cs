@@ -81,7 +81,7 @@ public class ArchipelagoClient : IRandomizerClient
                 var slotData = _session.DataStorage.GetSlotData<GameOptions>();
                 Plugin.SetGame(new GameState(slotData));
                 if (Plugin.GameState.Options.Version != Plugin.PLUGIN_VERSION)
-                    Plugin.BepInLogger.LogWarning($"World version {Plugin.GameState.Options.Version} is different from client version {Plugin.PLUGIN_VERSION}, issues may occur!");
+                    ArchipelagoConsole.LogMessage($"World version {Plugin.GameState.Options.Version} is different from client version {Plugin.PLUGIN_VERSION}, issues may occur!");
                 foreach (var item in _session.Items.AllItemsReceived)
                     Plugin.GameState.ReceivedItem((ItemId)item.ItemId, true);
                 foreach (var location in _session.Locations.AllLocationsChecked)
@@ -198,10 +198,10 @@ public class ArchipelagoClient : IRandomizerClient
     }
 
     // impl IRandomizerClient
-    public void Update() { }
+    public bool Connecting() => Plugin.GameState == null;
     public string GUIStatus()
     {
-        return Plugin.GameState != null ? $"{AP_VERSION_STATUS} Connected" : $"{AP_VERSION_STATUS} Connecting...";
+        return AP_VERSION_STATUS;
     }
     public void SendChat(string text) {
         lock (_lock)
@@ -232,5 +232,4 @@ public class ArchipelagoClient : IRandomizerClient
             _queuedDSLevelSelect = value;
         _wait.Set();
     }
-    //public void SetSlotDataMax(string _key, int _value) { }
 }

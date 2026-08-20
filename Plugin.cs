@@ -39,6 +39,13 @@ public class Plugin : BaseUnityPlugin
 
     }
 
+    string GUIStatus()
+    {
+        if (Client == null)
+            return ArchipelagoClient.AP_DEFAULT_STATUS;
+        return Client.GUIStatus() + (Client.Connecting() ? " Connecting..." : " Connected");
+    }
+
     void OnGUI()
     {
         bool titlescreen = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "titlescreen";
@@ -49,11 +56,8 @@ public class Plugin : BaseUnityPlugin
 
         if (titlescreen)
         {
-            GUI.Label(new Rect(16, 50, 300, 20), Client?.GUIStatus() ?? ArchipelagoClient.AP_DEFAULT_STATUS);
-            if (GameState != null)
-            {
-            }
-            else
+            GUI.Label(new Rect(16, 50, 300, 20), GUIStatus());
+            if (GameState == null)
             {
                 GUI.Label(new Rect(16, 70, 150, 20), "Host: ");
                 GUI.Label(new Rect(16, 90, 150, 20), "Player Name: ");
@@ -103,12 +107,12 @@ public class Plugin : BaseUnityPlugin
                 SetGame(new GameState(new GameOptions()));
             }
         }
-
-        Client?.Update();
     }
     public static void OnTitleConnect()
     {
         if (RandomizerData.SlotName.IsNullOrWhiteSpace())
+            return;
+        if (Client?.Connecting() ?? false)
             return;
         Client = new ArchipelagoClient();
     }

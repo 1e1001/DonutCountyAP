@@ -7,11 +7,8 @@ public class DebugClient : IRandomizerClient
     public Dictionary<long, ItemId> FakeRandomizer = [];
 
     // impl IRandomizerClient
-    public void Update() { }
-    public string GUIStatus()
-    {
-        return "In debug session";
-    }
+    public bool Connecting() => false;
+    public string GUIStatus() => "Debug session";
     public void SendChat(string _text) { }
     public void SendGoal() { }
     public void SendLocation(long id)
@@ -19,9 +16,6 @@ public class DebugClient : IRandomizerClient
         if (FakeRandomizer.TryGetValue(id, out var item))
             Plugin.GameState.ReceivedItem(item);
     }
-    public void Disconnect()
-    {
-        Plugin.SetGame(null);
-    }
+    public void Disconnect() => Plugin.SetGame(null);
     public void SetDSLevelSelect(int _value) { }
 }

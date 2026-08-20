@@ -4,7 +4,7 @@ namespace DonutCountyAP.Randomizer;
 
 public interface IRandomizerClient
 {
-    public void Update();
+    public bool Connecting();
     public string GUIStatus();
     public void SendChat(string text);
     public void SendGoal();
