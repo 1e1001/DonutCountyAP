@@ -45,7 +45,7 @@ def roll_required_pieces(world: DonutCountyWorld, total: int) -> tuple[list[int]
         world.random.shuffle(other_levels)
         level_order = [starting_level] + other_levels
         for i, level in enumerate(level_order):
-            out[level] = total_percent(i, len(level_order) - 1)
+            out[level] = total_percent(i, len(level_order))
     out[ending_level] = total_percent(1, 1)
     return out, out[ending_level]
 
@@ -54,9 +54,10 @@ def create_all_items(world: DonutCountyWorld) -> None:
     itempool: list[Item] = []
     def for_item(quantity, name):
         nonlocal itempool
-        # si-as-sifp lets extra space be used for pieces
-        if quantity == 1 and name in world.options.start_inventory:
-            return
+        # not sure how si-as-sifp would work with UT support so i'm conservatively removing it for now
+        ## si-as-sifp lets extra space be used for pieces
+        #if quantity == 1 and name in world.options.start_inventory:
+        #    return
         itempool += [world.create_item(name) for _ in range(quantity)]
     autologic.items(world.options, for_item)
     
@@ -65,11 +66,9 @@ def create_all_items(world: DonutCountyWorld) -> None:
         required_for_goal = max(world.dc_slot_data["required_pieces"])
     else:
         unfilled_after_basic = total_locations - len(itempool)
-        # TODO: UT yamlless gen should generate exact item quantities
         spawn_pieces = min(unfilled_after_basic, world.options.total_pieces.value)
         assert spawn_pieces >= 0, "Not enough item space to place any quadcopter pieces"
         world.dc_slot_data["total_pieces"] = spawn_pieces
-        # TODO: per-level piece rando - clean this up
         world.dc_slot_data["required_pieces"], required_for_goal = roll_required_pieces(world, spawn_pieces)
     itempool += [world.create_item("Quadcopter Piece") for _ in range(required_for_goal)]
     itempool += [create_nonprogression_piece(world) for _ in range(spawn_pieces - required_for_goal)]

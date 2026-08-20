@@ -24,5 +24,9 @@ public class DialogueSkippingPatches
         _timer = 0;
     }
 
-    // TODO: similar skipping for texting
+    [HarmonyPatch(typeof(TextingManager), "SetCloseButton"), HarmonyPrefix]
+    static void TextingManager_SetCloseButton(ref bool __0)
+    {
+        __0 |= !Plugin.GameState.Options.Texting || Plugin.GameState.Has(Randomizer.ItemId.Texting);
+    }
 }

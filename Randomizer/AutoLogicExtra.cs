@@ -12,7 +12,9 @@ public partial class AutoLogic
         SaltAndPepper,
         Victory,
     }
-    public record struct Location(long Id, LocationType Type);
+    public const int LOCATION_GOAL = 0;
+    // Id is an int instead of a long, since i use densely-packed location ids
+    public record struct Location(int Id, LocationType Type);
     // TODO: the real tracker info will be shaped for the menus
     public record struct DebugTracker(string Name, Location Location);
 

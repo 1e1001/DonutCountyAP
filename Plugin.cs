@@ -32,7 +32,7 @@ public class Plugin : BaseUnityPlugin
     {
         BepInLogger = Logger;
         ArchipelagoConsole.Awake();
-        //Globals.shipping = false;
+        Globals.shipping = false;
         Patcher.Global.Set(true);
 
         ArchipelagoConsole.LogMessage($"{MOD_DISPLAY_INFO} loaded!");
@@ -129,6 +129,8 @@ public class Plugin : BaseUnityPlugin
             return;
         Debug.Log(game == null ? "ending session" : "starting session");
         GameState = game;
+        if (game == null)
+            Client = null;
         // quit to titlescreen
         RM.sceneManager.OnQueueLevel("titlescreen");
         RM.sceneManager.OnPlayQueuedLevel();

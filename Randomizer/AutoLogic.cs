@@ -57,6 +57,8 @@ public enum ItemId {
 
 public partial class AutoLogic
 {
+    public const int LOCATIONS_SIZE = 107;
+
     public static readonly Dictionary<string, Location> EVENTS = new() {
         ["delivery0camera1"] = new(22, LocationType.Segment),
         ["delivery0"] = new(1, LocationType.Delivery),
@@ -320,7 +322,7 @@ public partial class AutoLogic
         new("Achievement: Gamer", new(94, LocationType.Achievement)),
         new("Achievement: Pyro", new(95, LocationType.Achievement)),
         new("Achievement: Pup's Odyssey", new(96, LocationType.Achievement)),
-        new("", new(0, LocationType.Victory)),
+        new("Victory", new(0, LocationType.Victory)),
     ];
     public static readonly LevelSelect[] LEVEL_SELECT = [
         new(ItemId.LevelMirasHouse, [new(85, LocationType.Achievement),new(22, LocationType.Segment),new(-1, LocationType.Victory),new(1, LocationType.Delivery)]),

@@ -3,15 +3,14 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
+using static DonutCountyAP.Randomizer.AutoLogic;
 
 namespace DonutCountyAP.Randomizer;
 
 public partial class GameState
 {
-    // TODO: should the randomizer client own this instead of the plugin?
-
     public readonly int[] _inventory = new int[(int)ItemId.Length];
+    public readonly bool[] _locations = new bool[AutoLogic.LOCATIONS_SIZE];
     public bool ActiveDelivery = false;
 
     public GameOptions Options;
@@ -104,30 +103,14 @@ public partial class GameState
             GUILayout.EndHorizontal();
         }
         GUILayout.Label("locations");
-        var locations = Plugin.Client.Locations();
         foreach (AutoLogic.DebugTracker entry in AutoLogic.DEBUG_TRACKER)
         {
             GUILayout.BeginHorizontal();
-            var has_location = locations.Contains(entry.Location.Id);
+            var has_location = _locations[entry.Location.Id];
             var will_have_location = GUILayout.Toggle(has_location, "", GUILayout.Width(15f));
-            if (has_location != will_have_location)
-            {
-                try
-                {
-                    if (will_have_location)
-                    {
-                        locations.Add(entry.Location.Id);
-                        ReceivedLocation(entry.Location.Id);
-                    }
-                    else
-                    {
-                        locations.Remove(entry.Location.Id);
-                    }
-                } catch (NotImplementedException)
-                {
-                    // do nothing (archipelago client)
-                }
-            }
+            _locations[entry.Location.Id] = will_have_location;
+            if (has_location != will_have_location && will_have_location)
+                ReceivedLocation(entry.Location.Id);
             var oldColor = GUI.contentColor;
             if (!Options.CanSendLocation(entry.Location.Type))
                 GUI.contentColor = Color.grey;
@@ -173,6 +156,10 @@ public partial class GameState
                 return true;
         }
     }
+    public bool HasLocation(int id)
+    {
+        return _locations[id];
+    }
 
     public void ReceivedItem(ItemId id, bool startOfGame = false)
     {
@@ -189,12 +176,12 @@ public partial class GameState
                 RM.gameUI?.GetComponent<Backflip>()?.DoBackflip();
                 break;
             case ItemId.CementTrap:
-                if (Plugin.Client.IsComplete())
+                if (HasLocation(AutoLogic.LOCATION_GOAL))
                     break;
                 RM.substanceManager?.GetComponent<CementTrap>()?.DoCementTrap();
                 break;
             case ItemId.DepthsTrap:
-                if (Plugin.Client.IsComplete())
+                if (HasLocation(AutoLogic.LOCATION_GOAL))
                     break;
                 GlobalPatches.DepthsTrapReroll = true;
                 // of note: if on the catapult delivery, this will just reload the catapult
@@ -214,8 +201,9 @@ public partial class GameState
                 break;
         }
     }
-    public void ReceivedLocation(long id)
+    public void ReceivedLocation(int id)
     {
+        _locations[id] = true;
         Plugin.BepInLogger.LogDebug($"received location {id}");
         // TODO: any more immediately-occuring updates go here
     }
@@ -230,14 +218,15 @@ public partial class GameState
         Plugin.BepInLogger.LogInfo($"found event {name}");
         if (!Options.CanSendLocation(location.Type))
             return;
+        if (_locations[location.Id])
+            return;
         if (location.Type == AutoLogic.LocationType.Victory)
         {
             Plugin.Client.SendGoal();
-            return;
+        } else
+        {
+            Plugin.Client.SendLocation(location.Id);
         }
-        if (Plugin.Client.Locations().Contains(location.Id))
-            return;
-        Plugin.Client.SendLocation(location.Id);
         ReceivedLocation(location.Id);
     }
 

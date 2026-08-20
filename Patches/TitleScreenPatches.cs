@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using DonutCountyAP.Randomizer;
+using HarmonyLib;
 using System.Reflection;
 using UnityEngine.Events;
 
@@ -33,7 +34,7 @@ public partial class GlobalPatches
             SetupButton(__instance.buttonNewGame, "Disconnect", Plugin.OnTitleDisconnect);
         else
             SetupButton(__instance.buttonNewGame, "Connect", Plugin.OnTitleConnect);
-        SetupButton(__instance.buttonLevelSelect, "???", Plugin.OnTitleOptions);
+        SetupButton(__instance.buttonLevelSelect, "idk what to put here", Plugin.OnTitleOptions);
 
         return false;
     }
@@ -44,7 +45,7 @@ public partial class GlobalPatches
     static bool Prefix(ShowTitleScreen __instance)
     {
         var complete = Plugin.GameState == null;
-        var beach = Plugin.Client?.IsComplete() ?? false;
+        var beach = Plugin.GameState?.HasLocation(AutoLogic.LOCATION_GOAL) ?? false;
         complete |= beach;
         Plugin.BepInLogger.LogDebug($"Titlescreen {complete}+{beach}");
         __instance.gameCompleteTitleScreen.SetActive(complete && beach);

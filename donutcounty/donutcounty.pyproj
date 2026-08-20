@@ -5,8 +5,8 @@
     <ProjectGuid>75003feb-caae-4d5b-9c0a-068ca52e4949</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>__init__.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+		<!-- TODO: can i make this not setup-dependant -->
+    <SearchPath>..\..\..\GitHub\Archipelago</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>donutcounty</Name>

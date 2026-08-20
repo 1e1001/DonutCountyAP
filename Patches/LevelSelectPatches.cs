@@ -64,7 +64,7 @@ public partial class GlobalPatches
             previousType = entry.Type;
             previousLine = false;
 
-            if (Plugin.Client.Locations().Contains(entry.Id))
+            if (Plugin.GameState.HasLocation(entry.Id))
                 trackerString.Append('_');
             else
                 trackerString.Append(LocationSymbol(entry.Type));
@@ -72,11 +72,11 @@ public partial class GlobalPatches
         GUI.Label(new Rect(16, 210, 300, 100), trackerString.ToString());
     }
 
-    [HarmonyPatch(typeof(OS1LevelSelect), "OnPressButtonNavigate"), HarmonyPostfix]
-    static void OS1LevelSelect_OnPressButtonNavigate(OS1LevelSelect __instance)
+    [HarmonyPatch(typeof(OS1LevelSelect), "SetLevel"), HarmonyPostfix]
+    static void OS1LevelSelect_SetLevel(OS1LevelSelect __instance)
     {
         // extra data for external trackers, done in the menu so you can quickly scroll through levels
-        Plugin.Client.SetSlotData("level", (int)OS1LevelSelect__currentDeliveryIndex.GetValue(__instance));
+        Plugin.Client.SetDSLevelSelect((int)OS1LevelSelect__currentDeliveryIndex.GetValue(__instance));
     }
 
     [HarmonyPatch(typeof(OS1LevelSelect), "OnPressButtonPlay"), HarmonyPrefix]

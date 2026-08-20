@@ -306,7 +306,10 @@ public enum ItemId {
 }
 
 public partial class AutoLogic
-{
+{"
+    sprintf "    public const int LOCATIONS_SIZE = %d;" (locations |> List.map (fun loc -> loc.id + 1) |> List.max)
+    |> csStream.WriteLine
+    csStream.WriteLine "
     public static readonly Dictionary<string, Location> EVENTS = new() {"
     for location in locations do
         if location.event <> "" then

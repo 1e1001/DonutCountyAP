@@ -4,9 +4,7 @@ namespace DonutCountyAP.Randomizer;
 
 public class DebugClient : IRandomizerClient
 {
-    readonly HashSet<long> _locations = [];
     public Dictionary<long, ItemId> FakeRandomizer = [];
-    bool _complete = false;
 
     // impl IRandomizerClient
     public void Update() { }
@@ -14,28 +12,16 @@ public class DebugClient : IRandomizerClient
     {
         return "In debug session";
     }
-    public bool IsComplete()
-    {
-        return _complete;
-    }
-    public void SendGoal()
-    {
-        _complete = true;
-    }
+    public void SendChat(string _text) { }
+    public void SendGoal() { }
     public void SendLocation(long id)
     {
-        if (_locations.Add(id) && FakeRandomizer.TryGetValue(id, out var item))
+        if (FakeRandomizer.TryGetValue(id, out var item))
             Plugin.GameState.ReceivedItem(item);
     }
     public void Disconnect()
     {
-        Plugin.Client = null;
         Plugin.SetGame(null);
     }
-    public ICollection<long> Locations()
-    {
-        return _locations;
-    }
-    public void SetSlotData(string _key, int _value) { }
-    public void SetSlotDataMax(string _key, int _value) { }
+    public void SetDSLevelSelect(int _value) { }
 }

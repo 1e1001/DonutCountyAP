@@ -5,6 +5,7 @@ The randomizer makes each level available from the start, requiring certain abil
 Completing levels and sections of levels sends items to other players.
 Either the Boss Fight or Aftermath level is locked behind gathering a number of `Quadcopter Piece` items.
 Once that is completed, you can enter Aftermath to win!
+Oh, and the raccoon's name is BK.
 
 <!-- TODO: some more info on kinds of items/locations -->
 

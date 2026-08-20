@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading;
-using Archipelago.MultiClient.Net;
+﻿using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using DonutCountyAP.Randomizer;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
 
 namespace DonutCountyAP.Archipelago;
 
 public class ArchipelagoClient : IRandomizerClient
 {
     record struct ConnectionInfo(string Uri, string SlotName, string Password);
+    record struct QueuedSlotData(string Key, int Value);
 
     public const string AP_VERSION = "0.5.0";
     public const string AP_VERSION_STATUS = $"Archipelago v{AP_VERSION}";
@@ -22,45 +23,32 @@ public class ArchipelagoClient : IRandomizerClient
     const string GAME = "Donut County";
 
     //private DeathLinkHandler _deathLinkHandler;
-    ArchipelagoSession _session = null;
+    readonly ArchipelagoSession _session = null;
 
     ConnectionInfo _thisConnection = new("", "", "");
 
-    // these are static as they need to persist between client connections
-    static readonly List<long> _pendingLocations = [];
-    static ConnectionInfo _lastConnection = new("", "", "");
+    readonly object _lock = new();
+    Thread _thread = null;
+    readonly EventWaitHandle _wait = new(false, EventResetMode.AutoReset);
+    readonly List<long> _queuedLocations = [];
+    readonly List<string> _queuedChat = [];
+    int _queuedDSLevelSelect = -1;
+    bool _queuedGoal = false;
 
     public ArchipelagoClient()
     {
-        _lastConnection = _thisConnection;
+
         _thisConnection = new(Plugin.RandomizerData.Uri, Plugin.RandomizerData.SlotName, Plugin.RandomizerData.Password);
 
         try
         {
             _session = ArchipelagoSessionFactory.CreateSession(_thisConnection.Uri);
-            SetupSession();
-        }
-        catch (Exception e)
-        {
-            Plugin.BepInLogger.LogError(e);
-        }
-
-        TryConnect();
-    }
-
-    void SetupSession()
-    {
-        _session.MessageLog.OnMessageReceived += message => ArchipelagoConsole.LogMessage(message.ToString());
-        _session.Items.ItemReceived += OnItemReceived;
-        _session.Locations.CheckedLocationsUpdated += OnLocationsReceived;
-        _session.Socket.ErrorReceived += OnSessionErrorReceived;
-        _session.Socket.SocketClosed += OnSessionSocketClosed;
-    }
-
-    void TryConnect()
-    {
-        try
-        {
+            _session.MessageLog.OnMessageReceived += message => ArchipelagoConsole.LogMessage(message.ToString());
+            _session.Items.ItemReceived += OnItemReceived;
+            _session.Locations.CheckedLocationsUpdated += OnLocationsReceived;
+            _session.Socket.ErrorReceived += OnSessionErrorReceived;
+            _session.Socket.SocketClosed += OnSessionSocketClosed;
+            Plugin.BepInLogger.LogDebug("doing connect");
             // it's safe to thread this function call but unity notoriously hates threading so do not use excessively
             ThreadPool.QueueUserWorkItem(
                 _ => HandleConnectResult(
@@ -70,67 +58,48 @@ public class ArchipelagoClient : IRandomizerClient
                         ItemsHandlingFlags.AllItems,
                         new Version(AP_VERSION),
                         password: _thisConnection.Password,
-                        requestSlotData: true
-                    )));
+                        requestSlotData: false
+                    )
+                )
+            );
         }
         catch (Exception e)
         {
-            Plugin.BepInLogger.LogError($"bad: {e}");
             HandleConnectResult(new LoginFailure(e.ToString()));
         }
-    }
 
-    void SlotDataKey(string key, Action<int> callback)
-    {
-        _session.DataStorage[Scope.Slot, key].Initialize(0);
-        _session.DataStorage[Scope.Slot, key].GetAsync(callback);
     }
-    void LoadSlotData()
-    {
-        SlotDataKey("has_seen_gameover_cutscene", data => DataManager.gameData.hasSeenGameOverCutscene = data);
-        SlotDataKey("RELEASE_HOT_AIR_BALLOON", data => DataManager.gameData.RELEASE_HOT_AIR_BALLOON = data);
-        SlotDataKey("DESTROY_DONUT_SHOP", data => DataManager.gameData.DESTROY_DONUT_SHOP = data);
-        SlotDataKey("DESTROY_RACCOON_LAGOON", data => DataManager.gameData.DESTROY_RACCOON_LAGOON = data);
-        SlotDataKey("HACK_HQ", data => DataManager.gameData.HACK_HQ = data);
-        SlotDataKey("WIN_BOSS_FIGHT", data => DataManager.gameData.WIN_BOSS_FIGHT = data);
-        SlotDataKey("CATAPULT_COMPLETE", data => DataManager.gameData.CATAPULT_COMPLETE = data);
-        SlotDataKey("COMPLETE_TRASHOPEDIA", data => DataManager.gameData.COMPLETE_TRASHOPEDIA = data);
-        SlotDataKey("BUY_GAMER_FUEL", data => DataManager.gameData.BUY_GAMER_FUEL = data);
-        SlotDataKey("SET_TRAILER_ON_FIRE", data => DataManager.gameData.SET_TRAILER_ON_FIRE = data);
-        SlotDataKey("QUACK_100_TIMES", data => DataManager.gameData.QUACK_100_TIMES = data);
-        SlotDataKey("BREAK_EGGS", data => DataManager.gameData.BREAK_EGGS = data);
-        SlotDataKey("COLLECT_RADIO_LAST", data => DataManager.gameData.COLLECT_RADIO_LAST = data);
-        SlotDataKey("FLAWLESS_BOSS_FIGHT", data => DataManager.gameData.FLAWLESS_BOSS_FIGHT = data);
-        SlotDataKey("LOSE_BOSS_FIGHT", data => DataManager.gameData.LOSE_BOSS_FIGHT = data);
-        SlotDataKey("DESTROY_MONITOR", data => DataManager.gameData.DESTROY_MONITOR = data);
-        SlotDataKey("DESTROY_MONUMENT", data => DataManager.gameData.DESTROY_MONUMENT = data);
-        SlotDataKey("MAKE_SECRET_SOUP", data => DataManager.gameData.MAKE_SECRET_SOUP = data);
-        SlotDataKey("FLY_THROUGH_DONUT_HOLE", data => DataManager.gameData.FLY_THROUGH_DONUT_HOLE = data);
-        SlotDataKey("FIND_AIRSHIP", data => DataManager.gameData.FIND_AIRSHIP = data);
-        SlotDataKey("UNLOCK_HQ_VAULT", data => DataManager.gameData.UNLOCK_HQ_VAULT = data);
-    }
-
     void HandleConnectResult(LoginResult result)
     {
+        Plugin.BepInLogger.LogDebug($"connect result {result.Successful}");
         string outText;
         if (result.Successful)
         {
             var success = (LoginSuccessful)result;
-
-            if (_thisConnection != _lastConnection)
+            try
             {
-                Plugin.BepInLogger.LogInfo("clearning previous locations");
-                _pendingLocations.Clear();
+                var slotData = _session.DataStorage.GetSlotData<GameOptions>();
+                Plugin.SetGame(new GameState(slotData));
+                if (Plugin.GameState.Options.Version != Plugin.PLUGIN_VERSION)
+                    Plugin.BepInLogger.LogWarning($"World version {Plugin.GameState.Options.Version} is different from client version {Plugin.PLUGIN_VERSION}, issues may occur!");
+                foreach (var item in _session.Items.AllItemsReceived)
+                    Plugin.GameState.ReceivedItem((ItemId)item.ItemId, true);
+                foreach (var location in _session.Locations.AllLocationsChecked)
+                    Plugin.GameState.ReceivedLocation((int)location);
+                if (_session.DataStorage.GetClientStatus() == ArchipelagoClientState.ClientGoal)
+                    Plugin.GameState.ReceivedLocation(AutoLogic.LOCATION_GOAL);
+
+                _thread = new(PacketQueueThread);
+                _thread.Start();
             }
-            LoadSlotData();
-            Plugin.SetGame(new GameState(_session.DataStorage.GetSlotData<GameOptions>()));
-            foreach (var item in _session.Items.AllItemsReceived)
-                Plugin.GameState.ReceivedItem((ItemId)item.ItemId, true);
-            foreach (var location in _session.Locations.AllLocationsChecked)
-                Plugin.GameState.ReceivedLocation(location);
+            catch (Exception e)
+            {
+                HandleConnectResult(new LoginFailure(e.ToString()));
+                return;
+            }
 
             //_deathLinkHandler = new(_session.CreateDeathLinkService(), ServerData.SlotName);
-            outText = $"Successfully connected to {Plugin.RandomizerData.Uri} as {Plugin.RandomizerData.SlotName}!";
+            outText = $"Successfully connected to {_thisConnection.Uri} as {_thisConnection.SlotName}!";
 
             ArchipelagoConsole.LogMessage(outText);
         }
@@ -148,16 +117,11 @@ public class ArchipelagoClient : IRandomizerClient
         ArchipelagoConsole.LogMessage(outText);
     }
 
-    public void SendMessage(string message)
-    {
-        _session.Socket.SendPacketAsync(new SayPacket { Text = message });
-    }
-
     void OnItemReceived(ReceivedItemsHelper helper)
     {
         var receivedItem = helper.DequeueItem();
 
-        Plugin.GameState?.ReceivedItem((ItemId)receivedItem.ItemId);
+        Plugin.GameState.ReceivedItem((ItemId)receivedItem.ItemId);
     }
 
     void OnLocationsReceived(ReadOnlyCollection<long> newCheckedLocations)
@@ -166,10 +130,8 @@ public class ArchipelagoClient : IRandomizerClient
             return;
         Plugin.BepInLogger.LogDebug($"received {newCheckedLocations.Count} remote locations");
         foreach (var location in newCheckedLocations)
-            Plugin.GameState.ReceivedLocation(location);
+            Plugin.GameState.ReceivedLocation((int)location);
     }
-
-
     void OnSessionErrorReceived(Exception e, string message)
     {
         Plugin.BepInLogger.LogError(e);
@@ -182,57 +144,93 @@ public class ArchipelagoClient : IRandomizerClient
         Disconnect();
     }
 
-    // impl IRandomizerClient
-    public void Update()
+    void PacketQueueThread()
     {
-        // TODO: learn more about how to synchronize with threadpool and make this properly threaded
-        if (_pendingLocations.Count == 0)
-            return;
-        Plugin.BepInLogger.LogDebug($"sending {_pendingLocations.Count} location(s) to the server");
-        _session.Locations.CompleteLocationChecks([.. _pendingLocations]);
-        _pendingLocations.Clear();
-        Plugin.BepInLogger.LogDebug($"sent!");
+        while (true)
+        {
+            var packets = new List<ArchipelagoPacketBase>();
+            long[] queuedLocations;
+            string[] queuedChat;
+            int queuedDSLevelSelect;
+            bool queuedGoal;
+            lock (_lock)
+            {
+                queuedLocations = [.. _queuedLocations];
+                _queuedLocations.Clear();
+                queuedChat = [.. _queuedChat];
+                _queuedChat.Clear();
+                queuedDSLevelSelect = _queuedDSLevelSelect;
+                _queuedDSLevelSelect = -1;
+                queuedGoal = _queuedGoal;
+                _queuedGoal = false;
+            }
+            if (queuedLocations.Length > 0)
+                packets.Add(new LocationChecksPacket() { Locations = queuedLocations });
+            foreach (var text in queuedChat)
+                packets.Add(new SayPacket() { Text = text });
+            if (queuedDSLevelSelect != -1)
+            {
+                packets.Add(new SetPacket()
+                {
+                    Key = $"Slot:{_session.ConnectionInfo.Slot}:level",
+                    Operations = [new OperationSpecification()
+                    {
+                        OperationType = OperationType.Replace,
+                        Value = queuedDSLevelSelect,
+                    }],
+                });
+            }
+            if (queuedGoal)
+                packets.Add(new StatusUpdatePacket() { Status = ArchipelagoClientState.ClientGoal });
+
+            // always run an extra iteration because i'm not confident in my multithreading
+            if (packets.Count > 0)
+            {
+                Plugin.BepInLogger.LogDebug($"sending {packets.Count} packets");
+                _session.Socket.SendMultiplePackets(packets);
+                Plugin.BepInLogger.LogDebug($"sent packets!");
+            }
+            else
+            {
+                _wait.WaitOne();
+            }
+        }
     }
+
+    // impl IRandomizerClient
+    public void Update() { }
     public string GUIStatus()
     {
         return Plugin.GameState != null ? $"{AP_VERSION_STATUS} Connected" : $"{AP_VERSION_STATUS} Connecting...";
     }
-    public bool IsComplete()
-    {
-        // this has a tendency to fail for some reason?
-        try {
-            return Plugin.GameState != null && _session.DataStorage.GetClientStatus() == ArchipelagoClientState.ClientGoal;
-        } catch (Exception e)
-        {
-            Plugin.BepInLogger.LogWarning($"Failed to get goal status: {e}");
-            return false;
-        }
+    public void SendChat(string text) {
+        lock (_lock)
+            _queuedChat.Add(text);
+        _wait.Set();
     }
-    public void SendGoal()
-    {
-        _session.SetGoalAchieved();
+    public void SendGoal() {
+        lock (_lock)
+            _queuedGoal = true;
+        _wait.Set();
     }
     public void SendLocation(long id)
     {
-        _pendingLocations.Add(id);
+        lock (_lock)
+            _queuedLocations.Add(id);
+        _wait.Set();
     }
     public void Disconnect()
     {
         Plugin.BepInLogger.LogDebug("disconnecting from server...");
-        _session.Socket.Disconnect();
-        Plugin.Client = null;
+        _session?.Socket.Disconnect();
+        // deprecated but i don't care it still works
+        _thread?.Abort();
         Plugin.SetGame(null);
     }
-    public ICollection<long> Locations()
-    {
-        return _session.Locations.AllLocationsChecked;
+    public void SetDSLevelSelect(int value) {
+        lock (_lock)
+            _queuedDSLevelSelect = value;
+        _wait.Set();
     }
-    public void SetSlotData(string key, int value)
-    {
-        _session.DataStorage[Scope.Slot, key] = value;
-    }
-    public void SetSlotDataMax(string key, int value)
-    {
-        _session.DataStorage[Scope.Slot, key] += Operation.Max(value);
-    }
+    //public void SetSlotDataMax(string _key, int _value) { }
 }

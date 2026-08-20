@@ -43,7 +43,7 @@ public partial class GlobalPatches
         var delivery = DataManager.GetCurrentDelivery();
         if (DELIVERY_ENDS_LEVEL[delivery])
         {
-            // a little hacky to change the nextScene on the DeliveryData directly, but it's deterministic
+            // a little hacky to change the nextScene on the delivery directly, but it's right before the only time that's referenced
             if (delivery == 25 && Plugin.GameState.Options.GoalArea == GameOptions.GoalAreaMode.Bossfight)
             {
                 DataManager.GetCurrentDeliveryData().nextScene = "999ft";

@@ -16,6 +16,7 @@ class DonutCountyWorld(World):
     Completing levels and sections of levels sends items to other players.
     Either the Boss Fight or Aftermath level is locked behind gathering a number of `Quadcopter Piece` items.
     Once that is completed, you can enter Aftermath to win!
+    Oh, and the raccoon's name is BK.
     """
     game = "Donut County"
     web = web_world.DonutCountyWebWorld()
@@ -28,7 +29,9 @@ class DonutCountyWorld(World):
     def __init__(self, multiworld: MultiWorld, player: int):
         super().__init__(multiworld, player)
         self.dc_gen_data = {}
-        self.dc_slot_data = {}
+        self.dc_slot_data = {
+            "version": "0.1.0",
+        }
     def create_regions(self) -> None:
         regions.create_and_connect_regions(self)
         locations.create_all_locations(self)
@@ -41,6 +44,7 @@ class DonutCountyWorld(World):
     def get_filler_item_name(self) -> str:
         return items.get_random_filler_item_name(self)
     def fill_slot_data(self) -> Mapping[str, Any]:
+        # TODO: move options slot data into their own subkey (how to deserialize this?)
         for k, v in self.options.as_dict("goal_area", "levels", "hole", "catapult", "texting", "achievements", "buy_catapult", "snake_danger", "salt_and_pepper").items():
             self.dc_slot_data[k] = v
         return self.dc_slot_data

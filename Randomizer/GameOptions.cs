@@ -16,6 +16,9 @@ public class GameOptions
         Global,
         Split,
     }
+    [JsonProperty("version")]
+    public string Version = "0.0.0";
+
     // Game options
     [JsonProperty("goal_area"), JsonConverter(typeof(StringEnumConverter))]
     public GoalAreaMode GoalArea;

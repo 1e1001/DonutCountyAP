@@ -36,12 +36,14 @@ class PiecesRequired(Range):
 class PiecesUnlockLevels(Toggle):
     """
     Start with a single area unlocked, Quadcopter Pieces progressively unlock more areas in a shuffled order.
+    **Likely to cause generation errors.**
     """
     display_name = "Pieces unlock levels"
    
 class Levels(Toggle):
     """
     Require items to be able to access each level. Add a level to `start_inventory` so you can do something at the start of the game. (20-21 items)
+    **Likely to cause generation errors.**
     """
     display_name = "Levels"
    
@@ -196,7 +198,7 @@ option_presets = {
         "pieces_unlock_levels": False,
         "levels": False,
         "hole": "split",
-        "catapult": "global",
+        "catapult": "split",
         "texting": True,
         "achievements": True,
         "buy_catapult": True,
