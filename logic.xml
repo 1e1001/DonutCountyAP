@@ -22,6 +22,7 @@
   <WindowTopX>495</WindowTopX>
   <WindowTopY>15</WindowTopY>
   <TabRatio>339</TabRatio>
+  <ActiveSheet>1</ActiveSheet>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>
@@ -34,7 +35,7 @@
    <NumberFormat/>
    <Protection/>
   </Style>
-  <Style ss:ID="s24">
+  <Style ss:ID="s21">
    <Font x:Family="Swiss"/>
   </Style>
  </Styles>
@@ -804,10 +805,7 @@
     <Cell><Data ss:Type="String">d20c2z</Data></Cell>
     <Cell><Data ss:Type="String">Boss Fight</Data></Cell>
     <Cell><Data ss:Type="String">Delivery</Data></Cell>
-    <Cell><Data ss:Type="String">boss_tornado</Data><Comment ss:Author="michael"><ss:Data
-       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
-         html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;this is referenced in level select code to gate aftermath</Font></ss:Data></Comment></Cell>
+    <Cell><Data ss:Type="String">boss_tornado</Data></Cell>
     <Cell><Data ss:Type="String">BossFight3</Data></Cell>
    </Row>
    <Row>
@@ -842,6 +840,7 @@
     <Cell><Data ss:Type="String">Achievement</Data></Cell>
     <Cell><Data ss:Type="String">DESTROY_MONITOR</Data></Cell>
     <Cell><Data ss:Type="String">AnthropologyLab1</Data></Cell>
+    <Cell><Data ss:Type="String">HoleFire</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">85</Data></Cell>
@@ -927,6 +926,7 @@
     <Cell><Data ss:Type="String">Achievement</Data></Cell>
     <Cell><Data ss:Type="String">BUY_GAMER_FUEL</Data></Cell>
     <Cell><Data ss:Type="String">ChickenBarn1</Data></Cell>
+    <Cell><Data ss:Type="String">Texting</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">95</Data></Cell>
@@ -953,7 +953,6 @@
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
-   <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
@@ -1114,12 +1113,11 @@
    <Row>
     <Cell><Data ss:Type="Number">11</Data></Cell>
     <Cell><Data ss:Type="String">CatapultWater</Data></Cell>
-    <Cell ss:StyleID="s24"><ss:Data ss:Type="String"
-      xmlns="http://www.w3.org/TR/REC-html40">Catapults: Water, Balloons, and Fish</ss:Data></Cell>
+    <Cell ss:StyleID="s21"><Data ss:Type="String">Catapults: Water, Balloons, and Fish</Data></Cell>
     <Cell><Data ss:Type="String">Catapult;Catapult Water;Catapult Balloons;Catapult Fish;Water, Ballons, and Fish;Balloons;Fish</Data><Comment
       ss:Author="michael"><ss:Data xmlns="http://www.w3.org/TR/REC-html40"><B><Font
-         html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;no &quot;Water&quot; tag since the hole is more used</Font></ss:Data></Comment></Cell>
+         html:Face="Tahoma" html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;no &quot;Water&quot; tag since the hole is more used</Font></ss:Data></Comment></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
@@ -1149,7 +1147,7 @@
     <Cell><Data ss:Type="Number">13</Data></Cell>
     <Cell><Data ss:Type="String">CatapultHackingDevice</Data></Cell>
     <Cell><Data ss:Type="String">Catapults: Hacking Device</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult;Hacking Device</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Catapult Hacking;Hacking Device</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
@@ -1180,8 +1178,8 @@
     <Cell><Data ss:Type="String">Texting</Data></Cell>
     <Cell><Data ss:Type="String">Texting</Data><Comment ss:Author="michael"><ss:Data
        xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
-         x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;TODO: this needs a better name?</Font></ss:Data></Comment></Cell>
+         html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;TODO: this needs a better name?</Font></ss:Data></Comment></Cell>
     <Cell ss:Index="5"><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Texting.option_true</Data></Cell>
@@ -1473,6 +1471,7 @@
     <HorizontalResolution>600</HorizontalResolution>
     <VerticalResolution>600</VerticalResolution>
    </Print>
+   <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>

@@ -388,6 +388,7 @@ ITEM_GROUPS = {
     "Donuts": {"Catapults: Donuts and Cameras"},
     "Cameras": {"Catapults: Donuts and Cameras"},
     "Raccoons": {"Catapults: Raccoons"},
+    "Catapult Hacking": {"Catapults: Hacking Device"},
     "Hacking Device": {"Catapults: Hacking Device"},
     "Keycards": {"Catapults: Keycards"},
     "Bombs": {"Catapults: Bombs"},
@@ -609,7 +610,7 @@ def locations(o, f):
         f(81, "Achievement: Bandit", "BiologyLab3", True_())
         f(82, "Achievement: Secret Soup", "CatSoup1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water") & HasFlag("Progressive Salt", 2) & HasFlag("Progressive Pepper", 3))
         f(83, "Achievement: Game Over", "BossFight0", True_())
-        f(84, "Achievement: Disrespecter", "AnthropologyLab1", True_())
+        f(84, "Achievement: Disrespecter", "AnthropologyLab1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Fire"))
         f(85, "Achievement: Quack Enthusiast", "Texting", True_())
         f(86, "Achievement: Egg Breaker", "ChickenBarn4", True_())
         f(87, "Achievement: Music Lover", "GeckoPark3", True_())
@@ -619,7 +620,7 @@ def locations(o, f):
         f(91, "Achievement: Hacker", "RaccoonHQ3", HasFlag("Catapults") & HasFlag("Catapults: Hacking Device"))
         f(92, "Achievement: The Flume Is Doomed", "RaccoonLagoon5", True_())
         f(93, "Achievement: Donut County", "DonutShop2", True_())
-        f(94, "Achievement: Gamer", "ChickenBarn1", True_())
+        f(94, "Achievement: Gamer", "ChickenBarn1", HasFlag("Texting"))
         f(95, "Achievement: Pyro", "JoshuaTree1", True_())
         f(96, "Achievement: Pup's Odyssey", "PottersRock5", True_())
 
