@@ -7,6 +7,14 @@ Either the Boss Fight or Aftermath level is locked behind gathering a number of 
 Once that is completed, you can enter Aftermath to win!
 Oh, and the raccoon's name is BK.
 
+## Extra tips
+
+The mod has some quality-of-life settings:
+- There's a setting that makes some achievements easier / less tedious.
+- There's a setting that allows skipping through dialogue.
+
+If you hate cutscenes, you can exit out of most levels as soon as they're completed.
+
 <!-- TODO: some more info on kinds of items/locations -->
 
 <!-- this is misinfo btw
