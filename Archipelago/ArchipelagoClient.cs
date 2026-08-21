@@ -35,6 +35,8 @@ public class ArchipelagoClient : IRandomizerClient
     int _queuedDSLevelSelect = -1;
     bool _queuedGoal = false;
 
+    // TODO: "by default a lot of exceptions in threads/tasks may get lost."
+    // add try handlers to more things (in a way that looks nice)
     public ArchipelagoClient()
     {
 
