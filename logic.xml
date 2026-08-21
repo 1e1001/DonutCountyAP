@@ -22,7 +22,6 @@
   <WindowTopX>495</WindowTopX>
   <WindowTopY>15</WindowTopY>
   <TabRatio>339</TabRatio>
-  <ActiveSheet>1</ActiveSheet>
   <ProtectStructure>False</ProtectStructure>
   <ProtectWindows>False</ProtectWindows>
  </ExcelWorkbook>
@@ -953,6 +952,7 @@
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
@@ -1094,7 +1094,7 @@
     <Cell><Data ss:Type="Number">9</Data></Cell>
     <Cell><Data ss:Type="String">CatapultHoneycomb</Data></Cell>
     <Cell><Data ss:Type="String">Catapults: Honeycomb</Data></Cell>
-    <Cell><Data ss:Type="String">Catapult;Honeycomb</Data></Cell>
+    <Cell><Data ss:Type="String">Catapult;Catapult Honey;Honey;Honeycomb</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Flag</Data></Cell>
     <Cell><Data ss:Type="String">Catapult.option_split</Data></Cell>
@@ -1471,7 +1471,6 @@
     <HorizontalResolution>600</HorizontalResolution>
     <VerticalResolution>600</VerticalResolution>
    </Print>
-   <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>

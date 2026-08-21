@@ -374,6 +374,8 @@ ITEM_GROUPS = {
     "Boxes": {"Catapults: Boxes"},
     "Chickens": {"Catapults: Chickens"},
     "Eggs": {"Catapults: Eggs"},
+    "Catapult Honey": {"Catapults: Honeycomb"},
+    "Honey": {"Catapults: Honeycomb"},
     "Honeycomb": {"Catapults: Honeycomb"},
     "Frogs": {"Catapults: Frogs"},
     "Catapult Water": {"Catapults: Water, Balloons, and Fish"},

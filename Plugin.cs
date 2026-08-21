@@ -129,12 +129,12 @@ public class Plugin : BaseUnityPlugin
     }
     public static void SetGame(GameState game)
     {
+        if (game == null)
+            Client = null;
         if (game == GameState)
             return;
         Debug.Log(game == null ? "ending session" : "starting session");
         GameState = game;
-        if (game == null)
-            Client = null;
         // quit to titlescreen
         RM.sceneManager.OnQueueLevel("titlescreen");
         RM.sceneManager.OnPlayQueuedLevel();

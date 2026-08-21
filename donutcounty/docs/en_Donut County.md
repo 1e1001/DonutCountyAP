@@ -9,11 +9,14 @@ Oh, and the raccoon's name is BK.
 
 ## Extra tips
 
-The mod has some quality-of-life settings:
-- There's a setting that makes some achievements easier / less tedious.
-- There's a setting that allows skipping through dialogue.
+The mod adds some quality-of-life settings to the menu:
+- You can makes some achievements easier / less tedious.
+- You can allow skipping through dialogue / texting.
 
 If you hate cutscenes, you can exit out of most levels as soon as they're completed.
+
+For the early releases of the mod, you can press `F3` to enter a debug session or open the debug menu, useful for reproducing logic bugs.
+The game's built-in debug menu is also enabled, on the <code>`</code> key. This can probably do some cool things but I haven't looked into it.
 
 <!-- TODO: some more info on kinds of items/locations -->
 
