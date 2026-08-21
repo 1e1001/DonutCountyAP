@@ -47,7 +47,7 @@ public class EasierAchievementPatches
     {
         var secretProgress = (int)ClawMachineManager__secretProgress.GetValue(__instance);
         var secretKey = (ClawMachineManager.ButtonType[])ClawMachineManager__secretKey.GetValue(__instance);
-        if (secretProgress > 0 && __0 == secretKey[secretProgress - 1])
+        if (secretProgress > 0 && secretProgress < secretKey.Length && __0 == secretKey[secretProgress - 1])
             ClawMachineManager__secretProgress.SetValue(__instance, secretProgress - 1);
     }
 

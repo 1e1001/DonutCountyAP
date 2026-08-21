@@ -67,9 +67,9 @@ public partial class GameState
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("+", GUILayout.Width(20f)) && long.TryParse(_guiDebugKeyText, out var location))
                 debugClient.FakeRandomizer.Add(location, (ItemId)Enum.Parse(typeof(ItemId), _guiDebugValueText));
-            _guiDebugKeyText = GUILayout.TextField(_guiDebugKeyText, GUILayout.ExpandWidth(false));
+            _guiDebugKeyText = GUILayout.TextField(_guiDebugKeyText, GUILayout.ExpandWidth(false), GUILayout.MinWidth(100));
             GUILayout.Label(" -> ", GUILayout.ExpandWidth(false));
-            _guiDebugValueText = GUILayout.TextField(_guiDebugValueText, GUILayout.ExpandWidth(false));
+            _guiDebugValueText = GUILayout.TextField(_guiDebugValueText, GUILayout.ExpandWidth(false), GUILayout.MinWidth(100));
             GUILayout.EndHorizontal();
         }
         GUILayout.BeginHorizontal();
