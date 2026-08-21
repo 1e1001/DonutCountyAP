@@ -16,6 +16,13 @@ public class DialogueSkippingPatches
         if (_timer > 0.5f)
             __instance.Do();
     }
+    [HarmonyPatch(typeof(ButtonTriggerEvent), "Down"), HarmonyPrefix]
+    static void ButtonTriggerEvent_Down(ButtonTriggerEvent __instance)
+    {
+        if (__instance.gameObject.name != "DialogNextButton")
+            return;
+        _timer = 0;
+    }
     [HarmonyPatch(typeof(ButtonTriggerEvent), "Up"), HarmonyPrefix]
     static void ButtonTriggerEvent_Up(ButtonTriggerEvent __instance)
     {
