@@ -53,7 +53,10 @@
     <Cell><Data ss:Type="String">name</Data></Cell>
     <Cell><Data ss:Type="String">type</Data></Cell>
     <Cell><Data ss:Type="String">event</Data></Cell>
-    <Cell><Data ss:Type="String">region</Data></Cell>
+    <Cell><Data ss:Type="String">region</Data><Comment ss:Author="michael"><ss:Data
+       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
+         x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;region for segment/delivery is the region entered upon completion</Font></ss:Data></Comment></Cell>
     <Cell><Data ss:Type="String">rules</Data></Cell>
    </Row>
    <Row>
@@ -848,7 +851,7 @@
     <Cell><Data ss:Type="String">Achievement</Data></Cell>
     <Cell><Data ss:Type="String">QUACK_100_TIMES</Data></Cell>
     <Cell><Data ss:Type="String">Texting</Data></Cell>
-    <Cell><Comment ss:Author="michael"><ss:Data
+    <Cell><Data ss:Type="String">Texting</Data><Comment ss:Author="michael"><ss:Data
        xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
          html:Size="9" html:Color="#000000">michael:</Font></B><Font
         html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;texting logic is done in regions.py</Font></ss:Data></Comment></Cell>
@@ -952,6 +955,11 @@
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <Print>
+    <ValidPrinterInfo/>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
    <Selected/>
    <ProtectObjects>False</ProtectObjects>
    <ProtectScenarios>False</ProtectScenarios>

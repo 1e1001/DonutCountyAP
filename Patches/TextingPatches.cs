@@ -10,7 +10,12 @@ public partial class GlobalPatches
     [HarmonyPatch(typeof(TextingManager), "OnPressContinue"), HarmonyPrefix]
     static bool TextingManager_OnPressContinue()
     {
-        // this doesn't prevent quacking, which is arguably funnier imo
+        return !Plugin.GameState.Options.Texting || Plugin.GameState.Has(ItemId.Texting);
+    }
+
+    [HarmonyPatch(typeof(TextingManager), "OnPressQuack"), HarmonyPrefix]
+    static bool TextingManager_OnPressQuack()
+    {
         return !Plugin.GameState.Options.Texting || Plugin.GameState.Has(ItemId.Texting);
     }
 }

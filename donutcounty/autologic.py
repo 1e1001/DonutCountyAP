@@ -613,7 +613,7 @@ def locations(o, f):
         f(82, "Achievement: Secret Soup", "CatSoup1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Water") & HasFlag("Progressive Salt", 2) & HasFlag("Progressive Pepper", 3))
         f(83, "Achievement: Game Over", "BossFight0", True_())
         f(84, "Achievement: Disrespecter", "AnthropologyLab1", HasFlag("Hole Effects") & HasFlag("Hole Effects: Fire"))
-        f(85, "Achievement: Quack Enthusiast", "Texting", True_())
+        f(85, "Achievement: Quack Enthusiast", "Texting", HasFlag("Texting"))
         f(86, "Achievement: Egg Breaker", "ChickenBarn4", True_())
         f(87, "Achievement: Music Lover", "GeckoPark3", True_())
         f(88, "Achievement: Flawless", "BossFight2", True_())
