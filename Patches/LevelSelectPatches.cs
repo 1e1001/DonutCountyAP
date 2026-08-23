@@ -36,7 +36,9 @@ public partial class GlobalPatches
     public static void LevelSelectGUI()
     {
         OS1LevelSelect select = RM.os1LevelSelect;
-        if (select == null || Plugin.GameState == null || (!(bool)OS1LevelSelect__isShowing.GetValue(select) && (OS1OptionsMenu.State)GlobalPatches.OS1OptionsMenu__currentState.GetValue(RM.pauseMenu) != OS1OptionsMenu.State.Profile))
+        if (select == null || Plugin.GameState == null)
+            return;
+        if (!(bool)OS1LevelSelect__isShowing.GetValue(select) && (OS1OptionsMenu.State)GlobalPatches.OS1OptionsMenu__currentState.GetValue(RM.pauseMenu) != OS1OptionsMenu.State.Profile)
             return;
         var index = (int)OS1LevelSelect__currentDeliveryIndex.GetValue(select);
         GUI.Box(new Rect(8, 162, 316, 156), "");
@@ -75,14 +77,14 @@ public partial class GlobalPatches
     [HarmonyPatch(typeof(OS1LevelSelect), "SetLevel"), HarmonyPostfix]
     static void OS1LevelSelect_SetLevel(OS1LevelSelect __instance)
     {
-        // extra data for external trackers, done in the menu so you can quickly scroll through levels
-        Plugin.Client.SetSlotStorage("level", (int)OS1LevelSelect__currentDeliveryIndex.GetValue(__instance));
+        Plugin.Client?.SetSlotStorage("level", $"select:{(int)OS1LevelSelect__currentDeliveryIndex.GetValue(__instance)}");
     }
 
     [HarmonyPatch(typeof(OS1LevelSelect), "OnPressButtonPlay"), HarmonyPrefix]
     static bool OS1LevelSelect_OnPressButtonPlay(OS1LevelSelect __instance)
     {
         var index = (int)OS1LevelSelect__currentDeliveryIndex.GetValue(__instance);
+        Plugin.Client?.SetSlotStorage("level", $"game:{index}");
         var info = AutoLogic.LEVEL_SELECT[index];
         var unlock = info.Unlock == ItemId.None ? Plugin.GameState.UnlockedBossfight() : !Plugin.GameState.Options.Levels || Plugin.GameState.Has(info.Unlock);
         var pieces = Plugin.GameState.Quantity(ItemId.QuadcopterPiece);
@@ -90,9 +92,13 @@ public partial class GlobalPatches
         return unlock && pieces >= requiredPieces;
     }
 
-    [HarmonyPatch(typeof(OS1LevelSelect), "SetLevelSelectWindow"), HarmonyPrefix]
-    static void OS1LevelSelect_SetLevelSelectWindow(bool show) {
-        Plugin.Client?.SetSlotStorage("menu", show);
+    [HarmonyPatch(typeof(OS1LevelSelect), "OnPressButtonBack"), HarmonyPrefix]
+    static void OS1LevelSelect_OnPressButtonBack(OS1LevelSelect __instance)
+    {
+        // this is called from titlescreen
+        if (__instance == null)
+            return;
+        Plugin.Client?.SetSlotStorage("level", $"title:{(int)OS1LevelSelect__currentDeliveryIndex.GetValue(__instance)}");
     }
 }
 
