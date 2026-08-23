@@ -4,6 +4,7 @@ using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using DonutCountyAP.Randomizer;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +16,6 @@ namespace DonutCountyAP.Archipelago;
 public class ArchipelagoClient : IRandomizerClient
 {
     record struct ConnectionInfo(string Uri, string SlotName, string Password);
-    record struct QueuedSlotData(string Key, int Value);
 
     public const string AP_VERSION = "0.5.0";
     public const string AP_VERSION_STATUS = $"Archipelago v{AP_VERSION}";
@@ -32,7 +32,7 @@ public class ArchipelagoClient : IRandomizerClient
     readonly EventWaitHandle _wait = new(false, EventResetMode.AutoReset);
     readonly List<long> _queuedLocations = [];
     readonly List<string> _queuedChat = [];
-    int _queuedDSLevelSelect = -1;
+    readonly Dictionary<string, JToken> _queuedDataStorage = [];
     bool _queuedGoal = false;
 
     // TODO: "by default a lot of exceptions in threads/tasks may get lost."
@@ -97,6 +97,17 @@ public class ArchipelagoClient : IRandomizerClient
                 Plugin.GameState.ReceivedItem((ItemId)item.ItemId, true);
             foreach (var location in _session.Locations.AllLocationsChecked)
                 Plugin.GameState.ReceivedLocation((int)location);
+            var cacheId = $"{_session.RoomState.Seed}:{_session.ConnectionInfo.Slot}";
+            if (Plugin.RandomizerData.LocationCacheId == cacheId)
+            {
+                // no need to lock as thread isn't running yet
+                _queuedLocations.AddRange(Plugin.RandomizerData.LocationCache);
+            } else
+            {
+                Plugin.RandomizerData.LocationCache.Clear();
+                Plugin.RandomizerData.LocationCacheId = cacheId;
+            }
+            DataManager.SaveGameData();
 
             _thread = new(PacketQueueThread);
             _thread.Start();
@@ -131,7 +142,11 @@ public class ArchipelagoClient : IRandomizerClient
     {
         Plugin.BepInLogger.LogDebug($"received {newCheckedLocations.Count} remote locations");
         foreach (var location in newCheckedLocations)
+        {
+            if (Plugin.RandomizerData.LocationCache.Contains(location))
+                Plugin.RandomizerData.LocationCache.Remove(location);
             Plugin.GameState.ReceivedLocation((int)location);
+        }
     }
     void OnSessionErrorReceived(Exception e, string message)
     {
@@ -152,7 +167,7 @@ public class ArchipelagoClient : IRandomizerClient
             var packets = new List<ArchipelagoPacketBase>();
             long[] queuedLocations;
             string[] queuedChat;
-            int queuedDSLevelSelect;
+            KeyValuePair<string, JToken>[] queuedDataStorage;
             bool queuedGoal;
             lock (_lock)
             {
@@ -160,8 +175,8 @@ public class ArchipelagoClient : IRandomizerClient
                 _queuedLocations.Clear();
                 queuedChat = [.. _queuedChat];
                 _queuedChat.Clear();
-                queuedDSLevelSelect = _queuedDSLevelSelect;
-                _queuedDSLevelSelect = -1;
+                queuedDataStorage = [.. _queuedDataStorage];
+                _queuedDataStorage.Clear();
                 queuedGoal = _queuedGoal;
                 _queuedGoal = false;
             }
@@ -169,15 +184,15 @@ public class ArchipelagoClient : IRandomizerClient
                 packets.Add(new LocationChecksPacket() { Locations = queuedLocations });
             foreach (var text in queuedChat)
                 packets.Add(new SayPacket() { Text = text });
-            if (queuedDSLevelSelect != -1)
+            foreach (var kv in queuedDataStorage)
             {
                 packets.Add(new SetPacket()
                 {
-                    Key = $"Slot:{_session.ConnectionInfo.Slot}:level",
+                    Key = $"Slot:{_session.ConnectionInfo.Slot}:{kv.Key}",
                     Operations = [new OperationSpecification()
                     {
                         OperationType = OperationType.Replace,
-                        Value = queuedDSLevelSelect,
+                        Value = kv.Value,
                     }],
                 });
             }
@@ -216,8 +231,11 @@ public class ArchipelagoClient : IRandomizerClient
     }
     public void SendLocation(long id)
     {
-        lock (_lock)
-            _queuedLocations.Add(id);
+        //lock (_lock)
+        //    _queuedLocations.Add(id);
+        if (!Plugin.RandomizerData.LocationCache.Contains(id))
+           Plugin.RandomizerData.LocationCache.Add(id);
+        // TODO: queue save of randomizer data? how often does it save mid-game
         _wait.Set();
     }
     public void Disconnect()
@@ -228,9 +246,10 @@ public class ArchipelagoClient : IRandomizerClient
         _thread?.Abort();
         Plugin.SetGame(null);
     }
-    public void SetDSLevelSelect(int value) {
+    public void SetSlotStorage(string key, JToken value) {
         lock (_lock)
-            _queuedDSLevelSelect = value;
+            if (!_queuedDataStorage.ContainsKey(key))
+                _queuedDataStorage.Add(key, value);
         _wait.Set();
     }
 }

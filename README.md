@@ -38,6 +38,7 @@ Generative AI has not been used to make this AP implementation. I have no plans 
 	- replace archipelago console with a notifications feed
 - disable steam autorestart? or do i just add the appid hack to the install guide
 - trashsanity
+	- new implementation: "soul" items that let them spawn
 	- trashopedia shows collection status next to item
 	- optional in-level indicator (some billboard above item?)
 - easier achievements: make mira's bossfight hp linear
@@ -64,5 +65,4 @@ Generative AI has not been used to make this AP implementation. I have no plans 
 testing todo:
 - gog version
 	- datamanager might need different hooks entirely?
-- proton
 - macos? terrifying

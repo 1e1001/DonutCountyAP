@@ -36,7 +36,7 @@ public partial class GlobalPatches
     public static void LevelSelectGUI()
     {
         OS1LevelSelect select = RM.os1LevelSelect;
-        if (select == null || (!(bool)OS1LevelSelect__isShowing.GetValue(select) && (OS1OptionsMenu.State)GlobalPatches.OS1OptionsMenu__currentState.GetValue(RM.pauseMenu) != OS1OptionsMenu.State.Profile))
+        if (select == null || Plugin.GameState == null || (!(bool)OS1LevelSelect__isShowing.GetValue(select) && (OS1OptionsMenu.State)GlobalPatches.OS1OptionsMenu__currentState.GetValue(RM.pauseMenu) != OS1OptionsMenu.State.Profile))
             return;
         var index = (int)OS1LevelSelect__currentDeliveryIndex.GetValue(select);
         GUI.Box(new Rect(8, 162, 316, 156), "");
@@ -76,7 +76,7 @@ public partial class GlobalPatches
     static void OS1LevelSelect_SetLevel(OS1LevelSelect __instance)
     {
         // extra data for external trackers, done in the menu so you can quickly scroll through levels
-        Plugin.Client.SetDSLevelSelect((int)OS1LevelSelect__currentDeliveryIndex.GetValue(__instance));
+        Plugin.Client.SetSlotStorage("level", (int)OS1LevelSelect__currentDeliveryIndex.GetValue(__instance));
     }
 
     [HarmonyPatch(typeof(OS1LevelSelect), "OnPressButtonPlay"), HarmonyPrefix]
@@ -88,6 +88,11 @@ public partial class GlobalPatches
         var pieces = Plugin.GameState.Quantity(ItemId.QuadcopterPiece);
         var requiredPieces = Plugin.GameState.Options.RequiredPieces[index];
         return unlock && pieces >= requiredPieces;
+    }
+
+    [HarmonyPatch(typeof(OS1LevelSelect), "SetLevelSelectWindow"), HarmonyPrefix]
+    static void OS1LevelSelect_SetLevelSelectWindow(bool show) {
+        Plugin.Client?.SetSlotStorage("menu", show);
     }
 }
 

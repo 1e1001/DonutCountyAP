@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace DonutCountyAP.Randomizer;
 
@@ -17,5 +18,5 @@ public class DebugClient : IRandomizerClient
             Plugin.GameState.ReceivedItem(item);
     }
     public void Disconnect() => Plugin.SetGame(null);
-    public void SetDSLevelSelect(int _value) { }
+    public void SetSlotStorage(string _key, JToken _value) { }
 }
