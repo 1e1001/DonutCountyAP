@@ -231,8 +231,8 @@ public class ArchipelagoClient : IRandomizerClient
     }
     public void SendLocation(long id)
     {
-        //lock (_lock)
-        //    _queuedLocations.Add(id);
+        lock (_lock)
+            _queuedLocations.Add(id);
         if (!Plugin.RandomizerData.LocationCache.Contains(id))
            Plugin.RandomizerData.LocationCache.Add(id);
         // TODO: queue save of randomizer data? how often does it save mid-game
