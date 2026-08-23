@@ -5,8 +5,8 @@ from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, Op
 class GoalArea(Choice):
     """
     The game will goal upon entering Aftermath.
-	- bossfight: Unlock and complete the Boss Fight level to unlock Aftermath
-	- aftermath: Quadcopter Pieces directly unlock Aftermath
+    - bossfight: Unlock and complete the Boss Fight level to unlock Aftermath
+    - aftermath: Quadcopter Pieces directly unlock Aftermath
     """
     display_name = "Goal area"
     option_bossfight = 0
@@ -49,9 +49,9 @@ class Levels(Toggle):
    
 class Hole(Choice):
     """
-	- off: Hole contents always have effects.
-	- global: Require an item to have effects from hole contents. (1 item)
-	- split: Require items to have effects from each individual type of hole contents. (5 items)
+    - off: Hole contents always have effects.
+    - global: Require an item to have effects from hole contents. (1 item)
+    - split: Require items to have effects from each individual type of hole contents. (5 items)
     """
     display_name = "Hole effects"
     option_off = 0
@@ -61,9 +61,9 @@ class Hole(Choice):
     
 class Catapult(Choice):
     """
-	- off: Catapult is always available.
-	- global: Require an item to use the catapult. (1 item)
-	- split: Require items to launch specific kinds of object. (11 items)
+    - off: Catapult is always available.
+    - global: Require an item to use the catapult. (1 item)
+    - split: Require items to launch specific kinds of object. (11 items)
     """
     display_name = "Catapult"
     option_off = 0
