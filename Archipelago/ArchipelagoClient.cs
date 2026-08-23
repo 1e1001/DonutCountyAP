@@ -17,7 +17,7 @@ public class ArchipelagoClient : IRandomizerClient
 {
     record struct ConnectionInfo(string Uri, string SlotName, string Password);
 
-    public const string AP_VERSION = "0.5.0";
+    public const string AP_VERSION = "0.6.7";
     public const string AP_VERSION_STATUS = $"Archipelago v{AP_VERSION}";
     public const string AP_DEFAULT_STATUS = $"{AP_VERSION_STATUS} Disconnected";
     const string GAME = "Donut County";
