@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static DonutCountyAP.Randomizer.AutoLogic;
 
 namespace DonutCountyAP.Randomizer;
 
@@ -201,8 +200,17 @@ public partial class GameState
                 break;
         }
     }
-    public void ReceivedLocation(int id)
+    public void ReceivedLocation(int id, bool local = false)
     {
+        if (_locations[id])
+            return;
+        if (local)
+        {
+            if (id == AutoLogic.LOCATION_GOAL)
+                Plugin.Client.SendGoal();
+            else
+                Plugin.Client.SendLocation(id);
+        }
         _locations[id] = true;
         Plugin.BepInLogger.LogDebug($"received location {id}");
         // TODO: any more immediately-occuring updates go here
@@ -215,19 +223,10 @@ public partial class GameState
                 Plugin.BepInLogger.LogWarning($"triggered invalid event {name}");
             return;
         }
-        Plugin.BepInLogger.LogInfo($"found event {name}");
+        Plugin.BepInLogger.LogDebug($"found event {name}");
         if (!Options.CanSendLocation(location.Type))
             return;
-        if (_locations[location.Id])
-            return;
-        if (location.Type == AutoLogic.LocationType.Victory)
-        {
-            Plugin.Client.SendGoal();
-        } else
-        {
-            Plugin.Client.SendLocation(location.Id);
-        }
-        ReceivedLocation(location.Id);
+        ReceivedLocation(location.Id, true);
     }
 
     public bool UnlockedBossfight()

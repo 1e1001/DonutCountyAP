@@ -17,7 +17,7 @@ public class CementTrap : MonoBehaviour
             return;
         if (RM.holeMovement.GetDisableMovement() || RM.holeScale.GetScale() == 0f)
             return;
-        Plugin.BepInLogger.LogInfo("doing cement trap");
+        Plugin.BepInLogger.LogDebug("doing cement trap");
         StartCoroutine(TrapRoutine());
     }
 

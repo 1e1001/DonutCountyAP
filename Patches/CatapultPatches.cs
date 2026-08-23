@@ -35,10 +35,9 @@ public partial class GlobalPatches
 
     static readonly FieldInfo HoleContents_contents = AccessTools.Field(typeof(HoleContents), "contents");
     [HarmonyPatch(typeof(HoleContents), "Remove"), HarmonyPrefix]
-    static bool HoleContents_Remove(HoleContents __instance, bool __1)
+    static bool HoleContents_Remove(HoleContents __instance, bool bypass)
     {
-        // bypass
-        if (__1)
+        if (bypass)
             return true;
         if (__instance.GetWater())
             return Plugin.GameState.HasCatapult(ItemId.CatapultWater);

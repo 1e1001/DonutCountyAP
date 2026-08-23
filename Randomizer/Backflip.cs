@@ -17,7 +17,7 @@ public class Backflip : MonoBehaviour
         var candidate = Characters.FirstOrDefault(ch => ch.activeInHierarchy);
         if (candidate == null)
             return;
-        Plugin.BepInLogger.LogInfo($"backflipping {candidate}");
+        Plugin.BepInLogger.LogDebug($"backflipping {candidate}");
         StartCoroutine(BackflipRoutine(candidate.transform));
     }
 

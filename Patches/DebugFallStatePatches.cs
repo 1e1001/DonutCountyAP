@@ -44,9 +44,9 @@ public class DebugFallStatePatches
     }
 
     [HarmonyPatch(typeof(HoleContents), "AddToHole"), HarmonyPrefix]
-    static void HoleContents_AddToHole(GameObject __0)
+    static void HoleContents_AddToHole(GameObject p)
     {
-        __0.GetComponent<DebugFallState>().AddToHole();
+        p.GetComponent<DebugFallState>().AddToHole();
     }
 
     [HarmonyPatch(typeof(SceneManager), "OnQueueLevel"), HarmonyPrefix]

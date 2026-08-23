@@ -22,14 +22,14 @@ public partial class GlobalPatches
     }
 
     [HarmonyPatch(typeof(HoleSubstanceManager), "SetSubstance"), HarmonyPrefix]
-    static bool HoleSubstanceManager_SetSubstance(HoleSubstanceManager __instance, HoleSubstanceManager.Substance __0)
+    static bool HoleSubstanceManager_SetSubstance(HoleSubstanceManager __instance, HoleSubstanceManager.Substance newSubstance)
     {
         var trap = __instance.GetComponent<CementTrap>();
         if (trap == null)
             return true;
         if (trap.Timer <= 0)
             return true;
-        trap.UnderlyingSubstance = __0;
+        trap.UnderlyingSubstance = newSubstance;
         return false;
     }
 

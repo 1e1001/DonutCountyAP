@@ -68,6 +68,7 @@ public partial class GlobalPatches
         }
         RM.musicManager.StartMusic();
         __instance.StartCoroutine((System.Collections.IEnumerator)ShowTitleScreen_StartTitleScreenRoutine.Invoke(__instance, []));
+        DataManager.SaveGameData();
         return false;
     }
 

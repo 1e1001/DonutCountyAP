@@ -45,11 +45,11 @@ public partial class GlobalPatches
     static bool DataManager_SaveGameData_Steam()
     {
         Plugin.RandomizerData.TrashopediaIndex = DataManager.gameData.trashopediaIndex;
+        // TODO: delay & debounce saving, then call it more often
         FileManagement.SetString(GetRandomizerDataPath(), SerializerHelper<RandomizerSaveData>.ObjectToXml(Plugin.RandomizerData));
         Plugin.BepInLogger.LogInfo("not saving the game, saved ap config instead");
         //if (Plugin.Client != null)
         //{
-        //    Plugin.Client.SetSlotDataMax("has_seen_gameover_cutscene", DataManager.gameData.hasSeenGameOverCutscene);
         //    Plugin.Client.SetSlotDataMax("RELEASE_HOT_AIR_BALLOON", DataManager.gameData.RELEASE_HOT_AIR_BALLOON);
         //    Plugin.Client.SetSlotDataMax("DESTROY_DONUT_SHOP", DataManager.gameData.DESTROY_DONUT_SHOP);
         //    Plugin.Client.SetSlotDataMax("DESTROY_RACCOON_LAGOON", DataManager.gameData.DESTROY_RACCOON_LAGOON);

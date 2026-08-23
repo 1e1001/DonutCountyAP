@@ -33,8 +33,8 @@ public class DialogueSkippingPatches
     }
 
     [HarmonyPatch(typeof(TextingManager), "SetCloseButton"), HarmonyPrefix]
-    static void TextingManager_SetCloseButton(ref bool __0)
+    static void TextingManager_SetCloseButton(ref bool showCloseButton)
     {
-        __0 |= !Plugin.GameState.Options.Texting || Plugin.GameState.Has(Randomizer.ItemId.Texting);
+        showCloseButton |= !Plugin.GameState.Options.Texting || Plugin.GameState.Has(Randomizer.ItemId.Texting);
     }
 }

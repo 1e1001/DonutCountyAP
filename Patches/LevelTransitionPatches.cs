@@ -57,18 +57,18 @@ public partial class GlobalPatches
     }
 
     [HarmonyPatch(typeof(SceneManager), "OnQueueLevel"), HarmonyPrefix]
-    static void SceneManager_OnQueueLevel(ref string __0)
+    static void SceneManager_OnQueueLevel(ref string level)
     {
-        if (__0 == "999ft" || UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "999ft")
+        if (level == "999ft" || UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "999ft")
         {
-            Plugin.BepInLogger.LogMessage("saving you from the depths");
-            __0 = "titlescreen";
+            Plugin.BepInLogger.LogInfo("saving you from the depths");
+            level = "titlescreen";
         }
-        if (__0 == "999ft_forced")
-            __0 = "999ft";
+        if (level == "999ft_forced")
+            level = "999ft";
         if (Plugin.GameState == null)
             return;
-        Plugin.GameState.ActiveDelivery = __0 != "titlescreen" && __0 != "results" && __0 != "scn_credits" && __0 != "999ft";
+        Plugin.GameState.ActiveDelivery = level != "titlescreen" && level != "results" && level != "scn_credits" && level != "999ft";
     }
 
     [HarmonyPatch(typeof(CameraManager), "MoveCamera"), HarmonyPrefix]

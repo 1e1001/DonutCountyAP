@@ -6,9 +6,9 @@ public partial class GlobalPatches
 {
 
     [HarmonyPatch(typeof(OS1Store), "BuyItem"), HarmonyPrefix]
-    static void OS1Store_BuyItem(OS1Store __instance, OS1ItemUI __0)
+    static void OS1Store_BuyItem(OS1Store __instance, OS1ItemUI itemUI)
     {
-        if (__0.item == __instance.mustBuyToExit)
+        if (itemUI.item == __instance.mustBuyToExit)
             Plugin.GameState.FoundEvent("store_catapult");
     }
 

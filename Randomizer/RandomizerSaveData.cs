@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace DonutCountyAP.Randomizer;
@@ -19,7 +20,11 @@ public class RandomizerSaveData
     public bool EasierAchievements;
     [XmlElement("dialogue_skipping")]
     public bool DialogueSkipping = true;
-
+    // cache un-confirmed locations between game sessions, in case of spurious disconnects or crashes
+    [XmlElement("location_cache_id")]
+    public string LocationCacheId;
+    [XmlElement("location_cache")]
+    public HashSet<long> LocationCache;
 
     public void Validate() { }
     public void ApplyPatches()

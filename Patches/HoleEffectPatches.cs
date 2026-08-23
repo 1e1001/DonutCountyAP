@@ -13,9 +13,9 @@ public partial class GlobalPatches
     }
 
     [HarmonyPatch(typeof(HoleContents), "SetWater"), HarmonyPrefix]
-    static bool HoleContents_SetWater(bool __0)
+    static bool HoleContents_SetWater(bool state)
     {
-        return !__0 || (Plugin.GameState.HasHole(ItemId.HoleWater) && CementTrap.HasNoCement());
+        return !state || (Plugin.GameState.HasHole(ItemId.HoleWater) && CementTrap.HasNoCement());
     }
 
     [HarmonyPatch(typeof(WaterVolume), "Drain"), HarmonyPrefix]
@@ -25,15 +25,15 @@ public partial class GlobalPatches
     }
 
     [HarmonyPatch(typeof(SoupManager), "SetBroth"), HarmonyPrefix]
-    static bool SoupManager_SetBroth(bool __0)
+    static bool SoupManager_SetBroth(bool state)
     {
-        return !__0 || (Plugin.GameState.HasHole(ItemId.HoleWater) && CementTrap.HasNoCement());
+        return !state || (Plugin.GameState.HasHole(ItemId.HoleWater) && CementTrap.HasNoCement());
     }
 
     [HarmonyPatch(typeof(HoleContents), "SetFire"), HarmonyPrefix]
-    static bool HoleContents_SetFire(bool __0)
+    static bool HoleContents_SetFire(bool state)
     {
-        return !__0 || Plugin.GameState.HasHole(ItemId.HoleFire);
+        return !state || Plugin.GameState.HasHole(ItemId.HoleFire);
     }
 
     [HarmonyPatch(typeof(HoleContents), "MakePopcorn"), HarmonyPrefix]
@@ -51,9 +51,9 @@ public partial class GlobalPatches
     }
 
     [HarmonyPatch(typeof(HoleSnake), "SetSnakeHole"), HarmonyPrefix]
-    static bool HoleSnake_SetSnakeHole(bool __0)
+    static bool HoleSnake_SetSnakeHole(bool on)
     {
-        return !__0 || Plugin.GameState.HasHole(ItemId.HoleSnake);
+        return !on || Plugin.GameState.HasHole(ItemId.HoleSnake);
     }
 
     [HarmonyPatch(typeof(Flashlight), "OnCollectBattery"), HarmonyPrefix]
