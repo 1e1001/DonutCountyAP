@@ -13,7 +13,7 @@ public class Plugin : BaseUnityPlugin
     public const string PLUGIN_GUID = "zz1e1001.DonutCountyAP";
     public const string PLUGIN_NAME = "DonutCountyAP";
     // also change version info in .csproj
-    public const string PLUGIN_VERSION = "0.1.0";
+    public const string PLUGIN_VERSION = "0.1.1";
 
     public const string MOD_DISPLAY_INFO = $"{PLUGIN_NAME} v{PLUGIN_VERSION}";
     public static ManualLogSource BepInLogger;

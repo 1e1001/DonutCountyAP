@@ -30,7 +30,7 @@ class DonutCountyWorld(World):
         super().__init__(multiworld, player)
         self.dc_gen_data = {}
         self.dc_slot_data = {
-            "version": "0.1.0",
+            "version": "0.1.1",
         }
     def create_regions(self) -> None:
         regions.create_and_connect_regions(self)
