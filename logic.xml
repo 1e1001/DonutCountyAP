@@ -8,7 +8,7 @@
   <Author>michael</Author>
   <LastAuthor>michael</LastAuthor>
   <Created>2026-08-06T00:56:49Z</Created>
-  <LastSaved>2026-09-13T01:39:11Z</LastSaved>
+  <LastSaved>2026-09-13T02:48:09Z</LastSaved>
   <Company>/DEV/PTY</Company>
   <Version>10.2625</Version>
  </DocumentProperties>
@@ -539,7 +539,8 @@
     <Cell ss:Index="3"><Data ss:Type="String">13,0</Data></Cell>
     <Cell><Data ss:Type="String">Logic</Data></Cell>
     <Cell><Data ss:Type="String">ahNoLight</Data></Cell>
-    <Cell ss:Index="7"><Data ss:Type="String">Abandoned House</Data></Cell>
+    <Cell><Data ss:Type="String">Next</Data></Cell>
+    <Cell><Data ss:Type="String">Abandoned House</Data></Cell>
     <Cell><Data ss:Type="String">Without light</Data></Cell>
     <Cell><Data ss:Type="String">(or HoleLight Glitches)</Data></Cell>
    </Row>
@@ -1328,7 +1329,7 @@
     <Cell><Data ss:Type="String">Filler;hole_size</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="String">Useful</Data></Cell>
-    <Cell><Data ss:Type="String">Hole Size Boost</Data></Cell>
+    <Cell><Data ss:Type="String">Hole Size Boost (Unimplemented)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">49</Data></Cell>
@@ -1336,7 +1337,7 @@
     <Cell><Data ss:Type="String">Filler;launch_trap</Data></Cell>
     <Cell><Data ss:Type="Number">0</Data></Cell>
     <Cell><Data ss:Type="String">UsefulTrap</Data></Cell>
-    <Cell><Data ss:Type="String">Launch Trap</Data></Cell>
+    <Cell><Data ss:Type="String">Launch Trap (Unimplemented)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">17</Data></Cell>

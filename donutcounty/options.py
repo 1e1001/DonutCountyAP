@@ -72,7 +72,7 @@ class TrashSouls(Toggle):
     """
     Require an item to unlock physics on each type of trash. Has no effect if `trashsanity` is `off`. (113 items)
     """
-    display_name = "Texting"
+    display_name = "Trash souls"
     
 #class LevelCompletions(Toggle):
 #    """

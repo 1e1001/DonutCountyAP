@@ -25,6 +25,10 @@ impl PyOptionFilter {
 		PyOptionFilter { option: "worlds.donutcounty.options.Catapult", value, operator }
 	}
 
+	fn trash_souls() -> Self {
+		PyOptionFilter { option: "worlds.donutcounty.options.TrashSouls", value: 1, operator: "eq" }
+	}
+
 	fn trashsanity(value: usize, operator: &'static str) -> Self {
 		PyOptionFilter { option: "worlds.donutcounty.options.Trashsanity", value, operator }
 	}
@@ -125,9 +129,7 @@ impl<'data> PyRule<'data> {
 				filtered_resolution: true,
 			},
 			Rule::Trash(kind) => {
-				Self::has(&data.items.get_named(kind).name, 1, vec![PyOptionFilter::trashsanity(
-					0, "ne",
-				)])
+				Self::has(&data.items.get_named(kind).name, 1, vec![PyOptionFilter::trash_souls()])
 			},
 			&Rule::Level(index) => Self::LevelPieces { args: PyLevelPieces { index } },
 			&Rule::SaltPepper(all) => Self::And {
@@ -185,8 +187,12 @@ impl<'data> PyRule<'data> {
 				if children.is_empty() {
 					Self::True
 				} else {
-					// TODO: instead cascade trashsanity filter to children?
-					Self::And { children, options: vec![PyOptionFilter::trashsanity(0, "ne")], filtered_resolution: true }
+					// TODO: instead cascade filter to children?
+					Self::And {
+						children,
+						options: vec![PyOptionFilter::trash_souls()],
+						filtered_resolution: true,
+					}
 				}
 			},
 			Rule::Or(terms) => {
@@ -357,30 +363,33 @@ impl<'data> PyData<'data> {
 		let mut item_groups = BTreeMap::<&'data str, Vec<&'data str>>::new();
 		let mut fillers = BTreeMap::<&'data str, Vec<&'data str>>::new();
 		for (index, item) in data.items.iter() {
-				assert!(!item.name.is_empty(), "empty item name for {index:?}");
-				if item_to_id.insert(&*item.name, index).is_some() {
-					panic!("duplicate item {:?}", item.name);
-				}
-				item_to_class.insert(&*item.name, item.class);
-				if let ItemType::Filler(id) = &item.r#type {
-					fillers.entry(id).or_default().push(&item.name);
-				}
-				for group in &item.groups {
-					item_groups.entry(group).or_default().push(&item.name);
-				}
-				let fixed_type = match &item.r#type {
-					ItemType::Filler(_) => ItemType::Filler(String::new()),
-					ItemType::Level(_) => ItemType::Level(0),
-					other => other.clone(),
-				};
-				items.entry(fixed_type).or_default().push(PyItem { name: &item.name, count: item.count });
+			assert!(!item.name.is_empty(), "empty item name for {index:?}");
+			if item_to_id.insert(&*item.name, index).is_some() {
+				panic!("duplicate item {:?}", item.name);
 			}
+			item_to_class.insert(&*item.name, item.class);
+			if let ItemType::Filler(id) = &item.r#type {
+				fillers.entry(id).or_default().push(&item.name);
+			}
+			for group in &item.groups {
+				item_groups.entry(group).or_default().push(&item.name);
+			}
+			let fixed_type = match &item.r#type {
+				ItemType::Filler(_) => ItemType::Filler(String::new()),
+				ItemType::Level(_) => ItemType::Level(0),
+				other => other.clone(),
+			};
+			items
+				.entry(fixed_type)
+				.or_default()
+				.push(PyItem { name: &item.name, count: item.count });
+		}
 		let items = items
 			.into_iter()
 			.map(|(r#type, items)| PyItemGroup {
 				filter: match r#type {
 					ItemType::Filler(_) | ItemType::Level(_) | ItemType::Piece => None,
-					ItemType::TrashType => Some(PyOptionFilter::trashsanity(0, "ne")),
+					ItemType::TrashType => Some(PyOptionFilter::trash_souls()),
 					ItemType::HoleGlobal => Some(PyOptionFilter::hole(1)),
 					ItemType::HoleSplit => Some(PyOptionFilter::hole(2)),
 					ItemType::CatapultGlobal => Some(PyOptionFilter::catapult(1, "eq")),
