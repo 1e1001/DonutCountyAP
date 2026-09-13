@@ -1,4 +1,5 @@
-﻿using DonutCountyAP.Randomizer;
+﻿using DonutCountyAP.Generated;
+using DonutCountyAP.Randomizer;
 using HarmonyLib;
 
 namespace DonutCountyAP.Patches;

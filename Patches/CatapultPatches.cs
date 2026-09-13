@@ -1,4 +1,5 @@
-﻿using DonutCountyAP.Randomizer;
+﻿using DonutCountyAP.Generated;
+using DonutCountyAP.Randomizer;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection;
@@ -46,12 +47,12 @@ public partial class GlobalPatches
             return true;
         GameObject top = contents[contents.Count - 1];
 		if (!CATAPULT_TYPES.TryGetValue(top.name, out var item)) {
-			Plugin.BepInLogger.LogWarning($"launching mysterious object {top}");
+			Plugin.BepInLogger.LogError($"launching mysterious object {top}");
 			return true;
 		}
 		if (Plugin.GameState.HasCatapult(item))
 			return true;
-		Plugin.BepInLogger.LogInfo($"prevening launch of {top} as player does not have {item}");
+		Plugin.BepInLogger.LogDebug($"prevening launch of {top} as player does not have {item}");
 		return false;
     }
 }

@@ -3,12 +3,14 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
+using DonutCountyAP.Generated;
 using DonutCountyAP.Randomizer;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 
 namespace DonutCountyAP.Archipelago;
@@ -17,8 +19,7 @@ public class ArchipelagoClient : IRandomizerClient
 {
     record struct ConnectionInfo(string Uri, string SlotName, string Password);
 
-    public const string AP_VERSION = "0.6.7";
-    public const string AP_VERSION_STATUS = $"Archipelago v{AP_VERSION}";
+    public const string AP_VERSION_STATUS = $"Archipelago v{VersionInfo.AP_VERSION}";
     public const string AP_DEFAULT_STATUS = $"{AP_VERSION_STATUS} Disconnected";
     const string GAME = "Donut County";
 
@@ -34,18 +35,23 @@ public class ArchipelagoClient : IRandomizerClient
     readonly List<string> _queuedChat = [];
     readonly Dictionary<string, JToken> _queuedDataStorage = [];
     bool _queuedGoal = false;
+    readonly List<long> _receivedLocations = [];
+    readonly List<long> _receivedItems = [];
 
     // TODO: "by default a lot of exceptions in threads/tasks may get lost."
     // add try handlers to more things (in a way that looks nice)
     public ArchipelagoClient()
     {
 
-        _thisConnection = new(Plugin.RandomizerData.Uri, Plugin.RandomizerData.SlotName, Plugin.RandomizerData.Password);
+        _thisConnection = new(Plugin.Options.Uri, Plugin.Options.SlotName, Plugin.Options.Password);
 
         try
         {
             _session = ArchipelagoSessionFactory.CreateSession(_thisConnection.Uri);
-            _session.MessageLog.OnMessageReceived += message => ArchipelagoConsole.LogMessage(message.ToString());
+            _session.MessageLog.OnMessageReceived += message => Plugin.BepInLogger.LogMessage(message.ToString());
+            // needed because item helper is unhelpful
+            _session.Items.ItemReceived += OnItemReceived;
+            _session.Locations.CheckedLocationsUpdated += OnLocationsReceived;
             _session.Socket.ErrorReceived += OnSessionErrorReceived;
             _session.Socket.SocketClosed += OnSessionSocketClosed;
             Plugin.BepInLogger.LogDebug("doing connect");
@@ -59,7 +65,7 @@ public class ArchipelagoClient : IRandomizerClient
                             GAME,
                             _thisConnection.SlotName,
                             ItemsHandlingFlags.AllItems,
-                            new Version(AP_VERSION),
+                            new Version(VersionInfo.AP_VERSION),
                             password: _thisConnection.Password,
                             requestSlotData: false
                         )
@@ -78,6 +84,38 @@ public class ArchipelagoClient : IRandomizerClient
         }
 
     }
+    string VersionFormatted(Version version)
+    {
+        if (version.Revision != -1)
+            return $"{version.Major}.{version.Minor}.{version.Build}-preview.{version.Revision}";
+        return $"{version.Major}.{version.Minor}.{version.Build}";
+    }
+    bool TestIncompatibleVersion(string slotVersion) {
+        var clientVersion = new Version(VersionInfo.VERSION);
+        var compatVersion = new Version(VersionInfo.COMPAT_VERSION);
+        var serverVersion = new Version(slotVersion);
+        if (serverVersion.Revision != -1 && serverVersion != clientVersion)
+        {
+            Plugin.BepInLogger.LogWarning($"Server {VersionFormatted(serverVersion)} is unstable and different from client {VersionFormatted(clientVersion)}, issues may occur");
+            return false;
+        }
+        if (serverVersion < compatVersion)
+        {
+            Plugin.BepInLogger.LogWarning($"Server {VersionFormatted(serverVersion)} is older than minimum supported {VersionFormatted(compatVersion)} of client {VersionFormatted(clientVersion)}, issues may occur");
+            return false;
+        }
+        if (serverVersion.Revision == -1 && clientVersion.Revision != -1 && serverVersion >= new Version(clientVersion.Major, clientVersion.Minor, clientVersion.Build))
+        {
+            Plugin.BepInLogger.LogWarning($"Server {VersionFormatted(serverVersion)} is newer than client {VersionFormatted(clientVersion)}, please update your client");
+            return true;
+        }
+        if (serverVersion > clientVersion)
+        {
+            Plugin.BepInLogger.LogWarning($"Server {VersionFormatted(serverVersion)} is newer than client {VersionFormatted(clientVersion)}, please update your client");
+            return true;
+        }
+        return false;
+    }
     void HandleConnectResult(LoginResult result)
     {
         Plugin.BepInLogger.LogDebug($"connect result {result.Successful}");
@@ -87,25 +125,25 @@ public class ArchipelagoClient : IRandomizerClient
             var success = (LoginSuccessful)result;
             var slotData = _session.DataStorage.GetSlotData<GameOptions>();
             Plugin.SetGame(new GameState(slotData));
-            if (Plugin.GameState.Options.Version != Plugin.PLUGIN_VERSION)
-                ArchipelagoConsole.LogMessage($"World version {Plugin.GameState.Options.Version} is different from client version {Plugin.PLUGIN_VERSION}, issues may occur!");
+            if (TestIncompatibleVersion(slotData.Version))
+            {
+                Disconnect();
+                return;
+            }
             if (_session.DataStorage.GetClientStatus() == ArchipelagoClientState.ClientGoal)
-                Plugin.GameState.ReceivedLocation(AutoLogic.LOCATION_GOAL);
-            _session.Items.ItemReceived += OnItemReceived;
-            _session.Locations.CheckedLocationsUpdated += OnLocationsReceived;
-            foreach (var item in _session.Items.AllItemsReceived)
-                Plugin.GameState.ReceivedItem((ItemId)item.ItemId, true);
-            foreach (var location in _session.Locations.AllLocationsChecked)
-                Plugin.GameState.ReceivedLocation((int)location);
+                Plugin.GameState.ReceivedLocation(Logic.GOAL);
             var cacheId = $"{_session.RoomState.Seed}:{_session.ConnectionInfo.Slot}";
-            if (Plugin.RandomizerData.LocationCacheId == cacheId)
+            lock (Plugin.Options.LocationCacheLock)
             {
-                // no need to lock as thread isn't running yet
-                _queuedLocations.AddRange(Plugin.RandomizerData.LocationCache);
-            } else
-            {
-                Plugin.RandomizerData.LocationCache.Clear();
-                Plugin.RandomizerData.LocationCacheId = cacheId;
+                if (Plugin.Options.LocationCacheId == cacheId)
+                {
+                    // no need to lock/notify as no queue thread is running
+                    _queuedLocations.AddRange(Plugin.Options.LocationCache);
+                } else
+                {
+                    Plugin.Options.LocationCache.Clear();
+                    Plugin.Options.LocationCacheId = cacheId;
+                }
             }
             DataManager.SaveGameData();
 
@@ -115,43 +153,32 @@ public class ArchipelagoClient : IRandomizerClient
             //_deathLinkHandler = new(_session.CreateDeathLinkService(), ServerData.SlotName);
             outText = $"Successfully connected to {_thisConnection.Uri} as {_thisConnection.SlotName}!";
 
-            ArchipelagoConsole.LogMessage(outText);
+            Plugin.BepInLogger.LogMessage(outText);
         }
         else
         {
             var failure = (LoginFailure)result;
-            outText = $"Failed to connect to {Plugin.RandomizerData.Uri} as {Plugin.RandomizerData.SlotName}.";
+            outText = $"Failed to connect to {Plugin.Options.Uri} as {Plugin.Options.SlotName}.";
             outText = failure.Errors.Aggregate(outText, (current, error) => current + $"\n    {error}");
 
             Plugin.BepInLogger.LogError(outText);
 
             Disconnect();
         }
-
-        ArchipelagoConsole.LogMessage(outText);
     }
 
     void OnItemReceived(ReceivedItemsHelper helper)
     {
-        var receivedItem = helper.DequeueItem();
-
-        Plugin.GameState.ReceivedItem((ItemId)receivedItem.ItemId);
+        _receivedItems.Add(helper.DequeueItem().ItemId);
     }
 
     void OnLocationsReceived(ReadOnlyCollection<long> newCheckedLocations)
     {
-        Plugin.BepInLogger.LogDebug($"received {newCheckedLocations.Count} remote locations");
-        foreach (var location in newCheckedLocations)
-        {
-            if (Plugin.RandomizerData.LocationCache.Contains(location))
-                Plugin.RandomizerData.LocationCache.Remove(location);
-            Plugin.GameState.ReceivedLocation((int)location);
-        }
+        _receivedLocations.AddRange(newCheckedLocations);
     }
     void OnSessionErrorReceived(Exception e, string message)
     {
         Plugin.BepInLogger.LogError(e);
-        ArchipelagoConsole.LogMessage(message);
     }
 
     void OnSessionSocketClosed(string reason)
@@ -199,12 +226,13 @@ public class ArchipelagoClient : IRandomizerClient
             if (queuedGoal)
                 packets.Add(new StatusUpdatePacket() { Status = ArchipelagoClientState.ClientGoal });
 
+            Plugin.BepInLogger.LogDebug($"sending {packets.Count} packets");
             // always run an extra iteration because i'm not confident in my multithreading
             if (packets.Count > 0)
             {
-                Plugin.BepInLogger.LogDebug($"sending {packets.Count} packets");
                 _session.Socket.SendMultiplePackets(packets);
                 Plugin.BepInLogger.LogDebug($"sent packets!");
+                System.Threading.Thread.Sleep(500);
             }
             else
             {
@@ -215,6 +243,27 @@ public class ArchipelagoClient : IRandomizerClient
 
     // impl IRandomizerClient
     public bool Connecting() => Plugin.GameState == null;
+    public void Update()
+    {
+        if (Plugin.GameState == null)
+            return;
+        if (_receivedItems.Count > 0)
+        {
+            foreach (var item in _receivedItems)
+                Plugin.GameState.ReceivedItem((ItemId)item);
+            _receivedItems.Clear();
+        }
+        if (_receivedLocations.Count > 0)
+        {
+            lock (Plugin.Options.LocationCacheLock)
+                foreach (var location in _receivedLocations)
+                    if (Plugin.Options.LocationCache.Contains(location))
+                        Plugin.Options.LocationCache.Remove(location);
+            foreach (var location in _receivedLocations)
+                Plugin.GameState.ReceivedLocation((int)location);
+            _receivedLocations.Clear();
+        }
+    }
     public string GUIStatus()
     {
         return AP_VERSION_STATUS;
@@ -233,8 +282,9 @@ public class ArchipelagoClient : IRandomizerClient
     {
         lock (_lock)
             _queuedLocations.Add(id);
-        if (!Plugin.RandomizerData.LocationCache.Contains(id))
-           Plugin.RandomizerData.LocationCache.Add(id);
+        lock (Plugin.Options.LocationCacheLock)
+            if (!Plugin.Options.LocationCache.Contains(id))
+                Plugin.Options.LocationCache.Add(id);
         // TODO: queue save of randomizer data? how often does it save mid-game
         _wait.Set();
     }

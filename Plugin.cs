@@ -4,26 +4,26 @@ using DonutCountyAP.Archipelago;
 using DonutCountyAP.Randomizer;
 using DonutCountyAP.Patches;
 using UnityEngine;
+using DonutCountyAP.Generated;
 
 namespace DonutCountyAP;
 
-[BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION), BepInProcess("DonutCounty.exe")]
+[BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, VersionInfo.VERSION), BepInProcess("DonutCounty.exe")]
 public class Plugin : BaseUnityPlugin
 {
     public const string PLUGIN_GUID = "zz1e1001.DonutCountyAP";
     public const string PLUGIN_NAME = "DonutCountyAP";
-    // also change version info in .csproj
-    public const string PLUGIN_VERSION = "0.1.1";
 
-    public const string MOD_DISPLAY_INFO = $"{PLUGIN_NAME} v{PLUGIN_VERSION}";
+    public const string MOD_DISPLAY_INFO = $"{PLUGIN_NAME} {VersionInfo.TEXT_VERSION}";
     public static ManualLogSource BepInLogger;
     // TODO: Client and GameState are extremely coupled together (via the global Plugin)
     // particularly there's some weird handling about when each is null or not
     // not a problem yet but it should be looked into more
     public static IRandomizerClient Client = null;
     public static GameState GameState = null;
-    public static RandomizerSaveData RandomizerData = null;
+    public static ClientOptions Options = null;
     public static Patcher Patcher = new();
+    public static Logic Logic;
 
     public static bool ShowOptionsGUI = false;
     public static bool ShowDebugGUI = false;
@@ -31,12 +31,12 @@ public class Plugin : BaseUnityPlugin
     void Awake()
     {
         BepInLogger = Logger;
+        Logic = Logic.LoadEmbedded();
+        PackedAssets.LoadEmbedded();
         ArchipelagoConsole.Awake();
         Globals.shipping = false;
         Patcher.Global.Set(true);
-
-        ArchipelagoConsole.LogMessage($"{MOD_DISPLAY_INFO} loaded!");
-
+        Plugin.BepInLogger.LogMessage($"{MOD_DISPLAY_INFO} loaded!");
     }
 
     string GUIStatus()
@@ -63,35 +63,25 @@ public class Plugin : BaseUnityPlugin
                 GUI.Label(new Rect(16, 90, 150, 20), "Player Name: ");
                 GUI.Label(new Rect(16, 110, 150, 20), "Password: ");
 
-                RandomizerData.Uri = GUI.TextField(new Rect(150, 70, 150, 20),
-                    RandomizerData.Uri);
-                RandomizerData.SlotName = GUI.TextField(new Rect(150, 90, 150, 20),
-                    RandomizerData.SlotName);
-                RandomizerData.Password = GUI.TextField(new Rect(150, 110, 150, 20),
-                    RandomizerData.Password);
+                Options.Uri = GUI.TextField(new Rect(150, 70, 150, 20),
+                    Options.Uri);
+                Options.SlotName = GUI.TextField(new Rect(150, 90, 150, 20),
+                    Options.SlotName);
+                Options.Password = GUI.TextField(new Rect(150, 110, 150, 20),
+                    Options.Password);
 
             }
 
         }
         //if (ShowOptionsGUI)
         if (RM.pauseMenu != null && (OS1OptionsMenu.State)GlobalPatches.OS1OptionsMenu__currentState.GetValue(RM.pauseMenu) == OS1OptionsMenu.State.Options)
-        {
-            GUI.Label(new Rect(16, 170, 300, 20), "Options:");
-            RandomizerData.EasierAchievements = GUI.Toggle(new Rect(16, 190, 300, 20), RandomizerData.EasierAchievements, "Easier achievements");
-            RandomizerData.DialogueSkipping = GUI.Toggle(new Rect(16, 210, 300, 20), RandomizerData.DialogueSkipping, "Dialogue skipping");
-            if (GUI.Button(new Rect(16, 230, 150, 20), "Apply"))
-            {
-                DataManager.SaveGameData_Steam();
-                RandomizerData.ApplyPatches();
-            }
-        }
+            Options.OnGUI();
 
         if (ShowDebugGUI)
-        {
             GameState?.OnGUI();
-        }
 
-        GlobalPatches.LevelSelectGUI();
+        if (GameState != null)
+            GlobalPatches.LevelSelectGUI();
     }
     void Update()
     {
@@ -107,10 +97,11 @@ public class Plugin : BaseUnityPlugin
                 SetGame(new GameState(new GameOptions()));
             }
         }
+        Client?.Update();
     }
     public static void OnTitleConnect()
     {
-        if (RandomizerData.SlotName.IsNullOrWhiteSpace())
+        if (Options.SlotName.IsNullOrWhiteSpace())
             return;
         if (Client?.Connecting() ?? false)
             return;
@@ -135,6 +126,8 @@ public class Plugin : BaseUnityPlugin
             return;
         Debug.Log(game == null ? "ending session" : "starting session");
         GameState = game;
+        if (GameState == null)
+            GameOptions.UnpatchAll();
         // quit to titlescreen
         RM.sceneManager.OnQueueLevel("titlescreen");
         RM.sceneManager.OnPlayQueuedLevel();

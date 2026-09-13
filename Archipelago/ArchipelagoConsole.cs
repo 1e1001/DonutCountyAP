@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BepInEx;
+using BepInEx.Logging;
 using UnityEngine;
 
 namespace DonutCountyAP.Archipelago;
@@ -23,13 +24,35 @@ public static class ArchipelagoConsole
     private const int MaxLogLines = 80;
     private const float HideTimeout = 15f;
 
-    private static string CommandText = "!help";
+    private static string CommandText = "";
     private static Rect CommandTextRect;
     private static Rect SendCommandButton;
 
+    // TODO: replace this with notification messages (and probably don't notify on chat messages?)
     public static void Awake()
     {
         UpdateWindow();
+        Plugin.BepInLogger.LogEvent += (_sender, args) =>
+        {
+            var text = args.Data.ToString();
+            switch (args.Level)
+            {
+                case LogLevel.Message:
+                    LogMessage(text);
+                    break;
+                case LogLevel.Fatal:
+                    LogMessage("[Fatal] " + text);
+                    break;
+                case LogLevel.Error:
+                    LogMessage("[Error] " + text);
+                    break;
+                case LogLevel.Warning:
+                    LogMessage("[Warning] " + text);
+                    break;
+                default:
+                    break;
+            }
+        };
     }
 
     public static void LogMessage(string message)
@@ -37,11 +60,8 @@ public static class ArchipelagoConsole
         if (message.IsNullOrWhiteSpace()) return;
 
         if (logLines.Count == MaxLogLines)
-        {
             logLines.RemoveAt(0);
-        }
         logLines.Add(message);
-        Plugin.BepInLogger.LogMessage(message);
         lastUpdateTime = Time.time;
         UpdateWindow();
     }
@@ -82,20 +102,15 @@ public static class ArchipelagoConsole
         if (Hidden)
         {
             if (logLines.Count > 0)
-            {
                 scrollText = logLines[logLines.Count - 1];
-            }
         }
         else
         {
             for (var i = 0; i < logLines.Count; i++)
             {
-                scrollText += "> ";
                 scrollText += logLines.ElementAt(i);
                 if (i < logLines.Count - 1)
-                {
-                    scrollText += "\n\n";
-                }
+                    scrollText += "\n";
             }
         }
 

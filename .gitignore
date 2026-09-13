@@ -2,4 +2,11 @@
 lib/
 bin/
 obj/
+logic/target/
+# generated files
+donutcounty/archipelago.json
+donutcounty/logic.json
+Generated/logic.json
+Generated/ItemId.cs
+Generated/VersionInfo.cs
 __pycache__/

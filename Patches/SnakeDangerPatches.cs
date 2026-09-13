@@ -1,4 +1,5 @@
-﻿using DonutCountyAP.Randomizer;
+﻿using DonutCountyAP.Generated;
+using DonutCountyAP.Randomizer;
 using HarmonyLib;
 using System;
 using System.Collections;
@@ -23,24 +24,34 @@ public class SnakeDangerPatches
                 OnDangerEvent(__instance);
                 break;
             case "<SnakeMoveRoutine>c__Iterator0":
-                Plugin.GameState.FoundEvent("snake_danger_snake");
+                Plugin.GameState.FoundEvent("snake_snake");
                 // queue initial snake danger
                 OnDangerEvent(__instance);
                 break;
             case "ChickenSnakeAlarm":
-                Plugin.GameState.FoundEvent("snake_danger_horn");
+                Plugin.GameState.FoundEvent("snake_horn");
                 break;
             case "ChickenSign":
-                Plugin.GameState.FoundEvent("snake_danger_sign");
+                Plugin.GameState.FoundEvent("snake_sign");
                 break;
             case "ChickenSwing":
-                Plugin.GameState.FoundEvent("snake_danger_swing");
+                Plugin.GameState.FoundEvent("snake_swing");
                 break;
             default:
-                Plugin.BepInLogger.LogWarning($"got invalid stacktrace for danger event: {trace}");
+                Plugin.BepInLogger.LogError($"got invalid stacktrace for danger event: {trace}");
                 break;
         }
         return false;
+    }
+
+    [HarmonyPatch(typeof(RangerRadio), "OnExceedMaxDangerLevel"), HarmonyPrefix]
+    static void RangerRadio_OnExceedMaxDangerLevel()
+    {
+        // TODO: some in-game way to prevent progression
+        Plugin.GameState.FoundEvent("snake_snake");
+        Plugin.GameState.FoundEvent("snake_horn");
+        Plugin.GameState.FoundEvent("snake_sign");
+        Plugin.GameState.FoundEvent("snake_swing");
     }
 
     static readonly FieldInfo RangerRadio_dangerCoroutine = AccessTools.Field(typeof(RangerRadio), "dangerCoroutine");

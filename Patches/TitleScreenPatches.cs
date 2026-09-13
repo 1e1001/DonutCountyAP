@@ -45,7 +45,7 @@ public partial class GlobalPatches
     static bool Prefix(ShowTitleScreen __instance)
     {
         var complete = Plugin.GameState == null;
-        var beach = Plugin.GameState?.HasLocation(AutoLogic.LOCATION_GOAL) ?? false;
+        var beach = Plugin.GameState?.HasLocation(Logic.GOAL) ?? false;
         OS1LevelSelect_OnPressButtonBack(RM.os1LevelSelect);
         complete |= beach;
         Plugin.BepInLogger.LogDebug($"Titlescreen {complete}+{beach}");

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DonutCountyAP.Generated;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace DonutCountyAP.Randomizer;
@@ -10,6 +11,7 @@ public class DebugClient : IRandomizerClient
     // impl IRandomizerClient
     public bool Connecting() => false;
     public string GUIStatus() => "Debug session";
+    public void Update() { }
     public void SendChat(string _text) { }
     public void SendGoal() { }
     public void SendLocation(long id)

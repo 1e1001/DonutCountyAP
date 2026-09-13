@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using DonutCountyAP.Generated;
+using HarmonyLib;
 using UnityEngine;
 
 namespace DonutCountyAP.Patches;
@@ -35,6 +36,6 @@ public class DialogueSkippingPatches
     [HarmonyPatch(typeof(TextingManager), "SetCloseButton"), HarmonyPrefix]
     static void TextingManager_SetCloseButton(ref bool showCloseButton)
     {
-        showCloseButton |= !Plugin.GameState.Options.Texting || Plugin.GameState.Has(Randomizer.ItemId.Texting);
+        showCloseButton |= !Plugin.GameState.Options.Texting || Plugin.GameState.Has(ItemId.Texting);
     }
 }

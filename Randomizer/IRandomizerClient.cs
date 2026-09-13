@@ -7,6 +7,7 @@ public interface IRandomizerClient
 {
     public bool Connecting();
     public string GUIStatus();
+    public void Update();
     public void SendChat(string text);
     public void SendGoal();
     public void SendLocation(long id);

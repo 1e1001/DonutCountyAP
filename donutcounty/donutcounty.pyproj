@@ -5,7 +5,7 @@
     <ProjectGuid>75003feb-caae-4d5b-9c0a-068ca52e4949</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>__init__.py</StartupFile>
-		<!-- TODO: can i make this not setup-dependant -->
+    <!-- TODO: can i make this not setup-dependant -->
     <SearchPath>..\..\..\GitHub\Archipelago</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -21,9 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="autologic.py" />
     <Compile Include="items.py" />
     <Compile Include="locations.py" />
+    <Compile Include="logic.py" />
     <Compile Include="options.py" />
     <Compile Include="regions.py" />
     <Compile Include="rules.py" />
@@ -35,6 +35,7 @@
     <Content Include="archipelago.json" />
     <Content Include="docs\en_Donut County.md" />
     <Content Include="docs\en_setup.md" />
+    <Content Include="logic.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="docs\" />

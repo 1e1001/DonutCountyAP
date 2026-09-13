@@ -11,7 +11,7 @@ public class Patcher
 
     public PatchSet SnakeDanger = new(typeof(SnakeDangerPatches));
     public PatchSet SaltAndPepper = new(typeof(SaltAndPepperPatches));
-    public PatchSet DebugFallState = new(typeof(DebugFallStatePatches));
+    public PatchSet Trashsanity = new(typeof(TrashsanityPatches));
 
     // for some reason record doesn't work here?
     public class PatchSet(Type Type)

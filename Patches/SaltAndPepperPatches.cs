@@ -1,4 +1,5 @@
-﻿using DonutCountyAP.Randomizer;
+﻿using DonutCountyAP.Generated;
+using DonutCountyAP.Randomizer;
 using HarmonyLib;
 using System.Reflection;
 using UnityEngine;
@@ -28,8 +29,8 @@ public class SaltAndPepperPatches
     {
         if (!__instance.isBad)
         {
-            Plugin.GameState.FoundEvent($"soup_salt{SoupManager_numSalt.GetValue(__instance)}");
-            Plugin.GameState.FoundEvent($"soup_pepper{SoupManager_numPepper.GetValue(__instance)}");
+            Plugin.GameState.FoundEvent($"soup_salt{SoupManager_numSalt.GetValue(__instance)}", true);
+            Plugin.GameState.FoundEvent($"soup_pepper{SoupManager_numPepper.GetValue(__instance)}", true);
         }
         var salt = Plugin.GameState.Quantity(ItemId.Salt);
         var pepper = Plugin.GameState.Quantity(ItemId.Pepper);

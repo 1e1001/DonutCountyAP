@@ -53,6 +53,7 @@ public partial class GlobalPatches
                 Plugin.GameState.ActiveDelivery = false;
             }
         }
+        Plugin.BepInLogger.LogDebug($"TEMP delivery {delivery}");
         Plugin.GameState.FoundEvent($"delivery{delivery}", true);
     }
 

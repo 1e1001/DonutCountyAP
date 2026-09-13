@@ -17,7 +17,6 @@ class TotalPieces(Range):
     """
     How many Quadcopter Pieces to add to the item pool.
     There may be fewer than this depending on the number of free locations.
-    See the note on the game info page about `start_inventory` behavior.
     """
     display_name = "Total pieces"
     range_start = 0
@@ -33,17 +32,9 @@ class PiecesRequired(Range):
     range_end = 100
     default = 80
     
-class PiecesUnlockLevels(Toggle):
-    """
-    Start with a single area unlocked, Quadcopter Pieces progressively unlock more areas in a shuffled order.
-    **Likely to cause generation errors.**
-    """
-    display_name = "Pieces unlock levels"
-   
 class Levels(Toggle):
     """
-    Require items to be able to access each level. Add a level to `start_inventory` so you can do something at the start of the game. (20-21 items)
-    **Likely to cause generation errors.**
+    Require items to be able to access each level. Automatically gives you one level to start (19-20 items)
     """
     display_name = "Levels"
    
@@ -62,8 +53,8 @@ class Hole(Choice):
 class Catapult(Choice):
     """
     - off: Catapult is always available.
-    - global: Require an item to use the catapult. (1 item)
-    - split: Require items to launch specific kinds of object. (11 items)
+    - global: Require an item to use the catapult. (1 item, 1 location)
+    - split: Require items to launch specific kinds of object. (11 items, 1 location)
     """
     display_name = "Catapult"
     option_off = 0
@@ -74,6 +65,12 @@ class Catapult(Choice):
 class Texting(Toggle):
     """
     Require an item to be able to send text messages. (1 item)
+    """
+    display_name = "Texting"
+    
+class TrashSouls(Toggle):
+    """
+    Require an item to unlock physics on each type of trash. Has no effect if `trashsanity` is `off`. (113 items)
     """
     display_name = "Texting"
     
@@ -94,12 +91,7 @@ class Achievements(Toggle):
     Location for each non-postgame achievement. (16 locations)
     """
     display_name = "Achievements"
-    
-class BuyCatapult(Toggle):
-    """
-    Location when purchasing the catapult. (1 location)
-    """
-    display_name = "Buy catapult"
+  
     
 class SnakeDanger(Toggle):
     """
@@ -112,10 +104,25 @@ class SaltAndPepper(Toggle):
     Cat Soup shakers will give locations, Progressive Salt & Pepper unlock progression. (5 locations, 5 items)
     """
     display_name = "Salt & pepper"
+    
+class Trashsanity(Choice):
+    """
+    - off: Trash gives no checks
+    - types: Collecting each type of trash is a location (113 locations)
+    - all: Collecting each individual piece of trash is a location (1276 locations)
+    """
+    display_name = "Trashsanity"
+    option_off = 0
+    option_types = 1
+    option_all = 2
+    default = option_off
 
 _default_filler_weights = {
-    "filler": 7,
-    "concrete_trap": 2,
+    "filler": 12,
+    # unimplemented
+    #"hole_size": 0,
+    #"launch_trap": 0,
+    "cement_trap": 2,
     "depths_trap": 1,
 }
 
@@ -126,6 +133,8 @@ class FillerWeights(OptionCounter):
     - concrete_trap: Disables your hole for a short period.
     - depths_trap: Takes you 999ft below Donut County for a random cutscene.
     """
+    #- hole_size: Gives your hole a temporary size boost.
+    #- launch_trap: Launch a random item from your hole.
     display_name = "Filler Weights"
     valid_keys = _default_filler_weights.keys()
 
@@ -152,23 +161,23 @@ class DonutCountyOptions(PerGameCommonOptions):
     goal_area: GoalArea
     total_pieces: TotalPieces
     pieces_required_percent: PiecesRequired
-    pieces_unlock_levels: PiecesUnlockLevels
 
     # Item options
     levels: Levels
     hole: Hole
     catapult: Catapult
     texting: Texting
+    trash_souls: TrashSouls
 
     # Location options
     #level_completions: LevelCompletions
     #level_segments: LevelSegments
     achievements: Achievements
-    buy_catapult: BuyCatapult
     snake_danger: SnakeDanger
     salt_and_pepper: SaltAndPepper
+    trashsanity: Trashsanity
     
-    # Trash options
+    # Filler options
     filler_weights: FillerWeights
 
     # Default AP option (why)
@@ -176,15 +185,15 @@ class DonutCountyOptions(PerGameCommonOptions):
 
 option_groups = [
     OptionGroup("Game Options", [
-        GoalArea, TotalPieces, PiecesRequired, PiecesUnlockLevels
+        GoalArea, TotalPieces, PiecesRequired
     ]),
     OptionGroup("Item Options", [
-        Levels, Hole, Catapult, Texting
+        Levels, Hole, Catapult, Texting, TrashSouls
     ]),
     OptionGroup("Location Options", [
-        Achievements, BuyCatapult, SnakeDanger, SaltAndPepper
+        Achievements, SnakeDanger, SaltAndPepper, Trashsanity
     ]),
-    OptionGroup("Trash Options", [
+    OptionGroup("Filler Options", [
         FillerWeights
     ]),
 ]

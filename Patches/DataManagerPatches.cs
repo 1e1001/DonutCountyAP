@@ -22,31 +22,32 @@ public partial class GlobalPatches
         if (FileManagement.FileExists(randomizerDataPath, false))
         {
             var xml2 = FileManagement.GetString(randomizerDataPath, string.Empty);
-            Plugin.RandomizerData = SerializerHelper<RandomizerSaveData>.XmlToObject(xml2);
-            Plugin.RandomizerData.Validate();
+            Plugin.Options = SerializerHelper<ClientOptions>.XmlToObject(xml2);
+            Plugin.Options.Validate();
             Plugin.BepInLogger.LogDebug("found randomizer save");
         }
         else
         {
-            Plugin.RandomizerData = new RandomizerSaveData();
+            Plugin.Options = new ClientOptions();
             Plugin.BepInLogger.LogDebug("no randomizer save");
         }
-        Plugin.RandomizerData.Log();
-        Plugin.RandomizerData.ApplyPatches();
+        Plugin.Options.Log();
+        Plugin.Options.ApplyPatches();
         DataManager.gameData = new DataManager.GameSaveData()
         {
             gameComplete = 1,
             newItemsPopup = 1,
-            trashopediaIndex = Plugin.RandomizerData.TrashopediaIndex,
+            trashopediaIndex = Plugin.Options.TrashopediaIndex,
             hasSeenGameOverCutscene = 0,
         };
     }
     [HarmonyPatch(typeof(DataManager), "SaveGameData_Steam"), HarmonyPrefix]
     static bool DataManager_SaveGameData_Steam()
     {
-        Plugin.RandomizerData.TrashopediaIndex = DataManager.gameData.trashopediaIndex;
+        Plugin.Options.TrashopediaIndex = DataManager.gameData.trashopediaIndex;
         // TODO: delay & debounce saving, then call it more often
-        FileManagement.SetString(GetRandomizerDataPath(), SerializerHelper<RandomizerSaveData>.ObjectToXml(Plugin.RandomizerData));
+        // also check cache lock!
+        FileManagement.SetString(GetRandomizerDataPath(), SerializerHelper<ClientOptions>.ObjectToXml(Plugin.Options));
         Plugin.BepInLogger.LogInfo("not saving the game, saved ap config instead");
         //if (Plugin.Client != null)
         //{
