@@ -1,4 +1,5 @@
-﻿using DonutCountyAP.Randomizer;
+﻿using DonutCountyAP.Generated;
+using DonutCountyAP.Randomizer;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
@@ -19,14 +20,14 @@ public class TrashsanityPatches
             return;
         Plugin.BepInLogger.LogDebug("prepare for lag");
         foreach (var obj in __instance.gameObject.scene.GetRootGameObjects())
-            EnumerateTransform(obj.transform, sceneName, expected, Plugin.GameState.Options.Trashsanity == GameOptions.TrashsanityMode.Types, ref i, null);
+            EnumerateTransform(obj.transform, sceneName, expected, Plugin.GameState.Options.TrashSouls, Plugin.GameState.Options.Trashsanity == GameOptions.TrashsanityMode.Types, ref i, null);
         if (i != expected.Length)
             Plugin.BepInLogger.LogError($"bad trash {sceneName} count {i} expected {expected.Length}");
         Plugin.BepInLogger.LogDebug($"loaded {i} fallstate(s) in {sceneName}");
 
     }
 
-    static void EnumerateTransform(Transform transform, string sceneName, Logic.GameTrash[] expected, bool types, ref int i, FallStateExtra parent)
+    static void EnumerateTransform(Transform transform, string sceneName, Logic.GameTrash[] expected, bool souls, bool types, ref int i, FallStateExtra parent)
     {
         var fallState = transform.GetComponent<FallState>();
         if (fallState != null)
@@ -38,7 +39,7 @@ public class TrashsanityPatches
             } else
             {
                 parent = fallState.gameObject.AddComponent<FallStateExtra>();
-                parent.Unlock = data.Unlock;
+                parent.Unlock = souls ? data.Unlock : ItemId.None;
                 parent.Location = types ? data.TypeId : data.Id;
                 parent.DebugIndex = i;
                 parent.Refresh();
@@ -55,7 +56,7 @@ public class TrashsanityPatches
                 parent.AddChildCollider(collider);
         }
         foreach (Transform child in transform)
-            EnumerateTransform(child, sceneName, expected, types, ref i, parent);
+            EnumerateTransform(child, sceneName, expected, souls, types, ref i, parent);
     }
 
     [HarmonyPatch(typeof(HoleContents), "AddToHole"), HarmonyPrefix]
@@ -71,6 +72,12 @@ public class TrashsanityPatches
         g.GetComponent<FallStateExtra>()?.Collect();
     }
 
+    static void InitLate(FallState root, string id, ItemId unlock)
+    {
+        var i = 0;
+        EnumerateTransform(root.transform, "late", [new(root.name, unlock, Plugin.Logic.Events[unlock.ToString()].Id, Plugin.Logic.Events[id].Id)], Plugin.GameState.Options.TrashSouls, Plugin.GameState.Options.Trashsanity == GameOptions.TrashsanityMode.Types, ref i, null);
+    }
+        
     [HarmonyPatch(typeof(FallState), "Start"), HarmonyPrefix]
     static void FallState_Start(FallState __instance)
     {
@@ -79,12 +86,24 @@ public class TrashsanityPatches
             var id = $"{UnityEngine.SceneManagement.SceneManager.GetActiveScene().name} {__instance.name}";
             switch (id)
             {
-                case "sbx_soup kitchenCockroach(Clone)": // Cockroach
-                case "scn_popcorn_simple Popcorn": // Corn
-                case "scn_fireworks popcorn(Clone)": // Corn
-                case "scn_waterpark fish(Clone)": // Fish
-                case "scn_waterpark waterBalloon(Clone)": // WaterBalloon
-                case "scn_405 photo(Clone)": // Camera
+                case "sbx_soup kitchenCockroach(Clone)":
+                    InitLate(__instance, id, ItemId.TrashCockroach);
+                    break;
+                case "scn_popcorn_simple Popcorn":
+                    InitLate(__instance, id, ItemId.TrashCorn);
+                    break;
+                case "scn_fireworks Popcorn":
+                    InitLate(__instance, id, ItemId.TrashCorn);
+                    break;
+                case "scn_waterpark fish":
+                    InitLate(__instance, id, ItemId.TrashFish);
+                    break;
+                case "scn_waterpark WaterBalloon(Clone)":
+                    InitLate(__instance, id, ItemId.TrashWaterBalloon);
+                    break;
+                case "scn_405 photo(Clone)":
+                    InitLate(__instance, id, ItemId.TrashCamera);
+                    break;
                 default: 
                     Plugin.BepInLogger.LogError($"object {id} is late!");
                     break;

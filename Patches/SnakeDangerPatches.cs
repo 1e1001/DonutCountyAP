@@ -44,16 +44,6 @@ public class SnakeDangerPatches
         return false;
     }
 
-    [HarmonyPatch(typeof(RangerRadio), "OnExceedMaxDangerLevel"), HarmonyPrefix]
-    static void RangerRadio_OnExceedMaxDangerLevel()
-    {
-        // TODO: some in-game way to prevent progression
-        Plugin.GameState.FoundEvent("snake_snake");
-        Plugin.GameState.FoundEvent("snake_horn");
-        Plugin.GameState.FoundEvent("snake_sign");
-        Plugin.GameState.FoundEvent("snake_swing");
-    }
-
     static readonly FieldInfo RangerRadio_dangerCoroutine = AccessTools.Field(typeof(RangerRadio), "dangerCoroutine");
     static readonly FieldInfo RangerRadio_dangerEventQueue = AccessTools.Field(typeof(RangerRadio), "dangerEventQueue");
     static readonly FieldInfo RangerRadio__exceededMaxDangerLevel = AccessTools.Field(typeof(RangerRadio), "_exceededMaxDangerLevel");

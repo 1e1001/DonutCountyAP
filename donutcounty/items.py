@@ -17,12 +17,6 @@ class DonutCountyItem(Item):
     game = "Donut County"
 
 def get_random_filler_item_name(world: DonutCountyWorld) -> str:
-    if "filler_lists" not in world.dc_gen_data:
-        filler_lists = (list(world.options.filler_weights.value.keys()), list(world.options.filler_weights.value.values()))
-        if sum(filler_lists[1]) == 0:
-            filler_lists[0].append("filler")
-            filler_lists[1].append(1)
-        world.dc_gen_data["filler_lists"] = filler_lists
     return world.random.choice(logic.fillers[world.random.choices(world.dc_gen_data["filler_lists"][0], world.dc_gen_data["filler_lists"][1])[0]])
 
 def create_item(world: DonutCountyWorld, name: str) -> DonutCountyItem:
@@ -88,14 +82,16 @@ def create_all_items(world: DonutCountyWorld) -> None:
     if is_ut_gen:
         spawn_pieces = world.dc_slot_data["total_pieces"]
         required_for_goal = max(world.dc_slot_data["required_pieces"])
+        # force all UT pieces progression so /next_progression can see them
+        itempool += [world.create_item(logic.piece) for _ in range(spawn_pieces)]
     else:
         unfilled_after_basic = total_locations - len(itempool)
         spawn_pieces = min(unfilled_after_basic, world.options.total_pieces.value)
         assert spawn_pieces >= 0, "Not enough item space to place any quadcopter pieces"
         world.dc_slot_data["total_pieces"] = spawn_pieces
         world.dc_slot_data["required_pieces"], required_for_goal = roll_required_pieces(world, spawn_pieces)
-    itempool += [world.create_item(logic.piece) for _ in range(required_for_goal)]
-    itempool += [create_nonprogression_piece(world) for _ in range(spawn_pieces - required_for_goal)]
+        itempool += [world.create_item(logic.piece) for _ in range(required_for_goal)]
+        itempool += [create_nonprogression_piece(world) for _ in range(spawn_pieces - required_for_goal)]
     
     # UT gens might have more items than locations
     unfilled = max(0, total_locations - len(itempool))

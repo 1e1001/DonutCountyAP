@@ -125,13 +125,6 @@ impl From<i32> for ItemIndex {
 	fn from(value: i32) -> Self { Self(value) }
 }
 
-#[derive(Debug)]
-pub enum LocationData {
-	None,
-	Event(String),
-	TrashType(String),
-}
-
 #[derive(Clone, Copy, Debug, Serialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum LocationType {
 	// order is used for tracker position
@@ -353,7 +346,7 @@ pub struct Region {
 #[derive(Debug)]
 pub struct Location {
 	pub name: String,
-	pub data: LocationData,
+	pub event: Option<String>,
 	pub r#type: LocationType,
 	pub region: RegionIndex,
 	pub rules: Rule,

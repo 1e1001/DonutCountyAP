@@ -7,9 +7,8 @@ use std::mem::take;
 use iter_debug::DebugIterator;
 
 use crate::data::{
-	Data, Item, ItemClass, ItemIndex, ItemType, Level, Location, LocationData, LocationIndex,
-	LocationType, Region, RegionConnection, RegionIndex, Rule, Scene, TrackerPosition, Trash,
-	Version,
+	Data, Item, ItemClass, ItemIndex, ItemType, Level, Location, LocationIndex, LocationType,
+	Region, RegionConnection, RegionIndex, Rule, Scene, TrackerPosition, Trash, Version,
 };
 use crate::output::{GameData, GameDataItemIds, GameDataVersionInfo, PyArchipelago, PyData};
 use crate::sheet::{FromCell, SheetReader};
@@ -122,7 +121,7 @@ fn main() {
 					};
 					data.locations.set(Some(id), LocationIndex(location), Location {
 						name: location_name,
-						data: event.map_or(LocationData::None, LocationData::Event),
+						event,
 						r#type: location_type,
 						region: region_index,
 						rules,
@@ -171,7 +170,7 @@ fn main() {
 			                         rules: Rule| {
 				data.locations.set(None, LocationIndex(location), Location {
 					name,
-					data: event.map_or(LocationData::None, LocationData::Event),
+					event,
 					r#type,
 					region: data.regions.name(&region).unwrap(),
 					rules,
@@ -203,6 +202,7 @@ fn main() {
 		"trash_types" => {
 			reader.sheet(worksheet!(|item: i32,
 			                         location: i32,
+			                         event: bool,
 			                         id: String,
 			                         class: ItemClass,
 			                         name: String| {
@@ -215,7 +215,7 @@ fn main() {
 				});
 				data.locations.set(Some(item_id.clone()), LocationIndex(location), Location {
 					name: name.clone(),
-					data: LocationData::TrashType(id),
+					event: event.then(|| item_id.clone()),
 					r#type: LocationType::TrashType,
 					region,
 					rules: Rule::True,
@@ -330,7 +330,7 @@ fn main() {
 						name: format!("{}: {visual}", data.regions[region].name),
 						// TODO: having locations use level name (and only differentiating by region when needed) is preferred
 						//name: format!("{}: {visual}", data.levels[data.regions[region].position.first().unwrap().0].name),
-						data: LocationData::None,
+						event: None,
 						r#type: LocationType::Trash,
 						region,
 						rules,

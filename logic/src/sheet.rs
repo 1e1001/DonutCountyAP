@@ -22,6 +22,10 @@ impl FromCell for i32 {
 	}
 }
 
+impl FromCell for bool {
+	fn from_cell(text: &str) -> Self { !text.is_empty() }
+}
+
 impl FromCell for String {
 	fn from_cell(text: &str) -> Self { text.to_owned() }
 }

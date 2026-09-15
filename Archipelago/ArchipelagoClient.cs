@@ -35,8 +35,8 @@ public class ArchipelagoClient : IRandomizerClient
     readonly List<string> _queuedChat = [];
     readonly Dictionary<string, JToken> _queuedDataStorage = [];
     bool _queuedGoal = false;
+    readonly object _rlLock = new();
     readonly List<long> _receivedLocations = [];
-    readonly List<long> _receivedItems = [];
 
     // TODO: "by default a lot of exceptions in threads/tasks may get lost."
     // add try handlers to more things (in a way that looks nice)
@@ -49,8 +49,6 @@ public class ArchipelagoClient : IRandomizerClient
         {
             _session = ArchipelagoSessionFactory.CreateSession(_thisConnection.Uri);
             _session.MessageLog.OnMessageReceived += message => Plugin.BepInLogger.LogMessage(message.ToString());
-            // needed because item helper is unhelpful
-            _session.Items.ItemReceived += OnItemReceived;
             _session.Locations.CheckedLocationsUpdated += OnLocationsReceived;
             _session.Socket.ErrorReceived += OnSessionErrorReceived;
             _session.Socket.SocketClosed += OnSessionSocketClosed;
@@ -166,15 +164,10 @@ public class ArchipelagoClient : IRandomizerClient
             Disconnect();
         }
     }
-
-    void OnItemReceived(ReceivedItemsHelper helper)
-    {
-        _receivedItems.Add(helper.DequeueItem().ItemId);
-    }
-
     void OnLocationsReceived(ReadOnlyCollection<long> newCheckedLocations)
     {
-        _receivedLocations.AddRange(newCheckedLocations);
+        lock (_rlLock)
+            _receivedLocations.AddRange(newCheckedLocations);
     }
     void OnSessionErrorReceived(Exception e, string message)
     {
@@ -247,21 +240,24 @@ public class ArchipelagoClient : IRandomizerClient
     {
         if (Plugin.GameState == null)
             return;
-        if (_receivedItems.Count > 0)
+        while (_session.Items.Any())
         {
-            foreach (var item in _receivedItems)
-                Plugin.GameState.ReceivedItem((ItemId)item);
-            _receivedItems.Clear();
+            var item = _session.Items.DequeueItem();
+            Plugin.GameState.ReceivedItem((ItemId)item.ItemId);
         }
-        if (_receivedLocations.Count > 0)
+        // this is a kinda huge critical section but it's fine for the socket thread to just wait it out
+        lock (_rlLock)
         {
-            lock (Plugin.Options.LocationCacheLock)
+            if (_receivedLocations.Count > 0)
+            {
+                lock (Plugin.Options.LocationCacheLock)
+                    foreach (var location in _receivedLocations)
+                        if (Plugin.Options.LocationCache.Contains(location))
+                            Plugin.Options.LocationCache.Remove(location);
                 foreach (var location in _receivedLocations)
-                    if (Plugin.Options.LocationCache.Contains(location))
-                        Plugin.Options.LocationCache.Remove(location);
-            foreach (var location in _receivedLocations)
-                Plugin.GameState.ReceivedLocation((int)location);
-            _receivedLocations.Clear();
+                    Plugin.GameState.ReceivedLocation((int)location);
+                _receivedLocations.Clear();
+            }
         }
     }
     public string GUIStatus()

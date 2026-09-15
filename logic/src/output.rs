@@ -6,8 +6,8 @@ use serde::Serialize;
 use serde_tuple::Serialize_tuple;
 
 use crate::data::{
-	Data, ItemClass, ItemIndex, ItemType, LocationData, LocationIndex, LocationType, RegionIndex,
-	Rule, TrackerPosition,
+	Data, ItemClass, ItemIndex, ItemType, LocationIndex, LocationType, RegionIndex, Rule,
+	TrackerPosition,
 };
 
 #[derive(Clone, Debug, Serialize, PartialEq, Eq, Hash)]
@@ -483,17 +483,15 @@ pub struct GameData<'data> {
 
 impl<'data> GameData<'data> {
 	pub fn new(data: &'data Data) -> Self {
-		let events = data
-			.locations
-			.iter()
-			.filter_map(|(index, location)| {
-				if let LocationData::Event(event) = &location.data {
-					Some((&**event, GameLocation { id: index, r#type: location.r#type }))
-				} else {
-					None
-				}
-			})
-			.collect();
+		let events =
+			data.locations
+				.iter()
+				.filter_map(|(index, location)| {
+					location.event.as_ref().map(|event| {
+						(&**event, GameLocation { id: index, r#type: location.r#type })
+					})
+				})
+				.collect();
 		let mut levels = data
 			.levels
 			.iter()

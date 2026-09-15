@@ -53,7 +53,7 @@ class DonutCountyWorld(World):
     def get_filler_item_name(self) -> str:
         return items.get_random_filler_item_name(self)
     def fill_slot_data(self) -> Mapping[str, Any]:
-        # TODO: move options slot data into their own subkey (how to deserialize this?)
+        # TODO: split direct options and generated values into sub-keys (how to deserialize in C#?)
         for k, v in self.options.as_dict("goal_area", "levels", "hole", "catapult", "texting", "trash_souls", "achievements", "snake_danger", "salt_and_pepper", "trashsanity").items():
             self.dc_slot_data[k] = v
         return self.dc_slot_data
@@ -94,3 +94,8 @@ class DonutCountyWorld(World):
                     opt: Optional[Option] = getattr(self.options, key, None)
                     if opt is not None:
                         setattr(self.options, key, opt.from_any(value))
+        filler_lists = (list(self.options.filler_weights.value.keys()), list(self.options.filler_weights.value.values()))
+        if sum(filler_lists[1]) == 0:
+            filler_lists[0].append("filler")
+            filler_lists[1].append(1)
+        self.dc_gen_data["filler_lists"] = filler_lists

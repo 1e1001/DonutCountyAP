@@ -71,6 +71,7 @@ class Texting(Toggle):
 class TrashSouls(Toggle):
     """
     Require an item to unlock physics on each type of trash. Has no effect if `trashsanity` is `off`. (113 items)
+    "It's like the Dark Souls of trash"
     """
     display_name = "Trash souls"
     
@@ -109,7 +110,7 @@ class Trashsanity(Choice):
     """
     - off: Trash gives no checks
     - types: Collecting each type of trash is a location (113 locations)
-    - all: Collecting each individual piece of trash is a location (1276 locations)
+    - all: Collecting each individual piece of trash is a location (1274 locations)
     """
     display_name = "Trashsanity"
     option_off = 0

@@ -22,13 +22,8 @@ Generative AI has not been used to make this AP implementation. I have no plans 
 
 ## design notes / todo:
 
-- kitchenCockroach is late
-- popcorn is late
-- lagoon fish and balloons is late
-- late warning triggers on titlescreen again! give it trash entries but no items
 - snake danger doesn't have a way to delay the 4-item transition to collect the locations?
 - error sound on failed catapult
-
 - different piece-percentage for level unlocks vs. goal unlock
 	- or like one piece = one level
 	- do actual playtesting / design work for this
@@ -36,9 +31,6 @@ Generative AI has not been used to make this AP implementation. I have no plans 
 		- and it seems in fuzzing that the piece requirements often outpace the available checks in each level
 - "Quadcopter Piece" is a temporary name, come up with a better one and use that
 	- name should try to reflect the usefulness of the item?
-- if levels = false, then levels in start_inventory should set their piece requirements to 0
-- fuzzing has >1% failure rate due to restrictive start / piece progression
-	- fix my fuzzing setup so i can actually use the empty world
 - fix weird sudden crashes
 - clamp mouse position to screen coordinates (there's some weird menu behaviors)
 - make the cursor visible in some situations it normally isn't (e.g. during loading)
