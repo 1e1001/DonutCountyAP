@@ -26,9 +26,7 @@ Once you've installed everything it should look like this:
 
 ![post-install diagram](./postinstall.png)
 
-1. From Donut County
-2. From BepInEx
-3. From DonutCountyAP
+(1) From Donut County. (2) From BepInEx. (3) From DonutCountyAP.
 
 ## Usage
 
