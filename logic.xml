@@ -35,13 +35,13 @@
    <Protection/>
   </Style>
   <Style ss:ID="s21">
-   <Font x:Family="Swiss"/>
+   <NumberFormat ss:Format="Scientific"/>
   </Style>
-  <Style ss:ID="s25">
+  <Style ss:ID="s22">
    <NumberFormat/>
   </Style>
-  <Style ss:ID="s27">
-   <NumberFormat ss:Format="Scientific"/>
+  <Style ss:ID="s23">
+   <Font x:Family="Swiss"/>
   </Style>
  </Styles>
  <Worksheet ss:Name="metadata">
@@ -69,7 +69,7 @@
    <Row>
     <Cell><Data ss:Type="String">archipelago</Data></Cell>
     <Cell ss:Index="3"><Data ss:Type="String">0.6.7;1e1001</Data></Cell>
-    <Cell ss:Index="7" ss:StyleID="s27"/>
+    <Cell ss:Index="7" ss:StyleID="s21"/>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
@@ -165,8 +165,8 @@
     <Cell ss:Index="8"><Data ss:Type="String">Launch</Data></Cell>
     <Cell><Data ss:Type="String">HoleFire</Data><Comment ss:Author="michael"><ss:Data
        xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
-         x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;TODO: kiln isn't enough for this, come up with extra item logic</Font></ss:Data></Comment></Cell>
+         html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;TODO: kiln isn't enough for this, come up with extra item logic</Font></ss:Data></Comment></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">2</Data></Cell>
@@ -754,8 +754,8 @@
     <Cell><Data ss:Type="Number">75</Data></Cell>
     <Cell><Data ss:Type="String">anthropology_end</Data><Comment
       ss:Author="michael"><ss:Data xmlns="http://www.w3.org/TR/REC-html40"><B><Font
-         html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;wait why is this not just&#10;delivery22?</Font></ss:Data></Comment></Cell>
+         html:Face="Tahoma" html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;wait why is this not just&#10;delivery22?</Font></ss:Data></Comment></Cell>
     <Cell><Data ss:Type="String">18,2</Data></Cell>
     <Cell><Data ss:Type="String">Segment</Data></Cell>
     <Cell><Data ss:Type="String">alFirework</Data></Cell>
@@ -820,8 +820,8 @@
     <Cell><Data ss:Type="String">Segment</Data></Cell>
     <Cell><Data ss:Type="String">bf2</Data><Comment ss:Author="michael"><ss:Data
        xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
-         x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;TODO: region split after hacking device&#10;(I forgot why)</Font></ss:Data></Comment></Cell>
+         html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;TODO: region split after hacking device&#10;(I forgot why)</Font></ss:Data></Comment></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">Phase 2</Data></Cell>
     <Cell><Data ss:Type="String">CatapultHackingDevice</Data></Cell>
    </Row>
@@ -852,7 +852,7 @@
     <Cell><Data ss:Type="String">menu</Data></Cell>
     <Cell><Data ss:Type="String">Levels</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">Menu</Data></Cell>
-    <Cell ss:StyleID="s25"/>
+    <Cell ss:StyleID="s22"/>
    </Row>
    <Row>
     <Cell ss:Index="3"><Data ss:Type="String">0,0;8,0;9,1;16,0</Data></Cell>
@@ -895,8 +895,8 @@
     <Cell><Data ss:Type="String">region</Data></Cell>
     <Cell><Data ss:Type="String">rules</Data><Comment ss:Author="michael"><ss:Data
        xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
-         x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;TODO: add trash rules to location</Font></ss:Data></Comment></Cell>
+         html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;TODO: add trash rules to location</Font></ss:Data></Comment></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">98</Data></Cell>
@@ -1294,7 +1294,7 @@
     <Cell><Data ss:Type="String">CatapultSplit</Data></Cell>
     <Cell><Data ss:Type="Number">1</Data></Cell>
     <Cell><Data ss:Type="String">Progression</Data></Cell>
-    <Cell ss:StyleID="s21"><Data ss:Type="String">Catapults: Water, Balloons, and Fish</Data></Cell>
+    <Cell ss:StyleID="s23"><Data ss:Type="String">Catapults: Water, Balloons, and Fish</Data></Cell>
     <Cell><Data ss:Type="String">Catapult;Catapult Water;Catapult Balloons;Catapult Fish;Water, Ballons, and Fish;Balloons;Fish</Data><Comment
       ss:Author="michael"><ss:Data xmlns="http://www.w3.org/TR/REC-html40"><B><Font
          html:Face="Tahoma" html:Size="9" html:Color="#000000">michael:</Font></B><Font
@@ -2464,7 +2464,7 @@
   </WorksheetOptions>
  </Worksheet>
  <Worksheet ss:Name="trashsanity">
-  <Table ss:ExpandedColumnCount="10" ss:ExpandedRowCount="2252" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="10" ss:ExpandedRowCount="2253" x:FullColumns="1"
    x:FullRows="1">
    <Column ss:AutoFitWidth="0" ss:Width="30"/>
    <Column ss:AutoFitWidth="0" ss:Width="123"/>
@@ -13078,8 +13078,8 @@
     <Cell><Data ss:Type="String">rlCollect</Data></Cell>
     <Cell><Data ss:Type="String">rlWater</Data><Comment ss:Author="michael"><ss:Data
        xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
-         x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
-        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;and rlCollect which comes after</Font></ss:Data></Comment></Cell>
+         html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" html:Size="9" html:Color="#000000">&#10;and rlCollect which comes after</Font></ss:Data></Comment></Cell>
    </Row>
    <Row>
     <Cell ss:Index="3"><Data ss:Type="Number">79</Data></Cell>
@@ -17802,6 +17802,12 @@
     <Cell ss:Index="3"><Data ss:Type="Number">71</Data></Cell>
     <Cell><Data ss:Type="String">loungeChair (2)</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="String">LawnChair</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:Index="2"><Data ss:Type="String">999ft</Data></Cell>
+    <Cell><Data ss:Type="Number">0</Data></Cell>
+    <Cell><Data ss:Type="String">campfire</Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="String">Campfire</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">

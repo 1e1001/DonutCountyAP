@@ -1,5 +1,6 @@
 ﻿using DonutCountyAP.Randomizer;
 using HarmonyLib;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -11,7 +12,7 @@ public partial class GlobalPatches
     static string GetRandomizerDataPath()
     {
         var randomizerDataPath = (string)DataManager_GetGameDataPath.Invoke(null, []);
-        return randomizerDataPath.Substring(0, randomizerDataPath.Length - "savegame.sav".Length) + "randomizer.xml";
+        return randomizerDataPath.Substring(0, randomizerDataPath.Length - "savegame.sav".Length) + "randomizer.json";
     }
 
     [HarmonyPatch(typeof(DataManager), "InitializeSaveData_Steam"), HarmonyPostfix]
@@ -21,8 +22,7 @@ public partial class GlobalPatches
         var randomizerDataPath = GetRandomizerDataPath();
         if (FileManagement.FileExists(randomizerDataPath, false))
         {
-            var xml2 = FileManagement.GetString(randomizerDataPath, string.Empty);
-            Plugin.Options = SerializerHelper<ClientOptions>.XmlToObject(xml2);
+            Plugin.Options = JsonConvert.DeserializeObject<ClientOptions>(FileManagement.GetString(randomizerDataPath, string.Empty));
             Plugin.Options.Validate();
             Plugin.BepInLogger.LogDebug("found randomizer save");
         }
@@ -46,8 +46,8 @@ public partial class GlobalPatches
     {
         Plugin.Options.TrashopediaIndex = DataManager.gameData.trashopediaIndex;
         // TODO: delay & debounce saving, then call it more often
-        // also check cache lock!
-        FileManagement.SetString(GetRandomizerDataPath(), SerializerHelper<ClientOptions>.ObjectToXml(Plugin.Options));
+        lock (Plugin.Options.LocationCacheLock)
+            FileManagement.SetString(GetRandomizerDataPath(), JsonConvert.SerializeObject(Plugin.Options));
         Plugin.BepInLogger.LogInfo("not saving the game, saved ap config instead");
         //if (Plugin.Client != null)
         //{

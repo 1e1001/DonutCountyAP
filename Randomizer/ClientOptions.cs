@@ -21,7 +21,7 @@ public class ClientOptions
     public bool TrashTrackers = true;
     // cache un-confirmed locations between game sessions, in case of spurious disconnects or crashes
     public string LocationCacheId;
-    public HashSet<long> LocationCache;
+    public HashSet<long> LocationCache = [];
 
     public void Validate() { }
     public void ApplyPatches()
