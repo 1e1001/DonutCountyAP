@@ -17,6 +17,12 @@ class DonutCountyItem(Item):
     game = "Donut County"
 
 def get_random_filler_item_name(world: DonutCountyWorld) -> str:
+    if "filler_lists" not in world.dc_gen_data:
+        filler_lists = (list(world.options.filler_weights.value.keys()), list(world.options.filler_weights.value.values()))
+        if sum(filler_lists[1]) == 0:
+            filler_lists[0].append("filler")
+            filler_lists[1].append(1)
+        world.dc_gen_data["filler_lists"] = filler_lists
     return world.random.choice(logic.fillers[world.random.choices(world.dc_gen_data["filler_lists"][0], world.dc_gen_data["filler_lists"][1])[0]])
 
 def create_item(world: DonutCountyWorld, name: str) -> DonutCountyItem:
@@ -60,11 +66,9 @@ def create_all_items(world: DonutCountyWorld) -> None:
     if world.options.levels:
         # levels with two or more checks to prevent restrictive starts
         add_sifp(logic.level_items[world.random.choice([1, 2, 12, 19])])
-    if world.options.trashsanity:
-        add_sifp("Rock")
-        add_sifp("Grass")
-        add_sifp("Brick")
-        add_sifp("Donut")
+    if world.options.trash_souls:
+        for trash in logic.start_trash:
+            add_sifp(trash)
     if is_ut_gen:
         # just add way too many items to the pool anyways, might be unneeded
         sifp = {}

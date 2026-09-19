@@ -129,7 +129,7 @@ public class FallStateExtra : MonoBehaviour
         var markers = new KeyValuePair<Transform, string>[_all.Count()];
         var i = 0;
         foreach (var listener in _all)
-            markers[i++] = listener == null ? new(null, "") :new(listener.transform, $"[{listener.DebugIndex}] {listener.name}");
+            markers[i++] = listener == null ? new(null, "") :new(listener.transform, $"[{listener.DebugIndex}] {listener.name} ({listener.Unlock})");
         return markers;
     }
 

@@ -35,6 +35,7 @@ public class ArchipelagoClient : IRandomizerClient
     readonly List<string> _queuedChat = [];
     readonly Dictionary<string, JToken> _queuedDataStorage = [];
     bool _queuedGoal = false;
+    int _currentItemIndex = 0;
     readonly object _rlLock = new();
     readonly List<long> _receivedLocations = [];
 
@@ -131,16 +132,17 @@ public class ArchipelagoClient : IRandomizerClient
             if (_session.DataStorage.GetClientStatus() == ArchipelagoClientState.ClientGoal)
                 Plugin.GameState.ReceivedLocation(Logic.GOAL);
             var cacheId = $"{_session.RoomState.Seed}:{_session.ConnectionInfo.Slot}";
-            lock (Plugin.Options.LocationCacheLock)
+            lock (Plugin.Options.CacheLock)
             {
-                if (Plugin.Options.LocationCacheId == cacheId)
+                if (Plugin.Options.CacheId == cacheId)
                 {
                     // no need to lock/notify as no queue thread is running
-                    _queuedLocations.AddRange(Plugin.Options.LocationCache);
+                    _queuedLocations.AddRange(Plugin.Options.CacheLocations);
                 } else
                 {
-                    Plugin.Options.LocationCache.Clear();
-                    Plugin.Options.LocationCacheId = cacheId;
+                    Plugin.Options.CacheLocations.Clear();
+                    Plugin.Options.CacheId = cacheId;
+                    Plugin.Options.CacheReceived = _session.Items.AllItemsReceived.Count();
                 }
             }
             DataManager.SaveGameData();
@@ -243,17 +245,19 @@ public class ArchipelagoClient : IRandomizerClient
         while (_session.Items.Any())
         {
             var item = _session.Items.DequeueItem();
-            Plugin.GameState.ReceivedItem((ItemId)item.ItemId);
+            Plugin.GameState.ReceivedItem((ItemId)item.ItemId, Plugin.Options.CacheReceived > _currentItemIndex);
+            if (++_currentItemIndex > Plugin.Options.CacheReceived)
+                Plugin.Options.CacheReceived = _currentItemIndex;
         }
         // this is a kinda huge critical section but it's fine for the socket thread to just wait it out
         lock (_rlLock)
         {
             if (_receivedLocations.Count > 0)
             {
-                lock (Plugin.Options.LocationCacheLock)
+                lock (Plugin.Options.CacheLock)
                     foreach (var location in _receivedLocations)
-                        if (Plugin.Options.LocationCache.Contains(location))
-                            Plugin.Options.LocationCache.Remove(location);
+                        if (Plugin.Options.CacheLocations.Contains(location))
+                            Plugin.Options.CacheLocations.Remove(location);
                 foreach (var location in _receivedLocations)
                     Plugin.GameState.ReceivedLocation((int)location);
                 _receivedLocations.Clear();
@@ -278,9 +282,9 @@ public class ArchipelagoClient : IRandomizerClient
     {
         lock (_lock)
             _queuedLocations.Add(id);
-        lock (Plugin.Options.LocationCacheLock)
-            if (!Plugin.Options.LocationCache.Contains(id))
-                Plugin.Options.LocationCache.Add(id);
+        lock (Plugin.Options.CacheLock)
+            if (!Plugin.Options.CacheLocations.Contains(id))
+                Plugin.Options.CacheLocations.Add(id);
         // TODO: queue save of randomizer data? how often does it save mid-game
         _wait.Set();
     }

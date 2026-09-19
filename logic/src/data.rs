@@ -439,6 +439,7 @@ pub struct Data {
 	pub sorted_locations: Vec<LocationIndex>,
 	pub levels: Vec<Level>,
 	pub scenes: BTreeMap<String, Scene>,
+	pub start_trash: Vec<ItemIndex>,
 }
 
 impl Data {

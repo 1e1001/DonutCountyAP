@@ -287,6 +287,7 @@ pub struct PyData<'data> {
 	// script-referenced ids
 	level_items: Vec<Option<&'data str>>,
 	piece: &'data str,
+	start_trash: Vec<&'data str>,
 	aCatapult: RegionIndex,
 	aWin: RegionIndex,
 }
@@ -423,6 +424,7 @@ impl<'data> PyData<'data> {
 			fillers,
 			level_items,
 			piece: &data.items.get_named("QuadcopterPiece").name,
+			start_trash: data.start_trash.iter().map(|&item| &*data.items[item].name).collect(),
 			aCatapult: data.regions.name("aCatapult").unwrap(),
 			aWin: data.regions.name("aWin").unwrap(),
 		}

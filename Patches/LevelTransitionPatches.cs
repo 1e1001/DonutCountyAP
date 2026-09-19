@@ -59,13 +59,14 @@ public partial class GlobalPatches
     [HarmonyPatch(typeof(SceneManager), "OnQueueLevel"), HarmonyPrefix]
     static void SceneManager_OnQueueLevel(ref string level)
     {
-        if (level == "999ft" || UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "999ft")
+        if (level == "999ft_forced")
+        {
+            level = "999ft";
+        } else if (level == "999ft" || UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "999ft")
         {
             Plugin.BepInLogger.LogInfo("saving you from the depths");
             level = "titlescreen";
         }
-        if (level == "999ft_forced")
-            level = "999ft";
         if (Plugin.GameState == null)
             return;
         Plugin.GameState.ActiveDelivery = level != "titlescreen" && level != "results" && level != "scn_credits" && level != "999ft";

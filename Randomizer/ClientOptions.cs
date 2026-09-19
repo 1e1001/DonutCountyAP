@@ -10,7 +10,7 @@ public class ClientOptions
     [JsonIgnore]
     public bool Stale = false;
     [JsonIgnore]
-    public object LocationCacheLock = new();
+    public object CacheLock = new();
 
     public int TrashopediaIndex;
     public string Uri = "localhost";
@@ -20,8 +20,9 @@ public class ClientOptions
     public bool DialogueSkipping = true;
     public bool TrashTrackers = true;
     // cache un-confirmed locations between game sessions, in case of spurious disconnects or crashes
-    public string LocationCacheId;
-    public HashSet<long> LocationCache = [];
+    public string CacheId;
+    public HashSet<long> CacheLocations = [];
+    public int CacheReceived;
 
     public void Validate() { }
     public void ApplyPatches()

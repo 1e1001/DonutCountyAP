@@ -46,7 +46,7 @@ public partial class GlobalPatches
     {
         Plugin.Options.TrashopediaIndex = DataManager.gameData.trashopediaIndex;
         // TODO: delay & debounce saving, then call it more often
-        lock (Plugin.Options.LocationCacheLock)
+        lock (Plugin.Options.CacheLock)
             FileManagement.SetString(GetRandomizerDataPath(), JsonConvert.SerializeObject(Plugin.Options));
         Plugin.BepInLogger.LogInfo("not saving the game, saved ap config instead");
         //if (Plugin.Client != null)

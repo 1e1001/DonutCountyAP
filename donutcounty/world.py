@@ -64,7 +64,10 @@ class DonutCountyWorld(World):
     glitches_item_name = "Glitches"
     @staticmethod
     def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]:
-        from worlds.tracker import TrackerException
+        try:
+            from worlds.tracker import TrackerException
+        except ImportError:
+            TrackerException = Exception
         parse_version = lambda text: [int(part) for part in str.split(text, ".")]
         str_version = lambda version: f"v{version[0]}.{version[1]}.{version[2]}-unstable.{version[3]}" if len(version) == 4 else f"v{version[0]}.{version[1]}.{version[2]}"
         client_version = parse_version(logic.version)
@@ -94,8 +97,3 @@ class DonutCountyWorld(World):
                     opt: Optional[Option] = getattr(self.options, key, None)
                     if opt is not None:
                         setattr(self.options, key, opt.from_any(value))
-        filler_lists = (list(self.options.filler_weights.value.keys()), list(self.options.filler_weights.value.values()))
-        if sum(filler_lists[1]) == 0:
-            filler_lists[0].append("filler")
-            filler_lists[1].append(1)
-        self.dc_gen_data["filler_lists"] = filler_lists

@@ -11,7 +11,7 @@ public class DialogueSkippingPatches
     [HarmonyPatch(typeof(ButtonTriggerEvent), "Hold"), HarmonyPrefix]
     static void ButtonTriggerEvent_Hold(ButtonTriggerEvent __instance)
     {
-        if (__instance.gameObject.name != "DialogNextButton")
+        if (__instance.name != "DialogNextButton")
             return;
         _timer += Time.deltaTime;
         if (_timer > 0.5f)
@@ -21,14 +21,14 @@ public class DialogueSkippingPatches
     //[HarmonyPatch(typeof(ButtonTriggerEvent), "Do"), HarmonyPrefix]
     //static void ButtonTriggerEvent_Do(ButtonTriggerEvent __instance)
     //{
-    //    if (__instance.gameObject.name != "DialogNextButton")
+    //    if (__instance.name != "DialogNextButton")
     //        return;
     //    _timer = 0;
     //}
     [HarmonyPatch(typeof(ButtonTriggerEvent), "Up"), HarmonyPrefix]
     static void ButtonTriggerEvent_Up(ButtonTriggerEvent __instance)
     {
-        if (__instance.gameObject.name != "DialogNextButton")
+        if (__instance.name != "DialogNextButton")
             return;
         _timer = 0;
     }

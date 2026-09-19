@@ -28,6 +28,7 @@ item_to_class["Glitches"] = 7
 fillers: dict[str, list[str]] = logic["fillers"]
 level_items: list[str | None] = logic["level_items"]
 piece: str = logic["piece"]
+start_trash: list[str] = logic["start_trash"]
 aCatapult: int = logic["aCatapult"]
 aWin: int = logic["aWin"]
 

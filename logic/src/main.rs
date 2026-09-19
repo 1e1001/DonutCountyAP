@@ -33,6 +33,20 @@ impl FromCell for PlaceholderRegionConnection {
 	}
 }
 
+pub enum TrashTypeExtra {
+	Event,
+	Start
+}
+impl FromCell for TrashTypeExtra {
+	fn from_cell(text: &str) -> Self {
+		match text {
+			"Event" => Self::Event,
+			"Start" => Self::Start,
+			text => panic!("bad TrashTypeExtra {text:?}"),
+		}
+	}
+}
+
 fn main() {
 	let mut data = Data::default();
 	// TODO: replace with a pull-based system since sheets need to be ordered anyways
@@ -202,20 +216,21 @@ fn main() {
 		"trash_types" => {
 			reader.sheet(worksheet!(|item: i32,
 			                         location: i32,
-			                         event: bool,
+			                         extra: Option<TrashTypeExtra>,
 			                         id: String,
 			                         class: ItemClass,
 			                         name: String| {
 				let item_id = format!("Trash{id}");
+				let name = format!("Trash: {name}");
 				let region = data.regions.add_sequential(Some(item_id.clone()), Region {
-					name: format!("Trash: {name}"),
+					name: name.clone(),
 					next: None,
 					connections: BTreeMap::new(),
 					position: BTreeSet::new(),
 				});
 				data.locations.set(Some(item_id.clone()), LocationIndex(location), Location {
 					name: name.clone(),
-					event: event.then(|| item_id.clone()),
+					event: matches!(extra, Some(TrashTypeExtra::Event)).then(|| item_id.clone()),
 					r#type: LocationType::TrashType,
 					region,
 					rules: Rule::True,
@@ -229,6 +244,9 @@ fn main() {
 					groups: vec!["Trash".to_owned()],
 				});
 				data.sorted_items.push(ItemIndex(item));
+				if matches!(extra, Some(TrashTypeExtra::Start)) {
+					data.start_trash.push(ItemIndex(item));
+				}
 			}))
 		},
 		"trashsanity" => {
