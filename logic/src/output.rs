@@ -33,6 +33,10 @@ impl PyOptionFilter {
 		PyOptionFilter { option: "worlds.donutcounty.options.Trashsanity", value, operator }
 	}
 
+	fn levels() -> Self {
+		PyOptionFilter { option: "worlds.donutcounty.options.Levels", value: 1, operator: "eq" }
+	}
+
 	fn achievements() -> Self {
 		PyOptionFilter {
 			option: "worlds.donutcounty.options.Achievements",
@@ -49,12 +53,8 @@ impl PyOptionFilter {
 		}
 	}
 
-	fn snake_danger() -> Self {
-		PyOptionFilter {
-			option: "worlds.donutcounty.options.SnakeDanger",
-			value: 1,
-			operator: "eq",
-		}
+	fn snake_danger(value: usize) -> Self {
+		PyOptionFilter { option: "worlds.donutcounty.options.SnakeDanger", value, operator: "eq" }
 	}
 
 	fn texting() -> Self {
@@ -144,9 +144,21 @@ impl<'data> PyRule<'data> {
 				options: Vec::new(),
 				filtered_resolution: true,
 			},
-			Rule::SnakeDangerAll => Self::has(&data.items.get_named("SnakeDanger").name, 4, vec![
-				PyOptionFilter::snake_danger(),
-			]),
+			Rule::SnakeDangerAll => {
+				let mut base_rule = Self::new(data, &data.snake_danger_rule);
+				let Self::And { options, .. } = &mut base_rule else { unreachable!() };
+				options.push(PyOptionFilter::snake_danger(0));
+				Self::And {
+					children: vec![
+						Self::has(&data.items.get_named("SnakeDanger").name, 4, vec![
+							PyOptionFilter::snake_danger(1),
+						]),
+						base_rule,
+					],
+					options: Vec::new(),
+					filtered_resolution: true,
+				}
+			},
 			Rule::Texting => {
 				Self::has(&data.items.get_named("Texting").name, 1, vec![PyOptionFilter::texting()])
 			},
@@ -346,7 +358,7 @@ impl<'data> PyData<'data> {
 					LocationType::Trash => Some(PyOptionFilter::trashsanity(2, "eq")),
 					LocationType::Achievement => Some(PyOptionFilter::achievements()),
 					LocationType::Catapult => Some(PyOptionFilter::catapult(0, "ne")),
-					LocationType::SnakeDanger => Some(PyOptionFilter::snake_danger()),
+					LocationType::SnakeDanger => Some(PyOptionFilter::snake_danger(1)),
 					LocationType::SaltAndPepper => Some(PyOptionFilter::salt_and_pepper()),
 					LocationType::Victory => unreachable!(),
 					LocationType::Segment => None,
@@ -389,14 +401,15 @@ impl<'data> PyData<'data> {
 			.into_iter()
 			.map(|(r#type, items)| PyItemGroup {
 				filter: match r#type {
-					ItemType::Filler(_) | ItemType::Level(_) | ItemType::Piece => None,
+					ItemType::Filler(_) | ItemType::Piece => None,
+					ItemType::Level(_) => Some(PyOptionFilter::levels()),
 					ItemType::TrashType => Some(PyOptionFilter::trash_souls()),
 					ItemType::HoleGlobal => Some(PyOptionFilter::hole(1)),
 					ItemType::HoleSplit => Some(PyOptionFilter::hole(2)),
 					ItemType::CatapultGlobal => Some(PyOptionFilter::catapult(1, "eq")),
 					ItemType::CatapultSplit => Some(PyOptionFilter::catapult(2, "eq")),
 					ItemType::Texting => Some(PyOptionFilter::texting()),
-					ItemType::SnakeDanger => Some(PyOptionFilter::snake_danger()),
+					ItemType::SnakeDanger => Some(PyOptionFilter::snake_danger(1)),
 					ItemType::SaltAndPepper => Some(PyOptionFilter::salt_and_pepper()),
 					ItemType::Debug => None,
 				},

@@ -35,7 +35,7 @@ impl FromCell for PlaceholderRegionConnection {
 
 pub enum TrashTypeExtra {
 	Event,
-	Start
+	Start,
 }
 impl FromCell for TrashTypeExtra {
 	fn from_cell(text: &str) -> Self {
@@ -182,6 +182,9 @@ fn main() {
 			                         name: String,
 			                         region: String,
 			                         rules: Rule| {
+				if r#type == LocationType::SnakeDanger {
+					data.snake_danger_rule.and(rules.clone());
+				}
 				data.locations.set(None, LocationIndex(location), Location {
 					name,
 					event,

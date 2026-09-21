@@ -1,5 +1,5 @@
 use std::collections::{BTreeMap, BTreeSet};
-use std::mem::replace;
+use std::mem::{replace, take};
 use std::{fmt, ops};
 
 use hashbrown::{HashMap, HashSet};
@@ -8,7 +8,7 @@ use serde_repr::Serialize_repr;
 
 use crate::sheet::FromCell;
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub enum Rule {
 	Hole(String),
 	Catapult(String),
@@ -21,6 +21,7 @@ pub enum Rule {
 	And(Vec<Rule>),
 	Or(Vec<Rule>),
 	AndTrash(Vec<Rule>),
+	#[default]
 	True,
 }
 impl Rule {
@@ -52,11 +53,21 @@ impl Rule {
 		}
 	}
 
+	pub fn and(&mut self, term: Self) {
+		if matches!(self, Self::True) {
+			*self = Self::And(Vec::new());
+		} else if !matches!(self, Self::And(_)) {
+			*self = Self::And(vec![take(self)]);
+		}
+		let Self::And(children) = self else { unreachable!() };
+		children.push(term);
+	}
+
 	pub fn and_trash(&mut self, term: Self) {
 		if matches!(self, Self::True) {
 			*self = Self::And(Vec::new());
 		} else if !matches!(self, Self::And(_)) {
-			*self = Self::And(vec![replace(self, Self::True)]);
+			*self = Self::And(vec![take(self)]);
 		}
 		let Self::And(children) = self else { unreachable!() };
 		if !matches!(children.last(), Some(Self::AndTrash(_))) {
@@ -440,6 +451,7 @@ pub struct Data {
 	pub levels: Vec<Level>,
 	pub scenes: BTreeMap<String, Scene>,
 	pub start_trash: Vec<ItemIndex>,
+	pub snake_danger_rule: Rule,
 }
 
 impl Data {

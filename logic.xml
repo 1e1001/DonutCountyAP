@@ -8,7 +8,7 @@
   <Author>michael</Author>
   <LastAuthor>michael</LastAuthor>
   <Created>2026-08-06T00:56:49Z</Created>
-  <LastSaved>2026-09-18T19:50:09Z</LastSaved>
+  <LastSaved>2026-09-21T23:33:24Z</LastSaved>
   <Company>/DEV/PTY</Company>
   <Version>10.2625</Version>
  </DocumentProperties>
@@ -322,7 +322,7 @@
     <Cell><Data ss:Type="String">blcFirst</Data></Cell>
     <Cell ss:Index="7"><Data ss:Type="String">Beach Lot C</Data></Cell>
     <Cell><Data ss:Type="String">First firework</Data></Cell>
-    <Cell><Data ss:Type="String">HoleFire</Data></Cell>
+    <Cell><Data ss:Type="String">(and HoleFire TrashBuilding)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">40</Data></Cell>
@@ -414,7 +414,7 @@
     <Cell><Data ss:Type="String">Segment</Data></Cell>
     <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">Catapult tutorial</Data></Cell>
-    <Cell><Data ss:Type="String">CatapultBoxes</Data></Cell>
+    <Cell><Data ss:Type="String">(and CatapultBoxes TrashBuilding)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">47</Data></Cell>
@@ -1866,7 +1866,10 @@
     <Cell><Data ss:Type="Number">955</Data></Cell>
     <Cell ss:Index="4"><Data ss:Type="String">Character</Data></Cell>
     <Cell><Data ss:Type="String">Progression</Data></Cell>
-    <Cell><Data ss:Type="String">Character</Data></Cell>
+    <Cell><Data ss:Type="String">Character</Data><Comment ss:Author="michael"><ss:Data
+       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Face="Tahoma"
+         x:CharSet="1" html:Size="9" html:Color="#000000">michael:</Font></B><Font
+        html:Face="Tahoma" x:CharSet="1" html:Size="9" html:Color="#000000">&#10;TODO: recommended to split for each character&#10;(honestly just redo trashtypes as trashopedia)</Font></ss:Data></Comment></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">81</Data></Cell>
@@ -8531,6 +8534,7 @@
     <Cell><Data ss:Type="String">Mitten</Data></Cell>
     <Cell><Data ss:Type="String">gpCoco</Data></Cell>
     <Cell><Data ss:Type="String">gpCollect</Data></Cell>
+    <Cell><Data ss:Type="String">(and TrashGrass TrashGardening TrashTree)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">636</Data></Cell>
@@ -8586,6 +8590,7 @@
     <Cell><Data ss:Type="String">Fridge</Data></Cell>
     <Cell><Data ss:Type="String">gpCoco</Data></Cell>
     <Cell><Data ss:Type="String">gpCollect</Data></Cell>
+    <Cell><Data ss:Type="String">(and TrashGrass TrashGardening TrashTree)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">642</Data></Cell>
@@ -8603,6 +8608,7 @@
     <Cell ss:Index="6"><Data ss:Type="String">Mitten 1</Data></Cell>
     <Cell><Data ss:Type="String">Mitten</Data></Cell>
     <Cell><Data ss:Type="String">gpCoco</Data></Cell>
+    <Cell ss:Index="10"><Data ss:Type="String">(and TrashGrass TrashGardening TrashTree)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">644</Data></Cell>
@@ -9061,6 +9067,7 @@
     <Cell ss:Index="6"><Data ss:Type="String">Mitten 2</Data></Cell>
     <Cell><Data ss:Type="String">Mitten</Data></Cell>
     <Cell><Data ss:Type="String">gpCoco</Data></Cell>
+    <Cell ss:Index="10"><Data ss:Type="String">(and TrashGrass TrashGardening TrashTree)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">698</Data></Cell>
@@ -9069,6 +9076,7 @@
     <Cell ss:Index="6"><Data ss:Type="String">Mitten 3</Data></Cell>
     <Cell><Data ss:Type="String">Mitten</Data></Cell>
     <Cell><Data ss:Type="String">gpCoco</Data></Cell>
+    <Cell ss:Index="10"><Data ss:Type="String">(and TrashGrass TrashGardening TrashTree)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">699</Data></Cell>
@@ -9123,6 +9131,7 @@
     <Cell ss:Index="6"><Data ss:Type="String">Mitten 4</Data></Cell>
     <Cell><Data ss:Type="String">Mitten</Data></Cell>
     <Cell><Data ss:Type="String">gpCoco</Data></Cell>
+    <Cell ss:Index="10"><Data ss:Type="String">(and TrashGrass TrashGardening TrashTree)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">705</Data></Cell>
@@ -9311,6 +9320,7 @@
     <Cell><Data ss:Type="String">crate</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Watermelon crate</Data></Cell>
     <Cell><Data ss:Type="String">Crate</Data></Cell>
+    <Cell><Data ss:Type="String">cbIntro</Data></Cell>
     <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
    </Row>
    <Row>
@@ -9329,7 +9339,8 @@
     <Cell ss:Index="6"><Data ss:Type="String">Watermelon</Data></Cell>
     <Cell><Data ss:Type="String">OtherFood</Data></Cell>
     <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
-    <Cell ss:Index="10"><Data ss:Type="String">CatapultBoxes</Data></Cell>
+    <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
+    <Cell><Data ss:Type="String">(and CatapultBoxes TrashCrate)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">729</Data></Cell>
@@ -9337,6 +9348,7 @@
     <Cell><Data ss:Type="String">crate</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Strawberry crate</Data></Cell>
     <Cell><Data ss:Type="String">Crate</Data></Cell>
+    <Cell><Data ss:Type="String">cbIntro</Data></Cell>
     <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
    </Row>
    <Row>
@@ -9355,7 +9367,8 @@
     <Cell ss:Index="6"><Data ss:Type="String">Strawberry 1</Data></Cell>
     <Cell><Data ss:Type="String">OtherFood</Data></Cell>
     <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
-    <Cell ss:Index="10"><Data ss:Type="String">CatapultBoxes</Data></Cell>
+    <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
+    <Cell><Data ss:Type="String">(and CatapultBoxes TrashCrate)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">732</Data></Cell>
@@ -9364,7 +9377,8 @@
     <Cell ss:Index="6"><Data ss:Type="String">Strawberry 2</Data></Cell>
     <Cell><Data ss:Type="String">OtherFood</Data></Cell>
     <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
-    <Cell ss:Index="10"><Data ss:Type="String">CatapultBoxes</Data></Cell>
+    <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
+    <Cell><Data ss:Type="String">(and CatapultBoxes TrashCrate)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">733</Data></Cell>
@@ -9373,7 +9387,8 @@
     <Cell ss:Index="6"><Data ss:Type="String">Orange</Data></Cell>
     <Cell><Data ss:Type="String">OtherFood</Data></Cell>
     <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
-    <Cell ss:Index="10"><Data ss:Type="String">CatapultBoxes</Data></Cell>
+    <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
+    <Cell><Data ss:Type="String">(and CatapultBoxes TrashCrate)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">734</Data></Cell>
@@ -9381,8 +9396,9 @@
     <Cell><Data ss:Type="String">crate</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Orange crate</Data></Cell>
     <Cell><Data ss:Type="String">Crate</Data></Cell>
+    <Cell><Data ss:Type="String">cbIntro</Data></Cell>
     <Cell><Data ss:Type="String">cbBoxes</Data></Cell>
-    <Cell ss:Index="10"><Data ss:Type="String">(and TrashBrick TrashGrass TrashFlourBag TrashCage)</Data></Cell>
+    <Cell><Data ss:Type="String">(and TrashBrick TrashGrass TrashFlourBag TrashCage)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">735</Data></Cell>
@@ -9775,9 +9791,9 @@
     <Cell><Data ss:Type="String">woodShelfHalf</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Left beehouse shelf</Data></Cell>
     <Cell><Data ss:Type="String">Beehouse</Data></Cell>
-    <Cell><Data ss:Type="String">hnfGetFrog</Data></Cell>
     <Cell><Data ss:Type="String">hnfFrog</Data></Cell>
-    <Cell><Data ss:Type="String">(or (and TrashPinecone TrashRock TrashTree TrashGrass TrashBeeSmoker) (and TrashBee TrashBeehive))</Data></Cell>
+    <Cell><Data ss:Type="String">hnfFrog</Data></Cell>
+    <Cell><Data ss:Type="String">(and TrashBee TrashBeehive)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">781</Data></Cell>
@@ -9822,9 +9838,9 @@
     <Cell><Data ss:Type="String">woodShelfHalf (2)</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Right beehouse shelf</Data></Cell>
     <Cell><Data ss:Type="String">Beehouse</Data></Cell>
-    <Cell><Data ss:Type="String">hnfGetFrog</Data></Cell>
     <Cell><Data ss:Type="String">hnfFrog</Data></Cell>
-    <Cell><Data ss:Type="String">(or (and TrashPinecone TrashRock TrashTree TrashGrass TrashBeeSmoker) (and TrashBee TrashBeehive))</Data></Cell>
+    <Cell><Data ss:Type="String">hnfFrog</Data></Cell>
+    <Cell><Data ss:Type="String">(and TrashBee TrashBeehive)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="Number">786</Data></Cell>
