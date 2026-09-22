@@ -27,11 +27,6 @@ Generative AI has not been used to make this AP implementation. I have no plans 
 
 - snake danger doesn't have a way to delay the 4-item transition to collect the locations?
 - error sound on failed catapult
-- different piece-percentage for level unlocks vs. goal unlock
-	- or like one piece = one level
-	- do actual playtesting / design work for this
-		- in sync situations it seems any kind of level locking is bad?
-		- and it seems in fuzzing that the piece requirements often outpace the available checks in each level
 - "Quadcopter Piece" is a temporary name, come up with a better one and use that
 	- name should try to reflect the usefulness of the item?
 - fix weird sudden crashes
@@ -54,7 +49,6 @@ Generative AI has not been used to make this AP implementation. I have no plans 
 - items tracker
 	- in main menu?
 	- or in the pause stats again
-- restart button for all levels
 - skip button if you've already completed a segment
 - poll timers for missed abilities
 	- within 1s after failing a hole ability, if you have the item it'll run the effect properly

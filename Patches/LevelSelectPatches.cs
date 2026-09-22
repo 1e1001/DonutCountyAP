@@ -125,5 +125,23 @@ public partial class GlobalPatches
             return;
         Plugin.Client?.SetSlotStorage("level", $"title:{(int)OS1LevelSelect__currentDeliveryIndex.GetValue(__instance)}");
     }
+
+    [HarmonyPatch(typeof(OS1OptionsMenu), "OnPressDebugRestartLevel"), HarmonyPrefix]
+    static bool OS1OptionsMenu_OnPressDebugRestartLevel(OS1OptionsMenu __instance)
+    {
+        if (OS1LevelSelect_OnPressButtonPlay(RM.os1LevelSelect))
+        {
+            OS1Delivery deliveryDataLevelSelect = DataManager.GetDeliveryDataLevelSelect((int)OS1LevelSelect__currentDeliveryIndex.GetValue(RM.os1LevelSelect));
+            DataManager.SetCurrentDelivery(deliveryDataLevelSelect);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(deliveryDataLevelSelect.scene);
+            __instance.PauseGame();
+        }
+        return false;
+    }
+    [HarmonyPatch(typeof(OS1OptionsMenu), "SetState"), HarmonyPostfix]
+    static void OS1OptionsMenu_SetState(OS1OptionsMenu __instance)
+    {
+        __instance.restartLevelButton.SetButtonActive(true, false);
+    }
 }
 
