@@ -89,31 +89,26 @@ public class ArchipelagoClient : IRandomizerClient
             return $"{version.Major}.{version.Minor}.{version.Build}-preview.{version.Revision}";
         return $"{version.Major}.{version.Minor}.{version.Build}";
     }
-    bool TestIncompatibleVersion(string slotVersion) {
+    void WarnIncompatibleVersion(string slotVersion) {
         var clientVersion = new Version(VersionInfo.VERSION);
         var compatVersion = new Version(VersionInfo.COMPAT_VERSION);
         var serverVersion = new Version(slotVersion);
         if (serverVersion.Revision != -1 && serverVersion != clientVersion)
         {
             Plugin.BepInLogger.LogWarning($"Server {VersionFormatted(serverVersion)} is unstable and different from client {VersionFormatted(clientVersion)}, issues may occur");
-            return false;
         }
         if (serverVersion < compatVersion)
         {
             Plugin.BepInLogger.LogWarning($"Server {VersionFormatted(serverVersion)} is older than minimum supported {VersionFormatted(compatVersion)} of client {VersionFormatted(clientVersion)}, issues may occur");
-            return false;
         }
         if (serverVersion.Revision == -1 && clientVersion.Revision != -1 && serverVersion >= new Version(clientVersion.Major, clientVersion.Minor, clientVersion.Build))
         {
             Plugin.BepInLogger.LogWarning($"Server {VersionFormatted(serverVersion)} is newer than client {VersionFormatted(clientVersion)}, please update your client");
-            return true;
         }
         if (serverVersion > clientVersion)
         {
             Plugin.BepInLogger.LogWarning($"Server {VersionFormatted(serverVersion)} is newer than client {VersionFormatted(clientVersion)}, please update your client");
-            return true;
         }
-        return false;
     }
     void HandleConnectResult(LoginResult result)
     {
@@ -124,11 +119,7 @@ public class ArchipelagoClient : IRandomizerClient
             var success = (LoginSuccessful)result;
             var slotData = _session.DataStorage.GetSlotData<GameOptions>();
             Plugin.SetGame(new GameState(slotData));
-            if (TestIncompatibleVersion(slotData.Version))
-            {
-                Disconnect();
-                return;
-            }
+            WarnIncompatibleVersion(slotData.Version);
             if (_session.DataStorage.GetClientStatus() == ArchipelagoClientState.ClientGoal)
                 Plugin.GameState.ReceivedLocation(Logic.GOAL);
             var cacheId = $"{_session.RoomState.Seed}:{_session.ConnectionInfo.Slot}";

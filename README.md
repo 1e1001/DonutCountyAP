@@ -24,6 +24,7 @@ Generative AI has not been used to make this AP implementation. I have no plans 
 
 - quadcopter cutscene go fast
 	- skip Block_DonutShop_01_Intro[5]
+- figure out how to patch scriptableobjects
 
 - snake danger doesn't have a way to delay the 4-item transition to collect the locations?
 - error sound on failed catapult

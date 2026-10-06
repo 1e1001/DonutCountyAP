@@ -67,20 +67,22 @@ class DonutCountyWorld(World):
         try:
             from worlds.tracker import TrackerException
         except ImportError:
-            TrackerException = Exception
+            # needed for stupid nonsense
+            def TrackerException(message):
+                return Exception(message)
         parse_version = lambda text: [int(part) for part in str.split(text, ".")]
         str_version = lambda version: f"v{version[0]}.{version[1]}.{version[2]}-unstable.{version[3]}" if len(version) == 4 else f"v{version[0]}.{version[1]}.{version[2]}"
         client_version = parse_version(logic.version)
         compat_version = parse_version(logic.compat_version)
         server_version = parse_version(slot_data["version"])
         if len(server_version) == 4 and server_version != client_version:
-            raise TrackerException(f"Server {str_version(server_version)} is unstable and different from client {str_version(client_version)}")
+            raise TrackerException(message = f"Server {str_version(server_version)} is unstable and different from client {str_version(client_version)}")
         if server_version < compat_version:
-            raise TrackerException(f"Server {str_version(server_version)} is older than minimum supported {str_version(compat_version)} of client {str_version(client_version)}")
+            raise TrackerException(message = f"Server {str_version(server_version)} is older than minimum supported {str_version(compat_version)} of client {str_version(client_version)}")
         if len(server_version) == 3 and len(client_version) == 4 and server_version >= client_version[:3]:
-            raise TrackerException(f"Server {str_version(server_version)} is newer than client {str_version(client_version)}, please update your client")
+            raise TrackerException(message = f"Server {str_version(server_version)} is newer than client {str_version(client_version)}, please update your client")
         if server_version > client_version:
-            raise TrackerException(f"Server {str_version(server_version)} is newer than client {str_version(client_version)}, please update your client")
+            raise TrackerException(message = f"Server {str_version(server_version)} is newer than client {str_version(client_version)}, please update your client")
         return slot_data
     def generate_early(self) -> None:
         # fix option conflict
